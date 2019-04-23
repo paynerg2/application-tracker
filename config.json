@@ -1,0 +1,4 @@
+{
+    "connectionString": "mongodb://localhost/<database-name>",
+    "secret": "replace with actual secret"
+}

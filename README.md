@@ -1,0 +1,1 @@
+Application to track job applications, track interviews associated with specific applications, manage and analyze data from the application process, and display the user with useful feedback during their job hunt.
