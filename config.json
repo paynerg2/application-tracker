@@ -1,4 +1,4 @@
 {
-    "connectionString": "mongodb://localhost/<database-name>",
-    "secret": "replace with actual secret"
+    "connectionString": "mongodb://localhost/application-tracker-db",
+    "secret": "i#;jY'b7=!CII=XL^sT]`',=i|A`f^[&,*.kKS$|7NtsXKZ'nZ)CH$1YC^3&cRo"
 }
