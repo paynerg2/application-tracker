@@ -1,10 +1,11 @@
-import config from 'config';
+import config from '../../config';
 import { authHeader } from '../_helpers';
 
 export const userService = {
     login,
     logout,
-    getAll
+    getAll,
+    create
 };
 
 function login(username, password) {
@@ -36,6 +37,16 @@ function getAll() {
     };
 
     return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+}
+
+function create(user) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user)
+    };
+
+    return fetch(`${config.apiUrl}/users`, requestOptions);
 }
 
 function handleResponse(response) {

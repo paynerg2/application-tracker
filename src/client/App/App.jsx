@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 import { history } from '../_helpers';
 import { alertActions } from '../_actions';
 import { PrivateRoute } from '../_components';
+import { HomePage } from '../HomePage';
+import { LoginPage } from '../AuthPages/LoginPage';
+import { RegistrationPage } from '../AuthPages/RegistrationPage';
+import { DataPage } from '../DataPage';
 
 class App extends Component {
     constructor(props) {
@@ -28,7 +32,22 @@ class App extends Component {
                             </div>
                         )}
                         <Router history={history}>
-                            <div>{/* Routes and Private Routes here */}</div>
+                            <div>
+                                <PrivateRoute
+                                    path="/"
+                                    exact
+                                    component={HomePage}
+                                />
+                                <Route path="/login" component={LoginPage} />
+                                <Route
+                                    path="/register"
+                                    component={RegistrationPage}
+                                />
+                                <PrivateRoute
+                                    path="/data"
+                                    component={DataPage}
+                                />
+                            </div>
                         </Router>
                     </div>
                 </div>
