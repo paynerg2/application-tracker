@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import { userActions } from '../../_actions';
 import {
@@ -10,7 +11,7 @@ import {
     Button
 } from '../form';
 
-export class RegistrationPage extends Component {
+class RegistrationPage extends Component {
     constructor(props) {
         super(props);
 
@@ -53,7 +54,11 @@ export class RegistrationPage extends Component {
         return (
             <FormContainer>
                 <H2Text>Create a New Account</H2Text>
-                <form name="form" onSubmit={this.handleSubmit}>
+                <form
+                    name="form"
+                    onSubmit={this.handleSubmit}
+                    autoComplete="off"
+                >
                     <FormGroup>
                         <label htmlFor="username">Username</label>
                         <Input
@@ -95,3 +100,6 @@ export class RegistrationPage extends Component {
         );
     }
 }
+
+const connectedRegistrationPage = connect(null)(RegistrationPage);
+export { connectedRegistrationPage as RegistrationPage };

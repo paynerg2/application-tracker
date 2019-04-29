@@ -1,4 +1,4 @@
-import config from '../../config';
+import config from '../config.json';
 import { authHeader } from '../_helpers';
 
 export const userService = {
@@ -46,7 +46,7 @@ function create(user) {
         body: JSON.stringify(user)
     };
 
-    return fetch(`${config.apiUrl}/users`, requestOptions);
+    return fetch(`${config.apiUrl}/users/register`, requestOptions);
 }
 
 function handleResponse(response) {

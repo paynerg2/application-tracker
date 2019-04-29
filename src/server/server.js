@@ -13,7 +13,7 @@ app.use(cors());
 app.use(jwt());
 
 // api routes
-app.use('/users', require('.models/users/users.controller'));
+app.use('/users', require('./models/users/users.controller'));
 app.use(
     '/applications',
     require('./models/applications/applications.controller')

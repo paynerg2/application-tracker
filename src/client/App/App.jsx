@@ -23,33 +23,24 @@ class App extends Component {
     render() {
         const { alert } = this.props;
         return (
-            <div className="jumbotron">
-                <div className="container">
-                    <div className="col-sm-8 col-sm-offset-2">
-                        {alert.message && (
-                            <div className={`alert ${alert.type}`}>
-                                {alert.message}
-                            </div>
-                        )}
-                        <Router history={history}>
-                            <div>
-                                <PrivateRoute
-                                    path="/"
-                                    exact
-                                    component={HomePage}
-                                />
-                                <Route path="/login" component={LoginPage} />
-                                <Route
-                                    path="/register"
-                                    component={RegistrationPage}
-                                />
-                                <PrivateRoute
-                                    path="/data"
-                                    component={DataPage}
-                                />
-                            </div>
-                        </Router>
-                    </div>
+            <div>
+                <div>
+                    {alert.message && (
+                        <div className={`alert ${alert.type}`}>
+                            {alert.message}
+                        </div>
+                    )}
+                    <Router history={history}>
+                        <div>
+                            <PrivateRoute path="/" exact component={HomePage} />
+                            <Route path="/login" component={LoginPage} />
+                            <Route
+                                path="/register"
+                                component={RegistrationPage}
+                            />
+                            <PrivateRoute path="/data" component={DataPage} />
+                        </div>
+                    </Router>
                 </div>
             </div>
         );

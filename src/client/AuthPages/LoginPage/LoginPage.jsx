@@ -50,7 +50,11 @@ class LoginPage extends Component {
         return (
             <FormContainer>
                 <H2Text>Login</H2Text>
-                <form name="form" onSubmit={this.handleSubmit}>
+                <form
+                    name="form"
+                    onSubmit={this.handleSubmit}
+                    autoComplete="off"
+                >
                     <FormGroup>
                         <label htmlFor="username">Username</label>
                         <Input
