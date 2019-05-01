@@ -1,7 +1,26 @@
 import styled from 'styled-components';
 
-export const Header = styled.div`
-    width: 100%;
-    height: 10vh;
-    background-color: #bebebe;
+export const CardListItem = styled.li`
+    /*Adust with media query */
+    width: 30%;
+    height: 20vh;
+    background-color: #fff;
+    list-style-type: none;
+    margin: 10px;
+`;
+
+export const CardList = styled.ul`
+    height: 100%;
+    padding: 20px;
+    background-color: #3b3b3b;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    flex: 1;
+`;
+
+export const Container = styled.div`
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 `;
