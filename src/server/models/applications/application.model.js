@@ -17,21 +17,31 @@ const schema = new Schema({
     },
     contract: {
         type: String,
-        enum: ['full-time', 'part-time', 'contract-to-hire']
+        enum: ['full-time', 'part-time', 'contract', 'contract-to-hire']
     },
     temp: { type: Boolean, default: false },
     arbitraryRelocation: { type: Boolean, required: true },
     location: { type: String },
     mainSkill: { type: String },
-    datePosted: { type: Date, required: true },
-    dateApplicationSent: { type: Date, required: true, default: Date.now },
+    datePosted: { type: Date, required: false },
+    dateApplicationSent: { type: Date, required: false, default: Date.now },
     // Link to resume
     // Link to cover letter
     givenReferral: { type: Boolean, default: false },
     companyLinkedIn: { type: String },
     expectedSalary: { type: Number },
     field: { type: String },
-    response: { type: String, default: 'No Response' },
+    response: {
+        type: String,
+        enum: [
+            'No Response',
+            'Rejected',
+            'Phone Screen',
+            'Interview',
+            'Job Offer'
+        ],
+        default: 'No Response'
+    },
     interviewId: { type: String }
 });
 

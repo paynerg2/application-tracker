@@ -39,6 +39,7 @@ function login(username, password) {
 
 function logout() {
     userService.logout();
+    history.push('/login');
     return { type: userConstants.LOGOUT };
 }
 
@@ -79,6 +80,6 @@ function create(user) {
         return { type: userConstants.CREATE_REQUEST };
     }
     function failure(error) {
-        return { type: userConstants.CREATE_FAILURE };
+        return { type: userConstants.CREATE_FAILURE, error };
     }
 }

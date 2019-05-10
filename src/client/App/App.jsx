@@ -9,6 +9,7 @@ import { HomePage } from '../HomePage';
 import { LoginPage } from '../AuthPages/LoginPage';
 import { RegistrationPage } from '../AuthPages/RegistrationPage';
 import { DataPage } from '../DataPage';
+import { CreateApplicationPage } from '../ApplicationPages/CreateApplicationPage';
 
 class App extends Component {
     constructor(props) {
@@ -40,6 +41,14 @@ class App extends Component {
                                 component={RegistrationPage}
                             />
                             <PrivateRoute path="/data" component={DataPage} />
+                            <PrivateRoute
+                                path="/applications/new"
+                                component={CreateApplicationPage}
+                            />
+                            <PrivateRoute
+                                path="/applications/:applicationId"
+                                component={CreateApplicationPage}
+                            />
                         </div>
                     </Router>
                 </div>

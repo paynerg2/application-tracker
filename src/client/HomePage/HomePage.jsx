@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { applicationActions } from '../_actions';
 import { CardList, Container } from './homepage.styles';
-import { Header, ApplicationCard } from '../_components';
+import { ApplicationCard } from '../_components';
 
 /*
     Fake Application data
@@ -29,20 +31,40 @@ const application3 = {
     mainSkill: 'javascript',
     dateApplicationSent: '1/11/11'
 };
-const applicationList = [application1, application2, application3];
+//const applicationList = [application1, application2, application3];
 
-export class HomePage extends Component {
+class HomePage extends Component {
+    componentDidMount() {
+        const { dispatch } = this.props;
+        dispatch(applicationActions.getAll());
+    }
+
     render() {
+        const { applicationList, loading } = this.props;
         return (
             <React.Fragment>
                 <Container>
-                    <CardList>
-                        {applicationList.map(app => {
-                            return <ApplicationCard application={app} />;
-                        })}
-                    </CardList>
+                    {loading && <div>Loading...</div>}
+                    {!loading && (
+                        <CardList>
+                            {applicationList.map(app => {
+                                return <ApplicationCard application={app} />;
+                            })}
+                        </CardList>
+                    )}
                 </Container>
             </React.Fragment>
         );
     }
 }
+
+function mapStateToProps(state) {
+    const { applicationList, loading } = state.applications;
+    return {
+        applicationList,
+        loading
+    };
+}
+
+const connectedHomePage = connect(mapStateToProps)(HomePage);
+export { connectedHomePage as HomePage };

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const CardListItem = styled.li`
@@ -37,6 +38,26 @@ const Location = styled.div`
     font-style: italic;
 `;
 
+const Button = styled.button`
+    border: none;
+    padding: 4px 7px 4px 7px;
+    background: #ff8500;
+    color: #fff;
+    margin-top: 5px;
+    box-shadow: 1px 1px 4px #dadada;
+    -moz-box-shadow: 1px 1px 4px #dadada;
+    -webkit-box-shadow: 1px 1px 4px #dadada;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    font-family: 8px Arial, Helvetica, sans-serif;
+
+    &:hover {
+        background: #ea7b00;
+        color: #fff;
+    }
+`;
+
 export class ApplicationCard extends Component {
     constructor(props) {
         super(props);
@@ -52,8 +73,17 @@ export class ApplicationCard extends Component {
         this.setState({ isSelected: !this.state.isSelected });
     }
 
+    formatDate(date) {
+        if (date) {
+            const d = new Date(date);
+            return d.toLocaleDateString('en-US');
+        }
+        return '';
+    }
+
     renderCard = application => {
         const {
+            _id,
             jobTitle,
             company,
             location,
@@ -72,12 +102,16 @@ export class ApplicationCard extends Component {
                 <RightColumn>
                     {this.state.isSelected && (
                         <div>
-                            <div>edit</div>
-                            <div>delete</div>
+                            <Link to={`/applications/${_id}`}>
+                                <Button>edit</Button>
+                            </Link>
+                            <Link to={`/delete/${_id}`}>
+                                <Button>delete</Button>
+                            </Link>
                         </div>
                     )}
                     <div>{mainSkill}</div>
-                    <div>{dateApplicationSent}</div>
+                    <div>{this.formatDate(dateApplicationSent)}</div>
                 </RightColumn>
             </React.Fragment>
         );

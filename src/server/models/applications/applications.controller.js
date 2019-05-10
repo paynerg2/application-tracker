@@ -6,7 +6,7 @@ const applicationService = require('./application.service');
 router.get('/', getAll);
 router.get('/:id', getById);
 router.post('/', create);
-router.put(':id', update);
+router.put('/:id', update);
 router.delete('/:id', _delete);
 
 module.exports = router;
@@ -36,6 +36,9 @@ function create(req, res, next) {
 }
 
 function update(req, res, next) {
+    console.log('body from update request');
+    console.log(req.body);
+    console.log(`id: ${req.params.id}`);
     applicationService
         .update(req.params.id, req.body)
         .then(() => res.json({}))

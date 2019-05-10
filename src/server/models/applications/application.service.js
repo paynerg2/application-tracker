@@ -23,14 +23,11 @@ async function create(applicationParam) {
 }
 
 async function update(id, applicationParam) {
-    const application = Application.findById(id);
+    const applicationInDatabase = await Application.findById(id);
+    if (!applicationInDatabase) throw Error('Application not found');
 
-    if (!application) throw Error('Application not found');
-
-    // copy parameters to application
-    Object.assign(application, applicationParam);
-
-    await application.save();
+    const updatedApplication = new Application(applicationParam);
+    await Application.findByIdAndUpdate(id, updatedApplication);
 }
 
 async function _delete(id) {

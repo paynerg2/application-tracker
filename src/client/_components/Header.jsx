@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { userActions } from '../_actions';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -44,14 +46,20 @@ const HeaderRight = styled.div`
     align-items: center;
 `;
 
-export class Header extends Component {
+class Header extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.logout = this.logout.bind(this);
+    }
+    logout() {
+        const { dispatch } = this.props;
+        dispatch(userActions.logout());
     }
 
     render() {
+        const { user } = this.props;
+        console.log(user);
         return (
             <HeaderContainer>
                 <HeaderLeft>
@@ -59,13 +67,33 @@ export class Header extends Component {
                         <NavLink to="/">Application Tracker</NavLink>
                     </Brand>
                     <NavLink to="/data">Data</NavLink>
-                    <NavLink to="#">Add New</NavLink>
+                    <NavLink to="/applications/new">Add New</NavLink>
                 </HeaderLeft>
                 <HeaderRight>
-                    <NavLink to="/login">Login</NavLink>
-                    <NavLink to="/register">Sign up</NavLink>
+                    {!user && (
+                        <React.Fragment>
+                            <NavLink to="/login">Login</NavLink>
+                            <NavLink to="/register">Sign up</NavLink>
+                        </React.Fragment>
+                    )}
+                    {user && (
+                        <React.Fragment>
+                            <div>Logged in as {user.username}</div>
+                            <button onClick={this.logout}>Logout</button>
+                        </React.Fragment>
+                    )}
                 </HeaderRight>
             </HeaderContainer>
         );
     }
 }
+
+function mapStateToProps(state) {
+    const user = state.authentication.user;
+    return {
+        user
+    };
+}
+
+const connectedHeader = connect(mapStateToProps)(Header);
+export { connectedHeader as Header };
