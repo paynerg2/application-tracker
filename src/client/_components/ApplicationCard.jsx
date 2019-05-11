@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { applicationActions } from '../_actions';
 
 export const CardListItem = styled.li`
     /*Adust with media query */
@@ -58,7 +61,7 @@ const Button = styled.button`
     }
 `;
 
-export class ApplicationCard extends Component {
+class ApplicationCard extends Component {
     constructor(props) {
         super(props);
 
@@ -67,10 +70,16 @@ export class ApplicationCard extends Component {
         };
 
         this.handleSelection = this.handleSelection.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     handleSelection() {
         this.setState({ isSelected: !this.state.isSelected });
+    }
+
+    handleDelete(id) {
+        const { dispatch } = this.props;
+        dispatch(applicationActions.delete(this.props.application._id));
     }
 
     formatDate(date) {
@@ -105,9 +114,7 @@ export class ApplicationCard extends Component {
                             <Link to={`/applications/${_id}`}>
                                 <Button>edit</Button>
                             </Link>
-                            <Link to={`/delete/${_id}`}>
-                                <Button>delete</Button>
-                            </Link>
+                            <Button onClick={this.handleDelete}>Delete</Button>
                         </div>
                     )}
                     <div>{mainSkill}</div>
@@ -128,3 +135,6 @@ export class ApplicationCard extends Component {
         );
     }
 }
+
+const connectedApplicationCard = connect(null)(ApplicationCard);
+export { connectedApplicationCard as ApplicationCard };

@@ -80,12 +80,18 @@ function update(id, update) {
 
         applicationService
             .update(id, update)
-            .then(history.push('/'))
+            .then(() => {
+                dispatch(success(update));
+                history.push('/');
+            })
             .catch(err => dispatch(failure(err)));
     };
 
     function request() {
         return { type: applicationConstants.UPDATE_REQUEST };
+    }
+    function success(update) {
+        return { type: applicationConstants.UPDATE_SUCCESS, update };
     }
     function failure(error) {
         return { type: applicationConstants.UPDATE_FAILURE, error };
@@ -98,11 +104,17 @@ function _delete(id) {
 
         applicationService
             .delete(id)
-            .then(history.push('/'))
+            .then(() => {
+                history.push('/');
+                dispatch(success(id));
+            })
             .catch(err => dispatch(failure(err)));
 
         function request() {
             return { type: applicationConstants.DELETE_REQUEST };
+        }
+        function success(id) {
+            return { type: applicationConstants.DELETE_SUCCESS, id };
         }
         function failure(error) {
             return { type: applicationConstants.DELETE_FAILURE, error };

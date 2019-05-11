@@ -42,7 +42,8 @@ class App extends Component {
                             />
                             <PrivateRoute path="/data" component={DataPage} />
                             <PrivateRoute
-                                path="/applications/new"
+                                exact
+                                path="/applications/"
                                 component={CreateApplicationPage}
                             />
                             <PrivateRoute

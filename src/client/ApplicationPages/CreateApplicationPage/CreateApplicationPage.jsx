@@ -98,6 +98,7 @@ class CreateApplicationPage extends Component {
     render() {
         const {
             submitted,
+            applicationId,
             jobTitle,
             company,
             jobDescriptionLink,
@@ -121,7 +122,9 @@ class CreateApplicationPage extends Component {
         } = this.state;
         return (
             <FormContainer>
-                <H2Text>Add a New Application</H2Text>
+                <H2Text>
+                    {applicationId ? 'Edit ' : 'Add a new '}Application
+                </H2Text>
                 <form
                     name="form"
                     onSubmit={this.handleSubmit}
