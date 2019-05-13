@@ -53,6 +53,7 @@ export function applications(state = initialState, action) {
             const listWithoutUpdatedApplication = state.applicationList.filter(
                 app => app.id !== action.update.id
             );
+            //const updatedList = state.applicationList.map(app => app.id === action.update.id ? action.update : app);
             return {
                 applicationList: [
                     ...listWithoutUpdatedApplication,
@@ -70,7 +71,7 @@ export function applications(state = initialState, action) {
                 loading: true
             };
         case applicationConstants.DELETE_SUCCESS:
-            const id = action.id;
+            const { id } = action;
             const updatedApplicationList = state.applicationList.filter(
                 app => app.id !== id
             );

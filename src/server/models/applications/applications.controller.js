@@ -36,9 +36,6 @@ function create(req, res, next) {
 }
 
 function update(req, res, next) {
-    console.log('body from update request');
-    console.log(req.body);
-    console.log(`id: ${req.params.id}`);
     applicationService
         .update(req.params.id, req.body)
         .then(() => res.json({}))

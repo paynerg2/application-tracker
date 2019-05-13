@@ -23,13 +23,11 @@ async function create(interviewParam) {
 }
 
 async function update(id, interviewParam) {
-    const interview = await Interview.findById(id);
+    const interviewInDatabase = await Interview.findById(id);
+    if (!interviewInDatabase) throw Error('Interview not found');
 
-    if (!interview) throw Error('Interview not found');
-
-    Object.assign(interview, interviewParam);
-
-    await interview.save();
+    const updatedInterview = new Interview(interviewParam);
+    await Interview.findByIdAndUpdate(id, updatedInterview);
 }
 
 async function _delete(id) {
