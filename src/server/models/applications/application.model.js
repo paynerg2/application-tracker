@@ -33,16 +33,10 @@ const schema = new Schema({
     field: { type: String },
     response: {
         type: String,
-        enum: [
-            'No Response',
-            'Rejected',
-            'Phone Screen',
-            'Interview',
-            'Job Offer'
-        ],
+        enum: ['No Response', 'Rejected', 'Interview'],
         default: 'No Response'
     },
-    interviewId: { type: String }
+    interviewId: [String]
 });
 
 schema.set('toJSON', { virtuals: true });

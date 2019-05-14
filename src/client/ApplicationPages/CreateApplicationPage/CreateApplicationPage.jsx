@@ -46,6 +46,8 @@ class CreateApplicationPage extends Component {
     }
 
     componentDidMount() {
+        // If an application Id is passed to the page, user this as
+        // an edit page and pre-fill values.
         const {
             match: { params }
         } = this.props;

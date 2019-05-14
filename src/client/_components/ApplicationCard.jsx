@@ -41,6 +41,8 @@ const Location = styled.div`
     font-style: italic;
 `;
 
+const Dropdown = styled.select``;
+
 const Button = styled.button`
     border: none;
     padding: 4px 7px 4px 7px;
@@ -69,17 +71,29 @@ class ApplicationCard extends Component {
             isSelected: false
         };
 
-        this.handleSelection = this.handleSelection.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-    }
-
-    handleSelection() {
-        this.setState({ isSelected: !this.state.isSelected });
+        this.handleResponseUpdate = this.handleResponseUpdate.bind(this);
     }
 
     handleDelete(id) {
         const { dispatch } = this.props;
         dispatch(applicationActions.delete(this.props.application._id));
+    }
+
+    handleResponseUpdate(e) {
+        const { dispatch } = this.props;
+        const { id } = this.props.application;
+        const selectedApplication = this.props.applicationList.find(
+            app => app.id === id
+        );
+        if (selectedApplication) {
+            dispatch(
+                applicationActions.update(id, {
+                    ...selectedApplication,
+                    response: e.target.value
+                })
+            );
+        }
     }
 
     formatDate(date) {
@@ -97,7 +111,8 @@ class ApplicationCard extends Component {
             company,
             location,
             mainSkill,
-            dateApplicationSent
+            dateApplicationSent,
+            response
         } = application;
         return (
             <React.Fragment>
@@ -107,6 +122,14 @@ class ApplicationCard extends Component {
                         <div>{company}</div>
                     </div>
                     <Location>{location}</Location>
+                    <Dropdown
+                        value={response}
+                        onChange={e => this.handleResponseUpdate(e)}
+                    >
+                        <option value="No Response">No Response</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Interview">Add Interview</option>
+                    </Dropdown>
                 </LeftColumn>
                 <RightColumn>
                     {this.state.isSelected && (
@@ -127,7 +150,8 @@ class ApplicationCard extends Component {
     render() {
         return (
             <CardListItem
-                onClick={this.handleSelection}
+                onMouseEnter={() => this.setState({ isSelected: true })}
+                onMouseLeave={() => this.setState({ isSelected: false })}
                 key={this.props.application._id}
             >
                 {this.renderCard(this.props.application)}
@@ -136,5 +160,12 @@ class ApplicationCard extends Component {
     }
 }
 
-const connectedApplicationCard = connect(null)(ApplicationCard);
+function mapStateToProps(state) {
+    const { applicationList } = state.applications;
+    return {
+        applicationList
+    };
+}
+
+const connectedApplicationCard = connect(mapStateToProps)(ApplicationCard);
 export { connectedApplicationCard as ApplicationCard };
