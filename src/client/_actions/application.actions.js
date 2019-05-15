@@ -82,7 +82,7 @@ function update(id, update) {
             .update(id, update)
             .then(() => {
                 dispatch(success(update));
-                history.push('/');
+                //history.push('/');
             })
             .catch(err => dispatch(failure(err)));
     };

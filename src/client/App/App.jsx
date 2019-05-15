@@ -10,6 +10,7 @@ import { LoginPage } from '../AuthPages/LoginPage';
 import { RegistrationPage } from '../AuthPages/RegistrationPage';
 import { DataPage } from '../DataPage';
 import { CreateApplicationPage } from '../ApplicationPages/CreateApplicationPage';
+import { CreateInterviewPage } from '../InterviewPages/CreateInterviewPage/CreateInterviewPage';
 
 class App extends Component {
     constructor(props) {
@@ -49,6 +50,11 @@ class App extends Component {
                             <PrivateRoute
                                 path="/applications/:applicationId"
                                 component={CreateApplicationPage}
+                            />
+                            <PrivateRoute
+                                exact
+                                path="/interviews/"
+                                component={CreateInterviewPage}
                             />
                         </div>
                     </Router>

@@ -80,7 +80,6 @@ class CreateInterviewPage extends Component {
         const {
             submitted,
             interviewId,
-            applicationId,
             startTime,
             location,
             contact,

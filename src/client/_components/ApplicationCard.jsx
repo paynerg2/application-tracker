@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { applicationActions } from '../_actions';
+import { history } from '../_helpers';
 
 export const CardListItem = styled.li`
     /*Adust with media query */
@@ -41,7 +42,10 @@ const Location = styled.div`
     font-style: italic;
 `;
 
-const Dropdown = styled.select``;
+const Dropdown = styled.select`
+    border: none;
+    width: 100px;
+`;
 
 const Button = styled.button`
     border: none;
@@ -86,6 +90,7 @@ class ApplicationCard extends Component {
         const selectedApplication = this.props.applicationList.find(
             app => app.id === id
         );
+
         if (selectedApplication) {
             dispatch(
                 applicationActions.update(id, {
@@ -93,6 +98,10 @@ class ApplicationCard extends Component {
                     response: e.target.value
                 })
             );
+        }
+
+        if (e.target.value === 'Interview') {
+            history.push('/interviews');
         }
     }
 
@@ -152,7 +161,6 @@ class ApplicationCard extends Component {
             <CardListItem
                 onMouseEnter={() => this.setState({ isSelected: true })}
                 onMouseLeave={() => this.setState({ isSelected: false })}
-                key={this.props.application._id}
             >
                 {this.renderCard(this.props.application)}
             </CardListItem>

@@ -19,7 +19,12 @@ class HomePage extends Component {
                     {!loading && (
                         <CardList>
                             {applicationList.map(app => {
-                                return <ApplicationCard application={app} />;
+                                return (
+                                    <ApplicationCard
+                                        key={app.id}
+                                        application={app}
+                                    />
+                                );
                             })}
                         </CardList>
                     )}
