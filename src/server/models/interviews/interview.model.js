@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-    applicationId: { type: String, unique: true, required: true },
-    user: { type: String, unique: true, required: true },
+    applicationId: { type: String, required: true },
+    user: { type: String, required: true },
     startTime: { type: Date, required: true },
     location: { type: String },
     contact: { type: String },

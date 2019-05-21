@@ -5,11 +5,12 @@ import styled from 'styled-components';
 
 import { applicationActions } from '../_actions';
 import { history } from '../_helpers';
+import { ProgressBar, InterviewList } from '../_components';
 
 export const CardListItem = styled.li`
     /*Adust with media query */
     width: 30%;
-    height: 20vh;
+    height: 25vh;
     padding: 15px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 13px;
@@ -18,6 +19,12 @@ export const CardListItem = styled.li`
     margin: 10px;
     display: grid;
     grid-template-columns: 66% auto;
+    box-shadow: 1px 2px 6px 1px lightgrey;
+    border-radius: 2%;
+
+    &:hover {
+        box-shadow: 1px 2px 6px 1px lightblue;
+    }
 `;
 
 const RightColumn = styled.div`
@@ -101,7 +108,7 @@ class ApplicationCard extends Component {
         }
 
         if (e.target.value === 'Interview') {
-            history.push('/interviews');
+            history.push(`interviews/${id}/`);
         }
     }
 
@@ -121,8 +128,15 @@ class ApplicationCard extends Component {
             location,
             mainSkill,
             dateApplicationSent,
-            response
+            response,
+            requiredSkillsMet,
+            requiredSkillsTotal,
+            additionalSkillsMet,
+            additionalSkillsTotal
         } = application;
+        const { interviews } = this.props;
+        console.log('interviews prop from applicationcard render:');
+        console.log(interviews);
         return (
             <React.Fragment>
                 <LeftColumn>
@@ -131,14 +145,16 @@ class ApplicationCard extends Component {
                         <div>{company}</div>
                     </div>
                     <Location>{location}</Location>
-                    <Dropdown
-                        value={response}
-                        onChange={e => this.handleResponseUpdate(e)}
-                    >
-                        <option value="No Response">No Response</option>
-                        <option value="Rejected">Rejected</option>
-                        <option value="Interview">Add Interview</option>
-                    </Dropdown>
+                    {!(interviews.length > 0) && (
+                        <Dropdown
+                            value={response}
+                            onChange={e => this.handleResponseUpdate(e)}
+                        >
+                            <option value="No Response">No Response</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Interview">Add Interview</option>
+                        </Dropdown>
+                    )}
                 </LeftColumn>
                 <RightColumn>
                     {this.state.isSelected && (
@@ -152,6 +168,30 @@ class ApplicationCard extends Component {
                     <div>{mainSkill}</div>
                     <div>{this.formatDate(dateApplicationSent)}</div>
                 </RightColumn>
+                <div>
+                    {response === 'Interview' && (
+                        <InterviewList interviews={interviews} />
+                    )}
+                </div>
+                <div>
+                    <ProgressBar
+                        fill={
+                            requiredSkillsTotal > 0
+                                ? (requiredSkillsMet / requiredSkillsTotal) *
+                                  100
+                                : 0
+                        }
+                    />
+                    <ProgressBar
+                        fill={
+                            additionalSkillsTotal > 0
+                                ? (additionalSkillsMet /
+                                      additionalSkillsTotal) *
+                                  100
+                                : 0
+                        }
+                    />
+                </div>
             </React.Fragment>
         );
     };

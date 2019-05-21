@@ -57,6 +57,7 @@ function getById(id) {
 }
 
 function create(interview) {
+    console.log('interview create action called');
     return dispatch => {
         dispatch(request());
 

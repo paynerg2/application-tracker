@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { applicationActions } from '../_actions';
+import { applicationActions, interviewActions } from '../_actions';
 import { CardList, Container } from './homepage.styles';
 import { ApplicationCard } from '../_components';
 
@@ -8,10 +8,11 @@ class HomePage extends Component {
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch(applicationActions.getAll());
+        dispatch(interviewActions.getAll());
     }
 
     render() {
-        const { applicationList, loading } = this.props;
+        const { applicationList, interviewList, loading } = this.props;
         return (
             <React.Fragment>
                 <Container>
@@ -19,10 +20,25 @@ class HomePage extends Component {
                     {!loading && (
                         <CardList>
                             {applicationList.map(app => {
+                                let interviews = [];
+                                console.log('this.props on Homepage');
+                                console.log(this.props);
+                                const { interviewList } = this.props;
+                                if (interviewList && interviewList.length > 0) {
+                                    console.log(
+                                        'interviewList from the CardList render on HomePage'
+                                    );
+                                    console.log(interviewList);
+                                    interviews = interviewList.filter(
+                                        interview =>
+                                            interview.applicationId === app.id
+                                    );
+                                }
                                 return (
                                     <ApplicationCard
                                         key={app.id}
                                         application={app}
+                                        interviews={interviews}
                                     />
                                 );
                             })}
@@ -36,6 +52,7 @@ class HomePage extends Component {
 
 function mapStateToProps(state) {
     const { applicationList, loading } = state.applications;
+    const { interviewList } = state.interviews;
     // sort by submission date, ascending
     applicationList.sort((a, b) => {
         const dateA = new Date(a.dateApplicationSent);
@@ -44,6 +61,7 @@ function mapStateToProps(state) {
     });
     return {
         applicationList,
+        interviewList,
         loading
     };
 }

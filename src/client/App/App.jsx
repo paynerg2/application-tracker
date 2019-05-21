@@ -48,13 +48,13 @@ class App extends Component {
                                 component={CreateApplicationPage}
                             />
                             <PrivateRoute
-                                path="/applications/:applicationId"
-                                component={CreateApplicationPage}
+                                path="/interviews/:applicationId"
+                                component={CreateInterviewPage}
                             />
                             <PrivateRoute
                                 exact
-                                path="/interviews/"
-                                component={CreateInterviewPage}
+                                path="/applications/:applicationId"
+                                component={CreateApplicationPage}
                             />
                         </div>
                     </Router>

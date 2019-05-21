@@ -18,7 +18,10 @@ async function getById(id) {
 }
 
 async function create(interviewParam) {
+    console.log('interview params from create backend create service');
+    console.log(interviewParam);
     const interview = new Interview(interviewParam);
+    console.log(interview);
     await interview.save();
 }
 

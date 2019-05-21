@@ -12,7 +12,7 @@ export const CardListItem = styled.li`
 export const CardList = styled.ul`
     height: 100%;
     padding: 20px;
-    background-color: #3b3b3b;
+    background-color: #fff;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
