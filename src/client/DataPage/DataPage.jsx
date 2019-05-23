@@ -1,21 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { applicationActions } from '../_actions';
+import { applicationActions, interviewActions } from '../_actions';
 
 class DataPage extends Component {
     componentDidMount() {
+        const { dispatch } = this.props;
         if (this.props.applicationList.length === 0) {
-            const { dispatch } = this.props;
             dispatch(applicationActions.getAll());
+        }
+        if (this.props.interviewList.length === 0) {
+            dispatch(interviewActions.getAll());
         }
     }
 
     render() {
-        const { applicationList } = this.props;
+        const { applicationList, interviewList } = this.props;
         return (
             <React.Fragment>
                 <div>Total Applications Sent: {applicationList.length}</div>
+                <div>Total Interviews received: {interviewList.length}</div>
             </React.Fragment>
         );
     }
@@ -23,8 +27,10 @@ class DataPage extends Component {
 
 function mapStateToProps(state) {
     const { applicationList } = state.applications;
+    const { interviewList } = state.interviews;
     return {
-        applicationList
+        applicationList,
+        interviewList
     };
 }
 

@@ -38,13 +38,17 @@ class CreateInterviewPage extends Component {
         const {
             match: { params }
         } = this.props;
+        console.log('params from create interview page mount');
+        console.log(params);
         if (params.applicationId) {
             this.setState({ applicationId: params.applicationId });
         }
         // ! May decide to change strategy to not update state
         if (params.interviewId) {
             this.setState({ interviewId: params.interviewId });
-            const selectedInterview = this.props.interviewList.find(
+
+            const { interviewList } = this.props;
+            const selectedInterview = interviewList.find(
                 interview => interview._id === params.interviewId
             );
             if (selectedInterview) {

@@ -54,7 +54,8 @@ class CreateApplicationPage extends Component {
         // !Consider not changing state, get id from params later
         if (params.applicationId) {
             this.setState({ applicationId: params.applicationId });
-            const selectedApplication = this.props.applicationList.find(
+            const { applicationList } = this.props;
+            const selectedApplication = applicationList.find(
                 app => app._id === params.applicationId
             );
             if (selectedApplication) {

@@ -35,26 +35,40 @@ class App extends Component {
                     <Router history={history}>
                         <div>
                             <Route path="/" component={Header} />
-                            <PrivateRoute path="/" exact component={HomePage} />
                             <Route path="/login" component={LoginPage} />
                             <Route
                                 path="/register"
                                 component={RegistrationPage}
                             />
+
+                            <PrivateRoute path="/" exact component={HomePage} />
                             <PrivateRoute path="/data" component={DataPage} />
-                            <PrivateRoute
-                                exact
-                                path="/applications/"
-                                component={CreateApplicationPage}
-                            />
-                            <PrivateRoute
-                                path="/interviews/:applicationId"
-                                component={CreateInterviewPage}
-                            />
-                            <PrivateRoute
-                                exact
-                                path="/applications/:applicationId"
-                                component={CreateApplicationPage}
+
+                            <Route
+                                path="/applications"
+                                render={({ match: { path } }) => (
+                                    <React.Fragment>
+                                        <PrivateRoute
+                                            path={`${path}/`}
+                                            component={CreateApplicationPage}
+                                            exact
+                                        />
+                                        <PrivateRoute
+                                            path={`${path}/:applicationId`}
+                                            component={CreateApplicationPage}
+                                            exact
+                                        />
+                                        <PrivateRoute
+                                            path={`${path}/:applicationId/interviews`}
+                                            component={CreateInterviewPage}
+                                            exact
+                                        />
+                                        <PrivateRoute
+                                            path={`${path}/:applicationId/interviews/:interviewId`}
+                                            component={CreateInterviewPage}
+                                        />
+                                    </React.Fragment>
+                                )}
                             />
                         </div>
                     </Router>
