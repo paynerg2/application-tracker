@@ -2,22 +2,25 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+const InterviewContainer = styled.select`
+    width: 88%;
+`;
+
 class InterviewList extends Component {
     renderList = () => {
         const { loading, interviews } = this.props;
         return (
-            <ul>
+            <InterviewContainer>
                 {!loading &&
                     interviews.map(interview => {
                         const { _id, startTime, location } = interview;
                         return (
-                            <li key={_id}>
-                                <div>{startTime}</div>
-                                <div>{location}</div>
-                            </li>
+                            <option key={_id}>
+                                {`${startTime}, ${location}`}
+                            </option>
                         );
                     })}
-            </ul>
+            </InterviewContainer>
         );
     };
 

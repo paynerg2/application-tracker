@@ -12,7 +12,7 @@ class HomePage extends Component {
     }
 
     render() {
-        const { applicationList, interviewList, loading } = this.props;
+        const { applicationList, loading } = this.props;
         return (
             <React.Fragment>
                 <Container>
@@ -39,6 +39,7 @@ class HomePage extends Component {
                                         key={app.id}
                                         application={app}
                                         interviews={interviews}
+                                        history={this.props.history}
                                     />
                                 );
                             })}

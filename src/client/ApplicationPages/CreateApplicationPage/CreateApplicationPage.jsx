@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+//import { history } from '../../_helpers';
 import { applicationActions } from '../../_actions';
 
 import {
@@ -355,6 +356,9 @@ class CreateApplicationPage extends Component {
                         <Button>Submit</Button>
                     </FormGroup>
                 </form>
+                <Button onClick={() => this.props.history.goBack()}>
+                    Cancel
+                </Button>
             </FormContainer>
         );
     }

@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { applicationActions } from '../_actions';
-import { history } from '../_helpers';
 import { ProgressBar, InterviewList } from '../_components';
 
 export const CardListItem = styled.li`
@@ -36,6 +35,13 @@ const RightColumn = styled.div`
 
 const LeftColumn = styled.div`
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+`;
+
+const Bottom = styled.div`
+    display: flex;
+    width: 100%;
     flex-direction: column;
     justify-content: space-between;
 `;
@@ -108,7 +114,7 @@ class ApplicationCard extends Component {
         }
 
         if (e.target.value === 'Interview') {
-            history.push(`interviews/${id}/`);
+            this.props.history.push(`applications/${id}/interviews`);
         }
     }
 
@@ -155,6 +161,42 @@ class ApplicationCard extends Component {
                             <option value="Interview">Add Interview</option>
                         </Dropdown>
                     )}
+                    <Bottom>
+                        <div>
+                            {response === 'Interview' && (
+                                <InterviewList interviews={interviews} />
+                            )}
+                            <Button
+                                onClick={() =>
+                                    this.props.history.push(
+                                        `/applications/${_id}/interviews`
+                                    )
+                                }
+                            >
+                                +
+                            </Button>
+                        </div>
+                        <div>
+                            <ProgressBar
+                                fill={
+                                    requiredSkillsTotal > 0
+                                        ? (requiredSkillsMet /
+                                              requiredSkillsTotal) *
+                                          100
+                                        : 0
+                                }
+                            />
+                            <ProgressBar
+                                fill={
+                                    additionalSkillsTotal > 0
+                                        ? (additionalSkillsMet /
+                                              additionalSkillsTotal) *
+                                          100
+                                        : 0
+                                }
+                            />
+                        </div>
+                    </Bottom>
                 </LeftColumn>
                 <RightColumn>
                     {this.state.isSelected && (
@@ -168,30 +210,6 @@ class ApplicationCard extends Component {
                     <div>{mainSkill}</div>
                     <div>{this.formatDate(dateApplicationSent)}</div>
                 </RightColumn>
-                <div>
-                    {response === 'Interview' && (
-                        <InterviewList interviews={interviews} />
-                    )}
-                </div>
-                <div>
-                    <ProgressBar
-                        fill={
-                            requiredSkillsTotal > 0
-                                ? (requiredSkillsMet / requiredSkillsTotal) *
-                                  100
-                                : 0
-                        }
-                    />
-                    <ProgressBar
-                        fill={
-                            additionalSkillsTotal > 0
-                                ? (additionalSkillsMet /
-                                      additionalSkillsTotal) *
-                                  100
-                                : 0
-                        }
-                    />
-                </div>
             </React.Fragment>
         );
     };

@@ -112,7 +112,7 @@ class CreateInterviewPage extends Component {
                     <FormGroup>
                         <label htmlFor="startTime">Start Time</label>
                         <Input
-                            type="date"
+                            type="datetime-local"
                             name="startTime"
                             value={startTime}
                             onChange={this.handleChange}
@@ -198,6 +198,9 @@ class CreateInterviewPage extends Component {
                         <Button>Submit</Button>
                     </FormGroup>
                 </form>
+                <Button onClick={() => this.props.history.goBack()}>
+                    Cancel
+                </Button>
             </FormContainer>
         );
     }
