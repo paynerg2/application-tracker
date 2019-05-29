@@ -11,6 +11,7 @@ import { RegistrationPage } from '../AuthPages/RegistrationPage';
 import { DataPage } from '../DataPage';
 import { CreateApplicationPage } from '../ApplicationPages/CreateApplicationPage';
 import { CreateInterviewPage } from '../InterviewPages/CreateInterviewPage/CreateInterviewPage';
+import { InterviewsPage } from '../InterviewPages/InterviewsPage';
 
 class App extends Component {
     constructor(props) {
@@ -66,6 +67,18 @@ class App extends Component {
                                         <PrivateRoute
                                             path={`${path}/:applicationId/interviews/:interviewId`}
                                             component={CreateInterviewPage}
+                                        />
+                                    </React.Fragment>
+                                )}
+                            />
+                            <Route
+                                path="/interviews"
+                                render={({ match: { path } }) => (
+                                    <React.Fragment>
+                                        <PrivateRoute
+                                            path={`${path}/`}
+                                            component={InterviewsPage}
+                                            exact
                                         />
                                     </React.Fragment>
                                 )}

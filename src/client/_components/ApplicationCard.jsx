@@ -141,8 +141,6 @@ class ApplicationCard extends Component {
             additionalSkillsTotal
         } = application;
         const { interviews } = this.props;
-        console.log('interviews prop from applicationcard render:');
-        console.log(interviews);
         return (
             <React.Fragment>
                 <LeftColumn>

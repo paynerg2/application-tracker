@@ -7,6 +7,8 @@ const InterviewContainer = styled.select`
 `;
 
 class InterviewList extends Component {
+    // TODO: add function to format date/time
+
     renderList = () => {
         const { loading, interviews } = this.props;
         return (

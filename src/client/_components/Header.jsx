@@ -66,6 +66,7 @@ class Header extends Component {
                     <Brand>
                         <NavLink to="/">Application Tracker</NavLink>
                     </Brand>
+                    <NavLink to="/interviews">Interviews</NavLink>
                     <NavLink to="/data">Data</NavLink>
                     <NavLink to="/applications/">Add New</NavLink>
                 </HeaderLeft>
