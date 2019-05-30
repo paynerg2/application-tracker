@@ -196,11 +196,11 @@ class CreateInterviewPage extends Component {
 
                     <FormGroup>
                         <Button>Submit</Button>
+                        <Button onClick={() => this.props.history.goBack()}>
+                            Cancel
+                        </Button>
                     </FormGroup>
                 </form>
-                <Button onClick={() => this.props.history.goBack()}>
-                    Cancel
-                </Button>
             </FormContainer>
         );
     }

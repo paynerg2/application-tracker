@@ -7,30 +7,75 @@ import styled from 'styled-components';
 const HeaderContainer = styled.div`
     width: 100%;
     height: 8vh;
-    background-color: #bebebe;
+    background-color: #bcbabe;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 `;
 
-const Brand = styled.div`
+const Brand = styled(Link)`
+    color: #1995ad;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 30px;
     font-weight: bold;
     padding-left: 29px;
+    margin-right: 20px;
+    border: none;
+
+    &:hover {
+        text-decoration: none;
+        color: #a1d6e2;
+    }
+`;
+
+const Nav = styled.div`
+    text-decoration: none;
+    margin-right: 10px;
+    border: 1px solid #1995ad;
+    border-radius: 20px;
+    padding: 6px;
+    color: #1995ad;
+
+    &:hover {
+        border: 1px solid #bcbabe;
+        color: #bcbabe;
+        background-color: #1995ad;
+    }
 `;
 
 const NavLink = styled(Link)`
     text-decoration: none;
-    color: black;
     margin-right: 10px;
+    border: 1px solid #1995ad;
+    border-radius: 20px;
+    padding: 6px;
+    transition: background-color 0.3s ease;
+    transition: color 0.3s ease;
 
     &:focus,
-    &:hover,
     &:visited,
     &:link,
     &:active {
         text-decoration: none;
+        color: #1995ad;
+    }
+    &:hover {
+        color: #bcbabe;
+        background: #1995ad;
+    }
+`;
+
+const NavButton = styled.button`
+    text-decoration: none;
+    border: 1px solid #1995ad;
+    border-radius: 20px;
+    color: #1995ad;
+    border: none;
+    background-color: transparent;
+
+    &:hover {
+        color: #bcbabe;
+        background: #1995ad;
     }
 `;
 
@@ -63,12 +108,10 @@ class Header extends Component {
         return (
             <HeaderContainer>
                 <HeaderLeft>
-                    <Brand>
-                        <NavLink to="/">Application Tracker</NavLink>
-                    </Brand>
+                    <Brand to="/">Application Tracker</Brand>
                     <NavLink to="/interviews">Interviews</NavLink>
                     <NavLink to="/data">Data</NavLink>
-                    <NavLink to="/applications/">Add New</NavLink>
+                    <NavLink to="/applications">Add New</NavLink>
                 </HeaderLeft>
                 <HeaderRight>
                     {!user && (
@@ -79,8 +122,12 @@ class Header extends Component {
                     )}
                     {user && (
                         <React.Fragment>
-                            <div>Logged in as {user.username}</div>
-                            <button onClick={this.logout}>Logout</button>
+                            <Nav>{user.username}</Nav>
+                            <Nav>
+                                <NavButton onClick={this.logout}>
+                                    Logout
+                                </NavButton>
+                            </Nav>
                         </React.Fragment>
                     )}
                 </HeaderRight>

@@ -3,28 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { applicationActions } from '../_actions';
+import { applicationActions, interviewActions } from '../_actions';
 import { ProgressBar, InterviewList } from '../_components';
-
-export const CardListItem = styled.li`
-    /*Adust with media query */
-    width: 30%;
-    height: 25vh;
-    padding: 15px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    background-color: #fff;
-    list-style-type: none;
-    margin: 10px;
-    display: grid;
-    grid-template-columns: 66% auto;
-    box-shadow: 1px 2px 6px 1px lightgrey;
-    border-radius: 2%;
-
-    &:hover {
-        box-shadow: 1px 2px 6px 1px lightblue;
-    }
-`;
+import { CardListItem, Dropdown, Button } from './Card.styles';
 
 const RightColumn = styled.div`
     display: flex;
@@ -55,31 +36,6 @@ const Location = styled.div`
     font-style: italic;
 `;
 
-const Dropdown = styled.select`
-    border: none;
-    width: 100px;
-`;
-
-const Button = styled.button`
-    border: none;
-    padding: 4px 7px 4px 7px;
-    background: #ff8500;
-    color: #fff;
-    margin-top: 5px;
-    box-shadow: 1px 1px 4px #dadada;
-    -moz-box-shadow: 1px 1px 4px #dadada;
-    -webkit-box-shadow: 1px 1px 4px #dadada;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    font-family: 8px Arial, Helvetica, sans-serif;
-
-    &:hover {
-        background: #ea7b00;
-        color: #fff;
-    }
-`;
-
 class ApplicationCard extends Component {
     constructor(props) {
         super(props);
@@ -93,8 +49,12 @@ class ApplicationCard extends Component {
     }
 
     handleDelete(id) {
-        const { dispatch } = this.props;
+        // Delete the selected application, and any associated interviews.
+        const { dispatch, interviews } = this.props;
         dispatch(applicationActions.delete(this.props.application._id));
+        interviews.forEach(interview =>
+            dispatch(interviewActions.delete(interview._id))
+        );
     }
 
     handleResponseUpdate(e) {
@@ -162,17 +122,19 @@ class ApplicationCard extends Component {
                     <Bottom>
                         <div>
                             {response === 'Interview' && (
-                                <InterviewList interviews={interviews} />
+                                <React.Fragment>
+                                    <InterviewList interviews={interviews} />
+                                    <Button
+                                        onClick={() =>
+                                            this.props.history.push(
+                                                `/applications/${_id}/interviews`
+                                            )
+                                        }
+                                    >
+                                        +
+                                    </Button>
+                                </React.Fragment>
                             )}
-                            <Button
-                                onClick={() =>
-                                    this.props.history.push(
-                                        `/applications/${_id}/interviews`
-                                    )
-                                }
-                            >
-                                +
-                            </Button>
                         </div>
                         <div>
                             <ProgressBar

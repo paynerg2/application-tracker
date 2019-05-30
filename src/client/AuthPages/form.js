@@ -47,20 +47,16 @@ export const HelpBlock = styled.div``;
 // Primary Button
 export const Button = styled.button`
     border: none;
-    padding: 8px 15px 8px 15px;
-    background: #ff8500;
+    padding: 4px 7px 4px 7px;
+    background: #1995ad;
     color: #fff;
-    margin-top: 20px;
+    margin-top: 5px;
     box-shadow: 1px 1px 4px #dadada;
-    -moz-box-shadow: 1px 1px 4px #dadada;
-    -webkit-box-shadow: 1px 1px 4px #dadada;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    font-family: 13px Arial, Helvetica, sans-serif;
+    border-radius: 1%;
+    font-family: 8px Arial, Helvetica, sans-serif;
 
     &:hover {
-        background: #ea7b00;
+        background: #a1d6e2;
         color: #fff;
     }
 `;

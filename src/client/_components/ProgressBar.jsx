@@ -3,13 +3,13 @@ import styled from 'styled-components';
 
 const ProgressBarWrapper = styled.div`
     margin: 5px 0px;
-    border: 2px solid lightblue;
+    border: 2px solid #1995ad;
     height: 2vh;
     width: 100%;
 `;
 
 const ProgressBarFill = styled.div`
-    background: lightblue;
+    background: #1995ad;
     height: 100%;
     width: ${props => props.fill}%;
 `;
