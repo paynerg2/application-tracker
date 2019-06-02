@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { interviewActions } from '../../_actions';
 import { CardList, Container } from '../../HomePage/homepage.styles';
@@ -12,8 +13,6 @@ class InterviewsPage extends Component {
 
     render() {
         const { interviewList, loading } = this.props;
-        console.log('interviewlist from interviewspage render');
-        console.log(interviewList);
         return (
             <React.Fragment>
                 <Container>
@@ -44,6 +43,12 @@ function mapStateToProps(state) {
         loading
     };
 }
+
+InterviewsPage.propTypes = {
+    interviewList: PropTypes.arrayOf(PropTypes.object),
+    loading: PropTypes.bool,
+    dispatch: PropTypes.func.isRequired
+};
 
 const connectedInterviewsPage = connect(mapStateToProps)(InterviewsPage);
 export { connectedInterviewsPage as InterviewsPage };

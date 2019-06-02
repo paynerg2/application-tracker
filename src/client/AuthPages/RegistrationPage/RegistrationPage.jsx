@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
 import { userActions } from '../../_actions';
@@ -100,6 +101,10 @@ class RegistrationPage extends Component {
         );
     }
 }
+
+RegistrationPage.propTypes = {
+    dispatch: PropTypes.func.isRequired
+};
 
 const connectedRegistrationPage = connect(null)(RegistrationPage);
 export { connectedRegistrationPage as RegistrationPage };

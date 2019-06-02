@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -97,5 +98,10 @@ function mapStateToProps(state) {
         alert
     };
 }
+
+App.propTypes = {
+    alert: PropTypes.object
+};
+
 const connectedApp = connect(mapStateToProps)(App);
 export { connectedApp as App };

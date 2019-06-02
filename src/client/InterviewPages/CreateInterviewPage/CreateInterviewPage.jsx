@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { interviewActions } from '../../_actions';
 
@@ -38,8 +39,6 @@ class CreateInterviewPage extends Component {
         const {
             match: { params }
         } = this.props;
-        console.log('params from create interview page mount');
-        console.log(params);
         if (params.applicationId) {
             this.setState({ applicationId: params.applicationId });
         }
@@ -212,6 +211,11 @@ function mapStateToProps(state) {
         interviewList
     };
 }
+
+CreateInterviewPage.propTypes = {
+    intervieList: PropTypes.arrayOf(PropTypes.object),
+    dispatch: PropTypes.func.isRequired
+};
 
 const connectedCreateInterviewPage = connect(mapStateToProps)(
     CreateInterviewPage

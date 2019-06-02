@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
 import { applicationActions, interviewActions } from '../_actions';
@@ -33,6 +34,12 @@ function mapStateToProps(state) {
         interviewList
     };
 }
+
+DataPage.propTypes = {
+    applicationList: PropTypes.arrayOf(PropTypes.object),
+    interviewList: PropTypes.arrayOf(PropTypes.object),
+    dispatch: PropTypes.func.isRequired
+};
 
 const connectedDataPage = connect(mapStateToProps)(DataPage);
 export { connectedDataPage as DataPage };

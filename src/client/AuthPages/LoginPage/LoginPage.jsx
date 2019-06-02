@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
 import { userActions } from '../../_actions';
@@ -95,6 +96,11 @@ function mapStateToProps(state) {
         loggingIn
     };
 }
+
+LoginPage.propTypes = {
+    loggingIn: PropTypes.bool,
+    dispatch: PropTypes.func.isRequired
+};
 
 const connectedLoginPage = connect(mapStateToProps)(LoginPage);
 export { connectedLoginPage as LoginPage };

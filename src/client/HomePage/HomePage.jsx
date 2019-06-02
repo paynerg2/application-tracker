@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { applicationActions, interviewActions } from '../_actions';
 import { CardList, Container } from './homepage.styles';
@@ -66,6 +67,13 @@ function mapStateToProps(state) {
         loading
     };
 }
+
+HomePage.propTypes = {
+    applicationList: PropTypes.arrayOf(PropTypes.object),
+    interviewList: PropTypes.arrayOf(PropTypes.object),
+    loading: PropTypes.bool,
+    dispatch: PropTypes.func.isRequired
+};
 
 const connectedHomePage = connect(mapStateToProps)(HomePage);
 export { connectedHomePage as HomePage };

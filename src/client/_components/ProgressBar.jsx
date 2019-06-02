@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import styled from 'styled-components';
 
 const ProgressBarWrapper = styled.div`
@@ -20,4 +21,8 @@ export const ProgressBar = ({ fill = 0 }) => {
             <ProgressBarFill fill={fill} />
         </ProgressBarWrapper>
     );
+};
+
+ProgressBar.propTypes = {
+    fill: PropTypes.number
 };

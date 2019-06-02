@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -53,6 +54,11 @@ class InterviewCard extends Component {
         );
     }
 }
+
+InterviewCard.propTypes = {
+    interview: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired
+};
 
 const connectedInterviewCard = connect(null)(InterviewCard);
 export { connectedInterviewCard as InterviewCard };

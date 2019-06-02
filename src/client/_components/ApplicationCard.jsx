@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -192,6 +193,14 @@ function mapStateToProps(state) {
         applicationList
     };
 }
+
+ApplicationCard.propTypes = {
+    applicationList: PropTypes.array,
+    application: PropTypes.object,
+    interviews: PropTypes.array,
+    history: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired
+};
 
 const connectedApplicationCard = connect(mapStateToProps)(ApplicationCard);
 export { connectedApplicationCard as ApplicationCard };

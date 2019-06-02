@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { userActions } from '../_actions';
 import { Link } from 'react-router-dom';
@@ -104,7 +105,6 @@ class Header extends Component {
 
     render() {
         const { user } = this.props;
-        console.log(user);
         return (
             <HeaderContainer>
                 <HeaderLeft>
@@ -114,13 +114,7 @@ class Header extends Component {
                     <NavLink to="/applications">Add New</NavLink>
                 </HeaderLeft>
                 <HeaderRight>
-                    {!user && (
-                        <React.Fragment>
-                            <NavLink to="/login">Login</NavLink>
-                            <NavLink to="/register">Sign up</NavLink>
-                        </React.Fragment>
-                    )}
-                    {user && (
+                    {user ? (
                         <React.Fragment>
                             <Nav>{user.username}</Nav>
                             <Nav>
@@ -128,6 +122,11 @@ class Header extends Component {
                                     Logout
                                 </NavButton>
                             </Nav>
+                        </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <NavLink to="/login">Login</NavLink>
+                            <NavLink to="/register">Sign up</NavLink>
                         </React.Fragment>
                     )}
                 </HeaderRight>
@@ -142,6 +141,11 @@ function mapStateToProps(state) {
         user
     };
 }
+
+Header.propTypes = {
+    user: PropTypes.object,
+    dispatch: PropTypes.func.isRequired
+};
 
 const connectedHeader = connect(mapStateToProps)(Header);
 export { connectedHeader as Header };

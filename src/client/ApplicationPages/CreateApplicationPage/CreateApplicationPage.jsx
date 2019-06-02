@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-//import { history } from '../../_helpers';
 import { applicationActions } from '../../_actions';
 
 import {
@@ -370,6 +370,11 @@ function mapStateToProps(state) {
         applicationList
     };
 }
+
+CreateApplicationPage.propTypes = {
+    applicationList: PropTypes.arrayOf(PropTypes.object),
+    dispatch: PropTypes.func.isRequired
+};
 
 // connect to authorization and application services
 const connectedCreateApplicationPage = connect(mapStateToProps)(

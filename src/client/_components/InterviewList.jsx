@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
@@ -32,12 +33,16 @@ class InterviewList extends Component {
 }
 
 function mapStateToProps(state) {
-    const { interviewList, loading } = state.interviews;
+    const { loading } = state.interviews;
     return {
-        loading,
-        interviewList
+        loading
     };
 }
+
+InterviewList.propTypes = {
+    interviews: PropTypes.arrayOf(PropTypes.object),
+    loading: PropTypes.bool
+};
 
 const connectedInterviewList = connect(mapStateToProps)(InterviewList);
 export { connectedInterviewList as InterviewList };
