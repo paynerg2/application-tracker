@@ -15,12 +15,14 @@ const RightColumn = styled.div`
     justify-content: space-between;
     align-items: center;
 `;
+RightColumn.displayName = 'RightColumn';
 
 const LeftColumn = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 `;
+LeftColumn.displayName = 'LeftColumn';
 
 const Bottom = styled.div`
     display: flex;
@@ -28,15 +30,18 @@ const Bottom = styled.div`
     flex-direction: column;
     justify-content: space-between;
 `;
+Bottom.displayName = 'Bottom';
 
 const Title = styled.div`
     font-weight: bold;
     border-bottom: solid 1px rgba(0, 0, 0, 0.0975);
 `;
+Title.displayName = 'Title';
 
 const Location = styled.div`
     font-style: italic;
 `;
+Location.displayName = 'Location';
 
 class ApplicationCard extends Component {
     constructor(props) {

@@ -13,8 +13,7 @@ const setUp = (props = {}, initialState = {}) => {
 };
 
 describe('Interview Card Component', () => {
-    let mockFunction;
-    let wrapper;
+    let mockFunction, wrapper;
     beforeEach(() => {
         mockFunction = jest.fn();
         const props = {

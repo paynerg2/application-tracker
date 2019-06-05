@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Application Card Component when the component is not selected does not show additional buttons in the right column 1`] = `
+<RightColumn>
+  <div>
+    test
+  </div>
+  <div>
+    5/5/1955
+  </div>
+</RightColumn>
+`;
+
+exports[`Application Card Component when the component is not selected returns to unselected state on mouse leave event 1`] = `
+<RightColumn>
+  <div>
+    test
+  </div>
+  <div>
+    5/5/1955
+  </div>
+</RightColumn>
+`;
+
+exports[`Application Card Component when the component is selected shows additional buttons in the right column 1`] = `
+<RightColumn>
+  <div>
+    <Link
+      replace={false}
+      to="/applications/test"
+    >
+      <Button>
+        edit
+      </Button>
+    </Link>
+    <Button
+      onClick={[Function]}
+    >
+      Delete
+    </Button>
+  </div>
+  <div>
+    test
+  </div>
+  <div>
+    5/5/1955
+  </div>
+</RightColumn>
+`;
+
+exports[`Application Card Component when there are associated interviews shows a list of interviews and button to interviews 1`] = `
+<Bottom>
+  <div>
+    <Connect(InterviewList)
+      interviews={
+        Array [
+          Object {
+            "location": "test 1",
+            "startTime": "5:55PM",
+          },
+          Object {
+            "location": "test 2",
+            "startTime": "5:55PM",
+          },
+        ]
+      }
+    />
+    <Button
+      onClick={[Function]}
+    >
+      +
+    </Button>
+  </div>
+  <div>
+    <ProgressBar
+      fill={10}
+    />
+    <ProgressBar
+      fill={10}
+    />
+  </div>
+</Bottom>
+`;
+
+exports[`Application Card Component when there are associated interviews shows no dropdown for responses 1`] = `
+<LeftColumn>
+  <div>
+    <Title>
+      test
+    </Title>
+    <div>
+      test
+    </div>
+  </div>
+  <Location>
+    test
+  </Location>
+  <Bottom>
+    <div>
+      <Connect(InterviewList)
+        interviews={
+          Array [
+            Object {
+              "location": "test 1",
+              "startTime": "5:55PM",
+            },
+            Object {
+              "location": "test 2",
+              "startTime": "5:55PM",
+            },
+          ]
+        }
+      />
+      <Button
+        onClick={[Function]}
+      >
+        +
+      </Button>
+    </div>
+    <div>
+      <ProgressBar
+        fill={10}
+      />
+      <ProgressBar
+        fill={10}
+      />
+    </div>
+  </Bottom>
+</LeftColumn>
+`;
+
+exports[`Application Card Component when there are no associated interviews does not show an interview list or button to add interviews 1`] = `
+<Bottom>
+  <div />
+  <div>
+    <ProgressBar
+      fill={10}
+    />
+    <ProgressBar
+      fill={10}
+    />
+  </div>
+</Bottom>
+`;
+
+exports[`Application Card Component when there are no associated interviews shows a dropdown for application response 1`] = `
+<LeftColumn>
+  <div>
+    <Title>
+      test
+    </Title>
+    <div>
+      test
+    </div>
+  </div>
+  <Location>
+    test
+  </Location>
+  <Dropdown
+    onChange={[Function]}
+    value="No Response"
+  >
+    <option
+      value="No Response"
+    >
+      No Response
+    </option>
+    <option
+      value="Rejected"
+    >
+      Rejected
+    </option>
+    <option
+      value="Interview"
+    >
+      Add Interview
+    </option>
+  </Dropdown>
+  <Bottom>
+    <div />
+    <div>
+      <ProgressBar
+        fill={10}
+      />
+      <ProgressBar
+        fill={10}
+      />
+    </div>
+  </Bottom>
+</LeftColumn>
+`;
