@@ -11,10 +11,12 @@ export const FormContainer = styled.div`
     justify-content: center;
     flex-direction: column;
     background-color: white;
+    font-family: 'Open Sans', sans-serif;
 `;
 // H2 Text
 export const H2Text = styled.h2`
-    font: 20px Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
     font-weight: 600;
     margin-bottom: 20px;
     padding-bottom: 4px;

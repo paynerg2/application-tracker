@@ -8,21 +8,30 @@ import { userActions } from '../../_actions';
 
 const HeaderContainer = styled.div`
     width: 100%;
-    height: 8vh;
+    height: 10vh;
     background-color: #bcbabe;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    font-family: 'Open Sans', sans-serif;
 `;
 
 const Brand = styled(Link)`
     color: #1995ad;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 30px;
     font-weight: bold;
     padding-left: 29px;
     margin-right: 20px;
     border: none;
+    text-decoration: none;
+
+    &:active,
+    &:visited,
+    &:link,
+    &:focus {
+        text-decoration: none;
+    }
 
     &:hover {
         text-decoration: none;

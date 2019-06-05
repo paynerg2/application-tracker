@@ -22,8 +22,6 @@ class HomePage extends Component {
                         <CardList>
                             {applicationList.map(app => {
                                 let interviews = [];
-                                console.log('this.props on Homepage');
-                                console.log(this.props);
                                 const { interviewList } = this.props;
                                 if (interviewList && interviewList.length > 0) {
                                     console.log(

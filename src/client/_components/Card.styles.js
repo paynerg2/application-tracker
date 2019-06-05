@@ -5,7 +5,7 @@ export const CardListItem = styled.li`
     width: 30%;
     height: 25vh;
     padding: 15px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 13px;
     background-color: #f1f1f2;
     list-style-type: none;

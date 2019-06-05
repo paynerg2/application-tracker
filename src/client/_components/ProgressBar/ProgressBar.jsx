@@ -15,14 +15,18 @@ const ProgressBarFill = styled.div`
     width: ${props => props.fill}%;
 `;
 
-export const ProgressBar = ({ fill = 0 }) => {
+export const ProgressBar = ({ fill }) => {
     return (
         <ProgressBarWrapper>
-            <ProgressBarFill fill={fill} />
+            <ProgressBarFill displayName="ProgressBarFill" fill={fill} />
         </ProgressBarWrapper>
     );
 };
 
 ProgressBar.propTypes = {
     fill: PropTypes.number
+};
+
+ProgressBar.defaultProps = {
+    fill: 0
 };

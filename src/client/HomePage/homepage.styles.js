@@ -17,10 +17,12 @@ export const CardList = styled.ul`
     flex-wrap: wrap;
     justify-content: space-evenly;
     flex: 1;
+    margin: 0;
 `;
 
 export const Container = styled.div`
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    font-family: 'Open Sans', sans-serif;
 `;
