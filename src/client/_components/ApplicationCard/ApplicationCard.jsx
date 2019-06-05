@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { applicationActions, interviewActions } from '../_actions';
-import { ProgressBar, InterviewList } from '../_components';
-import { CardListItem, Dropdown, Button } from './Card.styles';
+import { applicationActions, interviewActions } from '../../_actions';
+import { ProgressBar } from '../ProgressBar';
+import { InterviewList } from '../InterviewList';
+import { CardListItem, Dropdown, Button } from '../Card.styles';
 
 const RightColumn = styled.div`
     display: flex;

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { userActions } from '../_actions';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { userActions } from '../../_actions';
 
 const HeaderContainer = styled.div`
     width: 100%;

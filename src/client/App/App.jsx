@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 
 import { history } from '../_helpers';
 import { alertActions } from '../_actions';
-import { PrivateRoute, Header } from '../_components';
+import { Header } from '../_components/Header';
+import { PrivateRoute } from '../_components/PrivateRoute';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../AuthPages/LoginPage';
 import { RegistrationPage } from '../AuthPages/RegistrationPage';

@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { interviewActions } from '../../_actions';
 import { CardList, Container } from '../../HomePage/homepage.styles';
-import { InterviewCard } from '../../_components';
+import { InterviewCard } from '../../_components/InterviewCard';
 
 class InterviewsPage extends Component {
     componentDidMount() {

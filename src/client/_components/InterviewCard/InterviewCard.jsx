@@ -3,8 +3,8 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { interviewActions } from '../_actions';
-import { CardListItem, Button } from './Card.styles';
+import { interviewActions } from '../../_actions';
+import { CardListItem, Button } from '../Card.styles';
 
 class InterviewCard extends Component {
     constructor(props) {
