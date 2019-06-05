@@ -6,6 +6,7 @@ import styled from 'styled-components';
 const InterviewContainer = styled.select`
     width: 88%;
 `;
+InterviewContainer.displayName = 'InterviewContainer';
 
 class InterviewList extends Component {
     // TODO: add function to format date/time

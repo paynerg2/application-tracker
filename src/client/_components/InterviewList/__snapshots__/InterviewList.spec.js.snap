@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Interview List Component before finished loading does not render a list of interviews 1`] = `
+<Fragment>
+  <InterviewContainer />
+</Fragment>
+`;
+
+exports[`Interview List Component when finished loading renders without error 1`] = `
+<Fragment>
+  <InterviewContainer>
+    <option>
+      5:55PM, test 1
+    </option>
+    <option>
+      5:55PM, test 2
+    </option>
+  </InterviewContainer>
+</Fragment>
+`;
