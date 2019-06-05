@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header Component when a user is logged in should render with user functions 1`] = `
+<styled.div>
+  <styled.div>
+    <Styled(Link)
+      to="/"
+    >
+      Application Tracker
+    </Styled(Link)>
+    <Styled(Link)
+      to="/interviews"
+    >
+      Interviews
+    </Styled(Link)>
+    <Styled(Link)
+      to="/data"
+    >
+      Data
+    </Styled(Link)>
+    <Styled(Link)
+      to="/applications"
+    >
+      Add New
+    </Styled(Link)>
+  </styled.div>
+  <styled.div>
+    <styled.div>
+      test
+    </styled.div>
+    <styled.div>
+      <styled.button
+        onClick={[Function]}
+      >
+        Logout
+      </styled.button>
+    </styled.div>
+  </styled.div>
+</styled.div>
+`;
+
+exports[`Header Component when a user is not logged in should render with authentication functions 1`] = `
+<styled.div>
+  <styled.div>
+    <Styled(Link)
+      to="/"
+    >
+      Application Tracker
+    </Styled(Link)>
+    <Styled(Link)
+      to="/interviews"
+    >
+      Interviews
+    </Styled(Link)>
+    <Styled(Link)
+      to="/data"
+    >
+      Data
+    </Styled(Link)>
+    <Styled(Link)
+      to="/applications"
+    >
+      Add New
+    </Styled(Link)>
+  </styled.div>
+  <styled.div>
+    <Styled(Link)
+      to="/login"
+    >
+      Login
+    </Styled(Link)>
+    <Styled(Link)
+      to="/register"
+    >
+      Sign up
+    </Styled(Link)>
+  </styled.div>
+</styled.div>
+`;
