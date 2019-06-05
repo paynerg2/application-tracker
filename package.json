@@ -45,8 +45,6 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test --env=jsdom --verbose",
-        "test:watch": "jest --watch",
-        "test:coverage": "jest --coverage --colors",
         "eject": "react-scripts eject"
     },
     "jest": {

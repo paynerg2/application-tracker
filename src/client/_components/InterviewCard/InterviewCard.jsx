@@ -44,12 +44,16 @@ class InterviewCard extends Component {
     };
 
     render() {
+        const { interview } = this.props;
+        if (!interview) {
+            return null;
+        }
         return (
             <CardListItem
                 onMouseEnter={() => this.setState({ isSelected: true })}
                 onMouseLeave={() => this.setState({ isSelected: false })}
             >
-                {this.renderCard(this.props.interview)}
+                {this.renderCard(interview)}
             </CardListItem>
         );
     }

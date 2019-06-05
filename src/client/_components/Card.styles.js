@@ -20,6 +20,7 @@ export const CardListItem = styled.li`
         box-shadow: 1px 2px 6px 1px #a1d6e2;
     }
 `;
+CardListItem.displayName = 'CardListItem';
 
 export const Button = styled.button`
     border: none;
@@ -37,8 +38,10 @@ export const Button = styled.button`
         transition: background-color 0.2s linear;
     }
 `;
+Button.displayName = 'Button';
 
 export const Dropdown = styled.select`
     border: none;
     width: 100px;
 `;
+Dropdown.displayName = 'Dropdown';
