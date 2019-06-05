@@ -24,22 +24,36 @@
         "styled-components": "^4.2.0"
     },
     "devDependencies": {
+        "@types/jest": "^24.0.13",
         "babel-core": "^6.26.0",
         "babel-preset-env": "^1.6.1",
         "babel-preset-react": "^6.16.0",
         "babel-preset-stage-0": "^6.24.1",
+        "check-prop-types": "^1.1.2",
+        "enzyme": "^3.10.0",
+        "enzyme-adapter-react-16": "^1.14.0",
+        "enzyme-to-json": "^3.3.5",
         "html-webpack-plugin": "^3.2.0",
         "nodemon": "^1.18.11",
         "path": "^0.12.7",
         "prop-types": "^15.7.2",
+        "react-test-renderer": "^16.8.6",
         "webpack": "^4.15.0",
         "webpack-cli": "^3.3.1"
     },
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test",
+        "test": "react-scripts test --env=jsdom --verbose",
+        "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage --colors",
         "eject": "react-scripts eject"
+    },
+    "jest": {
+        "snapshotSerializers": [
+            "enzyme-to-json/serializer"
+        ],
+        "setupFilesAfterEnv": "./src/setupTests.js"
     },
     "eslintConfig": {
         "extends": "react-app"
