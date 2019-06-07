@@ -72,7 +72,10 @@ function create(user) {
 
         userService
             .create(user)
-            .then(history.push('/login'))
+            .then(
+                () => history.push('/login'),
+                error => dispatch(failure(error))
+            )
             .catch(err => dispatch(failure(err)));
     };
 

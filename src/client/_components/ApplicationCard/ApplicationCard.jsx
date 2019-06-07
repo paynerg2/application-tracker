@@ -116,7 +116,7 @@ class ApplicationCard extends Component {
                         <div>{company}</div>
                     </div>
                     <Location>{location}</Location>
-                    {!(interviews.length > 0) && (
+                    {interviews.length === 0 && (
                         <Dropdown
                             value={response}
                             onChange={e => this.handleResponseUpdate(e)}

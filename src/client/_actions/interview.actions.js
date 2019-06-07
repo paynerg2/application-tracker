@@ -49,10 +49,10 @@ function getById(id) {
         return { type: interviewConstants.GETBYID_REQUEST };
     }
     function success(interview) {
-        return { type: interviewConstants.GETALL_REQUEST, interview };
+        return { type: interviewConstants.GETBYID_SUCCESS, interview };
     }
     function failure(error) {
-        return { type: interviewConstants.GETALL_REQUEST, error };
+        return { type: interviewConstants.GETBYID_FAILURE, error };
     }
 }
 
@@ -63,7 +63,7 @@ function create(interview) {
 
         interviewService
             .create(interview)
-            .then(history.push('/'))
+            .then(() => history.push('/'), error => dispatch(failure(error)))
             .catch(err => dispatch(failure(err)));
     };
 
@@ -81,10 +81,13 @@ function update(id, update) {
 
         interviewService
             .update(id, update)
-            .then(() => {
-                dispatch(success(update));
-                history.push('/');
-            })
+            .then(
+                () => {
+                    dispatch(success(update));
+                    history.push('/');
+                },
+                error => dispatch(failure(error))
+            )
             .catch(err => dispatch(failure(err)));
     };
 
@@ -105,10 +108,13 @@ function _delete(id) {
 
         interviewService
             .delete(id)
-            .then(() => {
-                dispatch(success(id));
-                history.push('/');
-            })
+            .then(
+                () => {
+                    dispatch(success(id));
+                    history.push('/');
+                },
+                error => dispatch(failure(error))
+            )
             .catch(err => dispatch(failure(err)));
     };
 

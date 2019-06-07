@@ -49,10 +49,10 @@ function getById(id) {
         return { type: applicationConstants.GETBYID_REQUEST };
     }
     function success(application) {
-        return { type: applicationConstants.GETALL_REQUEST, application };
+        return { type: applicationConstants.GETBYID_SUCCESS, application };
     }
     function failure(error) {
-        return { type: applicationConstants.GETALL_REQUEST, error };
+        return { type: applicationConstants.GETBYID_FAILURE, error };
     }
 }
 
@@ -62,7 +62,7 @@ function create(application) {
 
         applicationService
             .create(application)
-            .then(history.push('/'))
+            .then(() => history.push('/'), error => dispatch(failure(error)))
             .catch(err => dispatch(failure(err)));
     };
 
@@ -80,10 +80,10 @@ function update(id, update) {
 
         applicationService
             .update(id, update)
-            .then(() => {
-                dispatch(success(update));
-                //history.push('/');
-            })
+            .then(
+                () => dispatch(success(update)),
+                error => dispatch(failure(error))
+            )
             .catch(err => dispatch(failure(err)));
     };
 
@@ -104,10 +104,13 @@ function _delete(id) {
 
         applicationService
             .delete(id)
-            .then(() => {
-                history.push('/');
-                dispatch(success(id));
-            })
+            .then(
+                () => {
+                    history.push('/');
+                    dispatch(success(id));
+                },
+                error => dispatch(failure(error))
+            )
             .catch(err => dispatch(failure(err)));
 
         function request() {
