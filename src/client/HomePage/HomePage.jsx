@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+
 import { applicationActions, interviewActions } from '../_actions';
 import { CardList, Container } from './homepage.styles';
 import { ApplicationCard } from '../_components/ApplicationCard';
 
-class HomePage extends Component {
+class HomePage extends PureComponent {
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch(applicationActions.getAll());
@@ -18,16 +19,13 @@ class HomePage extends Component {
             <React.Fragment>
                 <Container>
                     {loading && <div>Loading...</div>}
-                    {!loading && (
+                    {/* Check to be sure that the list is a non-empty array */}
+                    {!loading && applicationList && applicationList.length ? (
                         <CardList>
                             {applicationList.map(app => {
                                 let interviews = [];
                                 const { interviewList } = this.props;
                                 if (interviewList && interviewList.length > 0) {
-                                    console.log(
-                                        'interviewList from the CardList render on HomePage'
-                                    );
-                                    console.log(interviewList);
                                     interviews = interviewList.filter(
                                         interview =>
                                             interview.applicationId === app.id
@@ -43,6 +41,8 @@ class HomePage extends Component {
                                 );
                             })}
                         </CardList>
+                    ) : (
+                        <div>Try adding some applications!</div>
                     )}
                 </Container>
             </React.Fragment>
