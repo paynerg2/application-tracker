@@ -147,13 +147,14 @@ describe('Application Action Creator', () => {
         });
 
         describe('on successful request', () => {
+            const testApplication = {
+                _id: 'test'
+            };
             let store;
             beforeEach(async () => {
                 createMock.mockImplementation(() => Promise.resolve({}));
                 store = mockStore();
-                const testApplication = {
-                    _id: 'test'
-                };
+
                 await store.dispatch(
                     applicationActions.create(testApplication)
                 );
@@ -163,9 +164,13 @@ describe('Application Action Creator', () => {
                 expect(createMock).toHaveBeenCalled();
             });
 
-            it('should dispatch a request action', () => {
+            it('should dispatch request and success actions', () => {
                 const expectedActions = [
-                    { type: applicationConstants.CREATE_REQUEST }
+                    { type: applicationConstants.CREATE_REQUEST },
+                    {
+                        type: applicationConstants.CREATE_SUCCESS,
+                        application: testApplication
+                    }
                 ];
                 expect(store.getActions()).toEqual(expectedActions);
             });

@@ -39,6 +39,11 @@ export function applications(state = initialState, action) {
                 ...state,
                 loading: true
             };
+        case applicationConstants.CREATE_SUCCESS:
+            return {
+                loading: false,
+                applicationList: [...state.applicationList, action.application]
+            };
         case applicationConstants.CREATE_FAILURE:
             return {
                 error: action.error

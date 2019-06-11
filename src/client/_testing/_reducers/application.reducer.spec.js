@@ -123,6 +123,26 @@ describe('Applications Reducer', () => {
             expect(applications(initialState, action)).toEqual(expectedState);
         });
 
+        it('should handle create success', () => {
+            const initialState = {
+                loading: true,
+                applicationList: defaultList
+            };
+            const newApplication = {
+                id: 'new test',
+                name: 'new test'
+            };
+            const action = {
+                type: applicationConstants.CREATE_SUCCESS,
+                application: newApplication
+            };
+            const expectedState = {
+                loading: false,
+                applicationList: [...defaultList, newApplication]
+            };
+            expect(applications(initialState, action)).toEqual(expectedState);
+        });
+
         it('should handle create failure', () => {
             const initialState = {
                 loading: true,

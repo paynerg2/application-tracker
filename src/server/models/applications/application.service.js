@@ -19,7 +19,8 @@ async function getById(id) {
 
 async function create(applicationParam) {
     const application = new Application(applicationParam);
-    await application.save();
+    const newApplication = await application.save();
+    return newApplication;
 }
 
 async function update(id, applicationParam) {

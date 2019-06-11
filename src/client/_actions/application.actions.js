@@ -62,12 +62,21 @@ function create(application) {
 
         applicationService
             .create(application)
-            .then(() => history.push('/'), error => dispatch(failure(error)))
+            .then(
+                application => {
+                    dispatch(success(application));
+                    history.push('/');
+                },
+                error => dispatch(failure(error))
+            )
             .catch(err => dispatch(failure(err)));
     };
 
     function request() {
         return { type: applicationConstants.CREATE_REQUEST };
+    }
+    function success() {
+        return { type: applicationConstants.CREATE_SUCCESS, application };
     }
     function failure(error) {
         return { type: applicationConstants.CREATE_FAILURE, error };
@@ -81,7 +90,10 @@ function update(id, update) {
         applicationService
             .update(id, update)
             .then(
-                () => dispatch(success(update)),
+                () => {
+                    dispatch(success(update));
+                    history.push('/');
+                },
                 error => dispatch(failure(error))
             )
             .catch(err => dispatch(failure(err)));
@@ -106,8 +118,8 @@ function _delete(id) {
             .delete(id)
             .then(
                 () => {
-                    history.push('/');
                     dispatch(success(id));
+                    history.push('/');
                 },
                 error => dispatch(failure(error))
             )
