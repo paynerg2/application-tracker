@@ -8,6 +8,9 @@ import { applicationActions, interviewActions } from '../../_actions';
 import { ProgressBar } from '../ProgressBar';
 import { InterviewList } from '../InterviewList';
 import { CardListItem, Dropdown, Button } from '../Card.styles';
+import { ReactComponent as EditIcon } from '../../_assets/icons8-edit-50.svg';
+import { ReactComponent as DeleteIcon } from '../../_assets/icons8-trash-50.svg';
+import { iconSelector } from '../../_helpers/iconSelector';
 
 const RightColumn = styled.div`
     display: flex;
@@ -116,18 +119,23 @@ class ApplicationCard extends Component {
                         <div>{company}</div>
                     </div>
                     <Location>{location}</Location>
-                    {interviews.length === 0 && (
-                        <Dropdown
-                            value={response}
-                            onChange={e => this.handleResponseUpdate(e)}
-                        >
-                            <option value="No Response">No Response</option>
-                            <option value="Rejected">Rejected</option>
-                            <option value="Interview">Add Interview</option>
-                        </Dropdown>
-                    )}
+
                     <Bottom>
                         <div>
+                            {interviews.length === 0 && (
+                                <Dropdown
+                                    value={response}
+                                    onChange={e => this.handleResponseUpdate(e)}
+                                >
+                                    <option value="No Response">
+                                        No Response
+                                    </option>
+                                    <option value="Rejected">Rejected</option>
+                                    <option value="Interview">
+                                        Add Interview
+                                    </option>
+                                </Dropdown>
+                            )}
                             {response === 'Interview' && (
                                 <React.Fragment>
                                     <InterviewList interviews={interviews} />
@@ -166,15 +174,21 @@ class ApplicationCard extends Component {
                     </Bottom>
                 </LeftColumn>
                 <RightColumn>
-                    {this.state.isSelected && (
+                    {this.state.isSelected ? (
                         <div>
                             <Link to={`/applications/${_id}`}>
-                                <Button>edit</Button>
+                                <Button>
+                                    <EditIcon />
+                                </Button>
                             </Link>
-                            <Button onClick={this.handleDelete}>Delete</Button>
+                            <Button onClick={this.handleDelete}>
+                                <DeleteIcon />
+                            </Button>
                         </div>
+                    ) : (
+                        <div />
                     )}
-                    <div>{mainSkill}</div>
+                    <div>{iconSelector(mainSkill)}</div>
                     <div>{this.formatDate(dateApplicationSent)}</div>
                 </RightColumn>
             </React.Fragment>

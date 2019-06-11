@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 
 import { interviewActions } from '../../_actions';
 import { CardListItem, Button } from '../Card.styles';
+import { ReactComponent as EditIcon } from '../../_assets/icons8-edit-50.svg';
+import { ReactComponent as DeleteIcon } from '../../_assets/icons8-trash-50.svg';
 
 class InterviewCard extends Component {
     constructor(props) {
@@ -34,9 +36,13 @@ class InterviewCard extends Component {
                         <Link
                             to={`applications/${applicationId}/interviews/${_id}`}
                         >
-                            <Button>edit</Button>
+                            <Button>
+                                <EditIcon />
+                            </Button>
                         </Link>
-                        <Button onClick={this.handleDelete}>Delete</Button>
+                        <Button onClick={this.handleDelete}>
+                            <DeleteIcon />
+                        </Button>
                     </div>
                 )}
             </React.Fragment>

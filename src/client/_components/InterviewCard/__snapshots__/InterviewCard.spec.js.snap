@@ -45,13 +45,13 @@ exports[`Interview Card Component when the component is selected shows additiona
       to="applications/test/interviews/test"
     >
       <Button>
-        edit
+        <ForwardRef />
       </Button>
     </Link>
     <Button
       onClick={[Function]}
     >
-      Delete
+      <ForwardRef />
     </Button>
   </div>
 </CardListItem>

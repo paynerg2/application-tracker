@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 const InterviewContainer = styled.select`
     width: 88%;
+    border: none;
 `;
 InterviewContainer.displayName = 'InterviewContainer';
 

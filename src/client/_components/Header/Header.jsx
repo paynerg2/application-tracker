@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { userActions } from '../../_actions';
@@ -9,18 +9,20 @@ import { userActions } from '../../_actions';
 const HeaderContainer = styled.div`
     width: 100%;
     height: 10vh;
-    background-color: #bcbabe;
+    background-color: #fff;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     font-family: 'Open Sans', sans-serif;
+    font-size: 1.4em;
 `;
 
 const Brand = styled(Link)`
     color: #1995ad;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 30px;
+    font-family: 'Istok Web', sans-serif;
+    font-size: 3em;
     font-weight: bold;
+    letter-spacing: 2px;
     padding-left: 29px;
     margin-right: 20px;
     border: none;
@@ -42,37 +44,27 @@ const Brand = styled(Link)`
 const Nav = styled.div`
     text-decoration: none;
     margin-right: 10px;
-    border: 1px solid #1995ad;
-    border-radius: 20px;
+    padding: 6px;
+    color: #1995ad;
+`;
+
+const NavigationLink = styled(NavLink)`
+    margin: 5px;
     padding: 6px;
     color: #1995ad;
 
-    &:hover {
-        border: 1px solid #bcbabe;
-        color: #bcbabe;
-        background-color: #1995ad;
-    }
-`;
-
-const NavLink = styled(Link)`
-    text-decoration: none;
-    margin-right: 10px;
-    border: 1px solid #1995ad;
-    border-radius: 20px;
-    padding: 6px;
-    transition: background-color 0.3s ease;
-    transition: color 0.3s ease;
-
     &:focus,
+    &:active,
     &:visited,
-    &:link,
-    &:active {
+    &:hover {
         text-decoration: none;
         color: #1995ad;
     }
-    &:hover {
-        color: #bcbabe;
-        background: #1995ad;
+
+    &.is-active {
+        text-decoration: none;
+        color: #1995ad;
+        border-bottom: solid 3px #1995ad;
     }
 `;
 
@@ -83,11 +75,6 @@ const NavButton = styled.button`
     color: #1995ad;
     border: none;
     background-color: transparent;
-
-    &:hover {
-        color: #bcbabe;
-        background: #1995ad;
-    }
 `;
 
 const HeaderLeft = styled.div`
@@ -118,10 +105,30 @@ class Header extends Component {
         return (
             <HeaderContainer>
                 <HeaderLeft>
-                    <Brand to="/">Application Tracker</Brand>
-                    <NavLink to="/interviews">Interviews</NavLink>
-                    <NavLink to="/data">Data</NavLink>
-                    <NavLink to="/applications">Add New</NavLink>
+                    <Brand to="/">trackr</Brand>
+                    <NavigationLink exact to="/" activeClassName="is-active">
+                        Applications
+                    </NavigationLink>
+                    <NavigationLink
+                        exact
+                        to="/interviews"
+                        activeClassName="is-active"
+                    >
+                        Interviews
+                    </NavigationLink>
+                    <NavigationLink
+                        exact
+                        to="/data"
+                        activeClassName="is-active"
+                    >
+                        Data
+                    </NavigationLink>
+                    <NavigationLink
+                        to="/applications"
+                        activeClassName="is-active"
+                    >
+                        Add New
+                    </NavigationLink>
                 </HeaderLeft>
                 <HeaderRight>
                     {user ? (
@@ -135,8 +142,10 @@ class Header extends Component {
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
-                            <NavLink to="/login">Login</NavLink>
-                            <NavLink to="/register">Sign up</NavLink>
+                            <NavigationLink to="/login">Login</NavigationLink>
+                            <NavigationLink to="/register">
+                                Sign up
+                            </NavigationLink>
                         </React.Fragment>
                     )}
                 </HeaderRight>

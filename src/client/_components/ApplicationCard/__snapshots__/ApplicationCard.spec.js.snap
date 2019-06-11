@@ -2,8 +2,11 @@
 
 exports[`Application Card Component when the component is not selected does not show additional buttons in the right column 1`] = `
 <RightColumn>
+  <div />
   <div>
-    test
+    <div>
+      test
+    </div>
   </div>
   <div>
     5/5/1955
@@ -13,8 +16,11 @@ exports[`Application Card Component when the component is not selected does not 
 
 exports[`Application Card Component when the component is not selected returns to unselected state on mouse leave event 1`] = `
 <RightColumn>
+  <div />
   <div>
-    test
+    <div>
+      test
+    </div>
   </div>
   <div>
     5/5/1955
@@ -30,17 +36,19 @@ exports[`Application Card Component when the component is selected shows additio
       to="/applications/test"
     >
       <Button>
-        edit
+        <ForwardRef />
       </Button>
     </Link>
     <Button
       onClick={[Function]}
     >
-      Delete
+      <ForwardRef />
     </Button>
   </div>
   <div>
-    test
+    <div>
+      test
+    </div>
   </div>
   <div>
     5/5/1955
@@ -131,7 +139,28 @@ exports[`Application Card Component when there are associated interviews shows n
 
 exports[`Application Card Component when there are no associated interviews does not show an interview list or button to add interviews 1`] = `
 <Bottom>
-  <div />
+  <div>
+    <Dropdown
+      onChange={[Function]}
+      value="No Response"
+    >
+      <option
+        value="No Response"
+      >
+        No Response
+      </option>
+      <option
+        value="Rejected"
+      >
+        Rejected
+      </option>
+      <option
+        value="Interview"
+      >
+        Add Interview
+      </option>
+    </Dropdown>
+  </div>
   <div>
     <ProgressBar
       fill={10}
@@ -156,28 +185,29 @@ exports[`Application Card Component when there are no associated interviews show
   <Location>
     test
   </Location>
-  <Dropdown
-    onChange={[Function]}
-    value="No Response"
-  >
-    <option
-      value="No Response"
-    >
-      No Response
-    </option>
-    <option
-      value="Rejected"
-    >
-      Rejected
-    </option>
-    <option
-      value="Interview"
-    >
-      Add Interview
-    </option>
-  </Dropdown>
   <Bottom>
-    <div />
+    <div>
+      <Dropdown
+        onChange={[Function]}
+        value="No Response"
+      >
+        <option
+          value="No Response"
+        >
+          No Response
+        </option>
+        <option
+          value="Rejected"
+        >
+          Rejected
+        </option>
+        <option
+          value="Interview"
+        >
+          Add Interview
+        </option>
+      </Dropdown>
+    </div>
     <div>
       <ProgressBar
         fill={10}

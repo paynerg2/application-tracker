@@ -2,11 +2,10 @@ import styled from 'styled-components';
 
 export const CardListItem = styled.li`
     /*Adust with media query */
-    width: 30%;
-    height: 25vh;
+    width: 65vh;
+    height: 30vh;
     padding: 15px;
     font-family: 'Open Sans', sans-serif;
-    font-size: 13px;
     background-color: #f1f1f2;
     list-style-type: none;
     margin: 10px;
@@ -17,7 +16,7 @@ export const CardListItem = styled.li`
     transition: box-shadow 0.2s ease-in;
 
     &:hover {
-        box-shadow: 1px 2px 6px 1px #a1d6e2;
+        box-shadow: 1px 2px 6px 1px #1995ad;
     }
 `;
 CardListItem.displayName = 'CardListItem';
@@ -42,6 +41,6 @@ Button.displayName = 'Button';
 
 export const Dropdown = styled.select`
     border: none;
-    width: 100px;
+    width: 100%;
 `;
 Dropdown.displayName = 'Dropdown';
