@@ -44,7 +44,13 @@ export const Input = styled.input`
 `;
 
 // Help Block
-export const HelpBlock = styled.div``;
+export const HelpBlock = styled.div`
+    background: rgba(255, 0, 0, 0.5);
+    border-radius: 4px;
+    padding: 2px;
+    margin: 2px;
+    text-align: center;
+`;
 
 // Primary Button
 export const Button = styled.button`
@@ -60,5 +66,9 @@ export const Button = styled.button`
     &:hover {
         background: #a1d6e2;
         color: #fff;
+    }
+
+    &:disabled {
+        color: red;
     }
 `;

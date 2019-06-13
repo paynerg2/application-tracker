@@ -15,7 +15,7 @@ import { iconSelector } from '../../_helpers/iconSelector';
 const RightColumn = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 `;
 RightColumn.displayName = 'RightColumn';
@@ -45,6 +45,11 @@ const Location = styled.div`
     font-style: italic;
 `;
 Location.displayName = 'Location';
+
+const UpdateButton = styled(Button)`
+    box-shadow: 1px 2px 6px 1px darkgrey;
+`;
+UpdateButton.displayName = 'UpdateButton';
 
 class ApplicationCard extends Component {
     constructor(props) {
@@ -177,13 +182,13 @@ class ApplicationCard extends Component {
                     {this.state.isSelected ? (
                         <div>
                             <Link to={`/applications/${_id}`}>
-                                <Button>
+                                <UpdateButton>
                                     <EditIcon />
-                                </Button>
+                                </UpdateButton>
                             </Link>
-                            <Button onClick={this.handleDelete}>
+                            <UpdateButton onClick={this.handleDelete}>
                                 <DeleteIcon />
-                            </Button>
+                            </UpdateButton>
                         </div>
                     ) : (
                         <div />

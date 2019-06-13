@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import Loader from 'react-loader-spinner';
 
 import { applicationActions, interviewActions } from '../_actions';
 import { CardList, Container } from './homepage.styles';
@@ -18,9 +19,18 @@ class HomePage extends PureComponent {
         return (
             <React.Fragment>
                 <Container>
-                    {loading && <div>Loading...</div>}
+                    {loading && (
+                        <div>
+                            <Loader
+                                type="ThreeDots"
+                                color="#1995ad"
+                                height="50"
+                                width="50"
+                            />
+                        </div>
+                    )}
                     {/* Check to be sure that the list is a non-empty array */}
-                    {!loading && applicationList && applicationList.length ? (
+                    {!loading && applicationList && applicationList.length && (
                         <CardList>
                             {applicationList.map(app => {
                                 let interviews = [];
@@ -41,7 +51,8 @@ class HomePage extends PureComponent {
                                 );
                             })}
                         </CardList>
-                    ) : (
+                    )}
+                    {applicationList.length === 0 && (
                         <div>Try adding some applications!</div>
                     )}
                 </Container>

@@ -39,7 +39,19 @@ class CreateApplicationPage extends Component {
             companyLinkedIn: '',
             expectedSalary: 0,
             field: '',
-            response: 'No Response'
+            response: 'No Response',
+            errors: {
+                jobDescriptionLink: '',
+                requiredSkills: '',
+                additionalSkills: '',
+                yearsOfExperience: '',
+                datePostedDate: '',
+                datePostedRelativeDate: '',
+                dateApplicationSentDate: '',
+                dateApplicationSentRelativeDate: '',
+                companyLinkedIn: '',
+                expectedSalary: ''
+            }
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -67,22 +79,24 @@ class CreateApplicationPage extends Component {
 
     handleChange(e) {
         const { name, value } = e.target;
-        this.setState({ [name]: value });
+        this.setState({ [name]: value }, () => this.validateField(name, value));
     }
 
     handleSubmit(e) {
         e.preventDefault();
 
         this.setState({ submitted: true });
-        const { jobTitle, company } = this.state;
+        const { errors, company, location } = this.state;
         const { dispatch } = this.props;
         const user = JSON.parse(localStorage.getItem('user'));
         // validation of required fields before dispatch
-        if (user && jobTitle && company) {
+        const valid = this.validateForm(errors);
+        if (user && company && location && valid) {
             // destructuring to remove the piece of state outside of schema
             const {
                 submitted,
                 applicationId,
+                errors,
                 ...applicationParams
             } = this.state;
 
@@ -97,6 +111,146 @@ class CreateApplicationPage extends Component {
                   )
                 : dispatch(applicationActions.create(newApplication));
         }
+    }
+
+    validateField(fieldName, value) {
+        let { errors } = this.state;
+        let expression;
+
+        switch (fieldName) {
+            case 'jobDescriptionLink':
+                // RegEX for a generic URL
+                expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+                const validUrlRegEx = new RegExp(expression);
+                if (value) {
+                    errors.jobDescriptionLink = validUrlRegEx.test(value)
+                        ? ''
+                        : 'Link is not valid';
+                } else {
+                    errors.jobDescriptionLink = '';
+                }
+                break;
+            case 'requiredSkillsTotal':
+                if (value) {
+                    errors.requiredSkills =
+                        value >= 0 ? '' : 'Value cannot be negative';
+                }
+                break;
+            case 'requiredSkillsMet':
+                // Value greater than total should supercede a negative value
+                // since a negative value should count as both.
+                if (value) {
+                    errors.requiredSkills =
+                        value >= 0 ? '' : 'Value cannot be negative';
+                    errors.requiredSkills =
+                        value <= this.state.requiredSkillsTotal
+                            ? ''
+                            : 'Value must be less than the total';
+                }
+                break;
+            case 'additionalSkillsTotal':
+                if (value) {
+                    errors.additionalSkills =
+                        value >= 0 ? '' : 'Value cannot be negative';
+                }
+                break;
+            case 'additionalSkillsMet':
+                // Value greater than total should supercede a negative value
+                // since a negative value should count as both.
+                if (value) {
+                    errors.additionalSkills =
+                        value >= 0 ? '' : 'Value cannot be negative';
+                    errors.additionalSkills =
+                        value <= this.state.additionalSkillsTotal
+                            ? ''
+                            : 'Value must be less than the total';
+                }
+                break;
+            case 'yearsOfExperience':
+                errors.yearsOfExperience =
+                    value >= 0 ? '' : 'Value cannot be negative';
+                break;
+            case 'datePosted':
+            case 'dateApplicationSent':
+                function getTimeZoneCorrectedDate(value) {
+                    let valueAsDate = new Date(value);
+                    valueAsDate.setMinutes(
+                        valueAsDate.getMinutes() +
+                            valueAsDate.getTimezoneOffset()
+                    );
+                    return valueAsDate;
+                }
+                // set up values as date types for comparison, accounting for timezone offset.
+                const { dateApplicationSent, datePosted } = this.state;
+                const today = new Date();
+                const valueAsDate = getTimeZoneCorrectedDate(value);
+                let sent =
+                    dateApplicationSent &&
+                    getTimeZoneCorrectedDate(dateApplicationSent);
+                let posted = datePosted && getTimeZoneCorrectedDate(datePosted);
+
+                // Errors for date values split into subcategories
+                //  - to prevent overwriting individual error messages
+                //  - to give better feedback to the user.
+                if (sent && posted) {
+                    if (fieldName === 'datePosted') {
+                        posted = valueAsDate;
+                    } else {
+                        sent = valueAsDate;
+                    }
+
+                    const errorMessage =
+                        sent < posted
+                            ? 'Cannot submit application before post exists'
+                            : '';
+
+                    errors[`datePostedRelativeDate`] = errorMessage;
+                    errors[`dateApplicationSentRelativeDate`] = errorMessage;
+                }
+
+                errors[`${fieldName}Date`] =
+                    valueAsDate > today
+                        ? 'Value cannot be from the future'
+                        : '';
+
+                break;
+            case 'companyLinkedIn':
+                // must be a valid LinkedIn URL
+                if (value) {
+                    expression = /^((https?|chrome):\/\/)?(www\.)?(linkedin.com)\/(company).[^\s]*$/gi;
+                    const validCompanyLinkedInUrlRegEx = new RegExp(expression);
+                    errors.companyLinkedIn = validCompanyLinkedInUrlRegEx.test(
+                        value
+                    )
+                        ? ''
+                        : 'Not a valid company LinkedIn';
+                }
+                break;
+            case 'expectedSalary':
+                if (value) {
+                    errors.expectedSalary =
+                        value >= 0 ? '' : 'Value cannot be negative';
+                }
+                break;
+            default:
+                break;
+        }
+        const valid = this.validateForm(errors);
+        if (!valid) {
+            console.log(errors);
+            console.log('error state');
+        }
+        this.setState({ errors: errors });
+    }
+
+    validateForm(errors) {
+        let valid = true;
+        for (let key in errors) {
+            if (errors[key]) {
+                valid = false;
+            }
+        }
+        return valid;
     }
 
     render() {
@@ -122,7 +276,8 @@ class CreateApplicationPage extends Component {
             givenReferral,
             companyLinkedIn,
             expectedSalary,
-            field
+            field,
+            errors
         } = this.state;
         return (
             <FormContainer>
@@ -159,16 +314,64 @@ class CreateApplicationPage extends Component {
                         )}
                     </FormGroup>
                     <FormGroup>
-                        <label htmlFor="jobDescriptionLink">
-                            Link to Job Description
-                        </label>
+                        <label htmlFor="location">Location</label>
                         <Input
-                            type="url"
-                            name="jobDescriptionLink"
-                            value={jobDescriptionLink}
+                            type="text"
+                            name="location"
+                            value={location}
                             onChange={this.handleChange}
                         />
                     </FormGroup>
+                    <FormGroup>
+                        <label htmlFor="mainSkill">Main Skill</label>
+                        <Input
+                            type="text"
+                            name="mainSkill"
+                            value={mainSkill}
+                            onChange={this.handleChange}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <label htmlFor="datePosted">Date Posted</label>
+                        <Input
+                            type="date"
+                            name="datePosted"
+                            value={datePosted}
+                            onChange={this.handleChange}
+                        />
+                        {errors.datePostedDate && (
+                            <HelpBlock>{errors.datePostedDate}</HelpBlock>
+                        )}
+                        {errors.datePostedRelativeDate && (
+                            <HelpBlock>
+                                {errors.datePostedRelativeDate}
+                            </HelpBlock>
+                        )}
+                    </FormGroup>
+                    <FormGroup>
+                        <label htmlFor="dateApplicationSent">
+                            Date Application Submitted
+                        </label>
+                        <Input
+                            type="date"
+                            name="dateApplicationSent"
+                            value={dateApplicationSent}
+                            onChange={this.handleChange}
+                        />
+                        {errors.dateApplicationSentDate && (
+                            <HelpBlock>
+                                {errors.dateApplicationSentDate}
+                            </HelpBlock>
+                        )}
+                        {errors.dateApplicationSentRelativeDate && (
+                            <HelpBlock>
+                                {errors.dateApplicationSentRelativeDate}
+                            </HelpBlock>
+                        )}
+                    </FormGroup>
+                    {errors.requiredSkills && (
+                        <HelpBlock>{errors.requiredSkills}</HelpBlock>
+                    )}
                     <FormGroup>
                         <label htmlFor="requiredSkillsTotal">
                             Required Skills
@@ -191,6 +394,9 @@ class CreateApplicationPage extends Component {
                             onChange={this.handleChange}
                         />
                     </FormGroup>
+                    {errors.additionalSkills && (
+                        <HelpBlock>{errors.additionalSkills}</HelpBlock>
+                    )}
                     <FormGroup>
                         <label htmlFor="additionalSkillsTotal">
                             Additional Skills Total
@@ -203,7 +409,7 @@ class CreateApplicationPage extends Component {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <label htmlFor="additionalAkillsMet">
+                        <label htmlFor="additionalSkillsMet">
                             Additional Skills Met
                         </label>
                         <Input
@@ -223,6 +429,9 @@ class CreateApplicationPage extends Component {
                             value={yearsOfExperience}
                             onChange={this.handleChange}
                         />
+                        {errors.yearsOfExperience && (
+                            <HelpBlock>{errors.yearsOfExperience}</HelpBlock>
+                        )}
                     </FormGroup>
                     <FormGroup>
                         <label htmlFor="degreeLevel">
@@ -276,44 +485,6 @@ class CreateApplicationPage extends Component {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <label htmlFor="location">Location</label>
-                        <Input
-                            type="text"
-                            name="location"
-                            value={location}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="mainSkill">Main Skill</label>
-                        <Input
-                            type="text"
-                            name="mainSkill"
-                            value={mainSkill}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="datePosted">Date Posted</label>
-                        <Input
-                            type="date"
-                            name="datePosted"
-                            value={datePosted}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="dateApplicationSent">
-                            Date Application Submitted
-                        </label>
-                        <Input
-                            type="date"
-                            name="dateApplicationSent"
-                            value={dateApplicationSent}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
                         <label htmlFor="givenReferral">Referral?</label>
                         <Input
                             type="checkbox"
@@ -321,6 +492,20 @@ class CreateApplicationPage extends Component {
                             value={givenReferral}
                             onChange={this.handleChange}
                         />
+                    </FormGroup>
+                    <FormGroup>
+                        <label htmlFor="jobDescriptionLink">
+                            Link to Job Description
+                        </label>
+                        <Input
+                            type="url"
+                            name="jobDescriptionLink"
+                            value={jobDescriptionLink}
+                            onChange={this.handleChange}
+                        />
+                        {submitted && errors.jobDescriptionLink && (
+                            <HelpBlock>{errors.jobDescriptionLink}</HelpBlock>
+                        )}
                     </FormGroup>
                     <FormGroup>
                         <label htmlFor="companyLinkedIn">
@@ -332,6 +517,9 @@ class CreateApplicationPage extends Component {
                             value={companyLinkedIn}
                             onChange={this.handleChange}
                         />
+                        {submitted && errors.companyLinkedIn && (
+                            <HelpBlock>{errors.companyLinkedIn}</HelpBlock>
+                        )}
                     </FormGroup>
                     <FormGroup>
                         <label htmlFor="expectedSalary">Expected Salary</label>
@@ -341,6 +529,9 @@ class CreateApplicationPage extends Component {
                             value={expectedSalary}
                             onChange={this.handleChange}
                         />
+                        {errors.expectedSalary && (
+                            <HelpBlock>{errors.expectedSalary}</HelpBlock>
+                        )}
                     </FormGroup>
                     <FormGroup>
                         <label htmlFor="field">Job Field</label>
@@ -353,7 +544,7 @@ class CreateApplicationPage extends Component {
                     </FormGroup>
 
                     <FormGroup>
-                        <Button>Submit</Button>
+                        <Button disable={true}>Submit</Button>
                         <Button onClick={() => this.props.history.goBack()}>
                             Cancel
                         </Button>
