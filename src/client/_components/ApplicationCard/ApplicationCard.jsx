@@ -10,13 +10,15 @@ import { InterviewList } from '../InterviewList';
 import { CardListItem, Dropdown, Button } from '../Card.styles';
 import { ReactComponent as EditIcon } from '../../_assets/icons8-edit-50.svg';
 import { ReactComponent as DeleteIcon } from '../../_assets/icons8-trash-50.svg';
+import { ReactComponent as DownChevron } from '../../_assets/down-chevron.svg';
 import { iconSelector } from '../../_helpers/iconSelector';
 
 const RightColumn = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    display: grid;
+    grid-template-rows: 30% 30% 30%;
+    justify-items: center;
     align-items: center;
+    align-content: space-between;
 `;
 RightColumn.displayName = 'RightColumn';
 
@@ -56,7 +58,8 @@ class ApplicationCard extends Component {
         super(props);
 
         this.state = {
-            isSelected: false
+            isSelected: false,
+            showEditButtons: false
         };
 
         this.handleDelete = this.handleDelete.bind(this);
@@ -179,20 +182,29 @@ class ApplicationCard extends Component {
                     </Bottom>
                 </LeftColumn>
                 <RightColumn>
-                    {this.state.isSelected ? (
-                        <div>
-                            <Link to={`/applications/${_id}`}>
-                                <UpdateButton>
-                                    <EditIcon />
-                                </UpdateButton>
-                            </Link>
-                            <UpdateButton onClick={this.handleDelete}>
-                                <DeleteIcon />
-                            </UpdateButton>
+                    <div>
+                        <div
+                            onClick={() =>
+                                this.setState({
+                                    showEditButtons: !this.state.showEditButtons
+                                })
+                            }
+                        >
+                            <DownChevron />
                         </div>
-                    ) : (
-                        <div />
-                    )}
+                        {this.state.showEditButtons && (
+                            <div>
+                                <Link to={`/applications/${_id}`}>
+                                    <UpdateButton>
+                                        <EditIcon />
+                                    </UpdateButton>
+                                </Link>
+                                <UpdateButton onClick={this.handleDelete}>
+                                    <DeleteIcon />
+                                </UpdateButton>
+                            </div>
+                        )}
+                    </div>
                     <div>{iconSelector(mainSkill)}</div>
                     <div>{this.formatDate(dateApplicationSent)}</div>
                 </RightColumn>

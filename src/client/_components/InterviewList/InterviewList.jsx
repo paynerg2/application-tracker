@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { longStackSupport } from 'q';
 
 const InterviewContainer = styled.select`
     width: 88%;
@@ -10,7 +11,17 @@ const InterviewContainer = styled.select`
 InterviewContainer.displayName = 'InterviewContainer';
 
 class InterviewList extends Component {
-    // TODO: add function to format date/time
+    formatDate = value => {
+        const options = {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+        const valueAsDate = new Date(value);
+        return valueAsDate.toLocaleDateString('en-US', options);
+    };
 
     renderList = () => {
         const { loading, interviews } = this.props;
@@ -19,9 +30,10 @@ class InterviewList extends Component {
                 {!loading &&
                     interviews.map(interview => {
                         const { _id, startTime, location } = interview;
+                        const formattedDateTime = this.formatDate(startTime);
                         return (
                             <option key={_id}>
-                                {`${startTime}, ${location}`}
+                                {`${formattedDateTime}, ${location}`}
                             </option>
                         );
                     })}
