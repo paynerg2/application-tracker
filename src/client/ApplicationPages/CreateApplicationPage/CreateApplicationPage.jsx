@@ -7,7 +7,10 @@ import {
     FormContainer,
     H2Text,
     FormGroup,
+    Column,
     Input,
+    Checkbox,
+    CheckboxGroup,
     HelpBlock,
     Button
 } from '../../AuthPages/form';
@@ -235,11 +238,7 @@ class CreateApplicationPage extends Component {
             default:
                 break;
         }
-        const valid = this.validateForm(errors);
-        if (!valid) {
-            console.log(errors);
-            console.log('error state');
-        }
+
         this.setState({ errors: errors });
     }
 
@@ -280,277 +279,295 @@ class CreateApplicationPage extends Component {
             errors
         } = this.state;
         return (
-            <FormContainer>
+            <React.Fragment>
                 <H2Text>
                     {applicationId ? 'Edit ' : 'Add a new '}Application
                 </H2Text>
-                <form
+                <FormContainer
                     name="form"
                     onSubmit={this.handleSubmit}
                     autoComplete="off"
                 >
-                    <FormGroup>
-                        <label htmlFor="jobTitle">Job Title</label>
-                        <Input
-                            type="text"
-                            name="jobTitle"
-                            value={jobTitle}
-                            onChange={this.handleChange}
-                        />
-                        {submitted && !jobTitle && (
-                            <HelpBlock>Job Title is required</HelpBlock>
+                    <Column>
+                        <FormGroup>
+                            <label htmlFor="jobTitle">Job Title</label>
+                            <Input
+                                type="text"
+                                name="jobTitle"
+                                value={jobTitle}
+                                onChange={this.handleChange}
+                            />
+                            {submitted && !jobTitle && (
+                                <HelpBlock>Job Title is required</HelpBlock>
+                            )}
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="company">Company</label>
+                            <Input
+                                type="text"
+                                name="company"
+                                value={company}
+                                onChange={this.handleChange}
+                            />
+                            {submitted && !company && (
+                                <HelpBlock>Company name is required</HelpBlock>
+                            )}
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="location">Location</label>
+                            <Input
+                                type="text"
+                                name="location"
+                                value={location}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="mainSkill">Main Skill</label>
+                            <Input
+                                type="text"
+                                name="mainSkill"
+                                value={mainSkill}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="datePosted">Date Posted</label>
+                            <Input
+                                type="date"
+                                name="datePosted"
+                                value={datePosted}
+                                onChange={this.handleChange}
+                            />
+                            {errors.datePostedDate && (
+                                <HelpBlock>{errors.datePostedDate}</HelpBlock>
+                            )}
+                            {errors.datePostedRelativeDate && (
+                                <HelpBlock>
+                                    {errors.datePostedRelativeDate}
+                                </HelpBlock>
+                            )}
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="dateApplicationSent">
+                                Date Application Submitted
+                            </label>
+                            <Input
+                                type="date"
+                                name="dateApplicationSent"
+                                value={dateApplicationSent}
+                                onChange={this.handleChange}
+                            />
+                            {errors.dateApplicationSentDate && (
+                                <HelpBlock>
+                                    {errors.dateApplicationSentDate}
+                                </HelpBlock>
+                            )}
+                            {errors.dateApplicationSentRelativeDate && (
+                                <HelpBlock>
+                                    {errors.dateApplicationSentRelativeDate}
+                                </HelpBlock>
+                            )}
+                        </FormGroup>
+                    </Column>
+                    <Column>
+                        {errors.requiredSkills && (
+                            <HelpBlock>{errors.requiredSkills}</HelpBlock>
                         )}
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="company">Company</label>
-                        <Input
-                            type="text"
-                            name="company"
-                            value={company}
-                            onChange={this.handleChange}
-                        />
-                        {submitted && !company && (
-                            <HelpBlock>Company name is required</HelpBlock>
+                        <FormGroup>
+                            <label htmlFor="requiredSkillsTotal">
+                                Required Skills
+                            </label>
+                            <Input
+                                type="number"
+                                name="requiredSkillsTotal"
+                                value={requiredSkillsTotal}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="requiredSkillsMet">
+                                Required Skills Met
+                            </label>
+                            <Input
+                                type="number"
+                                name="requiredSkillsMet"
+                                value={requiredSkillsMet}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        {errors.additionalSkills && (
+                            <HelpBlock>{errors.additionalSkills}</HelpBlock>
                         )}
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="location">Location</label>
-                        <Input
-                            type="text"
-                            name="location"
-                            value={location}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="mainSkill">Main Skill</label>
-                        <Input
-                            type="text"
-                            name="mainSkill"
-                            value={mainSkill}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="datePosted">Date Posted</label>
-                        <Input
-                            type="date"
-                            name="datePosted"
-                            value={datePosted}
-                            onChange={this.handleChange}
-                        />
-                        {errors.datePostedDate && (
-                            <HelpBlock>{errors.datePostedDate}</HelpBlock>
-                        )}
-                        {errors.datePostedRelativeDate && (
-                            <HelpBlock>
-                                {errors.datePostedRelativeDate}
-                            </HelpBlock>
-                        )}
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="dateApplicationSent">
-                            Date Application Submitted
-                        </label>
-                        <Input
-                            type="date"
-                            name="dateApplicationSent"
-                            value={dateApplicationSent}
-                            onChange={this.handleChange}
-                        />
-                        {errors.dateApplicationSentDate && (
-                            <HelpBlock>
-                                {errors.dateApplicationSentDate}
-                            </HelpBlock>
-                        )}
-                        {errors.dateApplicationSentRelativeDate && (
-                            <HelpBlock>
-                                {errors.dateApplicationSentRelativeDate}
-                            </HelpBlock>
-                        )}
-                    </FormGroup>
-                    {errors.requiredSkills && (
-                        <HelpBlock>{errors.requiredSkills}</HelpBlock>
-                    )}
-                    <FormGroup>
-                        <label htmlFor="requiredSkillsTotal">
-                            Required Skills
-                        </label>
-                        <Input
-                            type="number"
-                            name="requiredSkillsTotal"
-                            value={requiredSkillsTotal}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="requiredSkillsMet">
-                            Required Skills Met
-                        </label>
-                        <Input
-                            type="number"
-                            name="requiredSkillsMet"
-                            value={requiredSkillsMet}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    {errors.additionalSkills && (
-                        <HelpBlock>{errors.additionalSkills}</HelpBlock>
-                    )}
-                    <FormGroup>
-                        <label htmlFor="additionalSkillsTotal">
-                            Additional Skills Total
-                        </label>
-                        <Input
-                            type="number"
-                            name="additionalSkillsTotal"
-                            value={additionalSkillsTotal}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="additionalSkillsMet">
-                            Additional Skills Met
-                        </label>
-                        <Input
-                            type="number"
-                            name="additionalSkillsMet"
-                            value={additionalSkillsMet}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="yearsOfExperience">
-                            Requested Years of Experience
-                        </label>
-                        <Input
-                            type="number"
-                            name="yearsOfExperience"
-                            value={yearsOfExperience}
-                            onChange={this.handleChange}
-                        />
-                        {errors.yearsOfExperience && (
-                            <HelpBlock>{errors.yearsOfExperience}</HelpBlock>
-                        )}
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="degreeLevel">
-                            Required Degree Level
-                        </label>
-                        <select
-                            name="degreeLevel"
-                            value={degreeLevel}
-                            onChange={this.handleChange}
-                        >
-                            <option value="None">None</option>
-                            <option value="Associates">Associates</option>
-                            <option value="Bachelors">Bachelors</option>
-                            <option value="Masters">Masters</option>
-                            <option value="Ph.D">Ph.D</option>
-                        </select>
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="contract">Contract Type</label>
-                        <select
-                            name="contract"
-                            value={contract}
-                            onChange={this.handleChange}
-                        >
-                            <option value="full-time">full-time</option>
-                            <option value="part-time">part-time</option>
-                            <option value="contract">contract</option>
-                            <option value="contract-to-hire">
-                                contract-to-hire
-                            </option>
-                        </select>
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="temp">Temp?</label>
-                        <Input
-                            type="checkbox"
-                            name="temp"
-                            value={temp}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="arbitraryRelocation">
-                            Arbitrary Relocation Required?
-                        </label>
-                        <Input
-                            type="checkbox"
-                            name="arbitraryRelocation"
-                            value={arbitraryRelocation}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="givenReferral">Referral?</label>
-                        <Input
-                            type="checkbox"
-                            name="givenReferral"
-                            value={givenReferral}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="jobDescriptionLink">
-                            Link to Job Description
-                        </label>
-                        <Input
-                            type="url"
-                            name="jobDescriptionLink"
-                            value={jobDescriptionLink}
-                            onChange={this.handleChange}
-                        />
-                        {submitted && errors.jobDescriptionLink && (
-                            <HelpBlock>{errors.jobDescriptionLink}</HelpBlock>
-                        )}
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="companyLinkedIn">
-                            Company LinkedIn
-                        </label>
-                        <Input
-                            type="url"
-                            name="companyLinkedIn"
-                            value={companyLinkedIn}
-                            onChange={this.handleChange}
-                        />
-                        {submitted && errors.companyLinkedIn && (
-                            <HelpBlock>{errors.companyLinkedIn}</HelpBlock>
-                        )}
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="expectedSalary">Expected Salary</label>
-                        <Input
-                            type="number"
-                            name="expectedSalary"
-                            value={expectedSalary}
-                            onChange={this.handleChange}
-                        />
-                        {errors.expectedSalary && (
-                            <HelpBlock>{errors.expectedSalary}</HelpBlock>
-                        )}
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="field">Job Field</label>
-                        <Input
-                            type="text"
-                            name="field"
-                            value={field}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="additionalSkillsTotal">
+                                Additional Skills Total
+                            </label>
+                            <Input
+                                type="number"
+                                name="additionalSkillsTotal"
+                                value={additionalSkillsTotal}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="additionalSkillsMet">
+                                Additional Skills Met
+                            </label>
+                            <Input
+                                type="number"
+                                name="additionalSkillsMet"
+                                value={additionalSkillsMet}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="yearsOfExperience">
+                                Requested Years of Experience
+                            </label>
+                            <Input
+                                type="number"
+                                name="yearsOfExperience"
+                                value={yearsOfExperience}
+                                onChange={this.handleChange}
+                            />
+                            {errors.yearsOfExperience && (
+                                <HelpBlock>
+                                    {errors.yearsOfExperience}
+                                </HelpBlock>
+                            )}
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="degreeLevel">
+                                Required Degree Level
+                            </label>
+                            <select
+                                name="degreeLevel"
+                                value={degreeLevel}
+                                onChange={this.handleChange}
+                            >
+                                <option value="None">None</option>
+                                <option value="Associates">Associates</option>
+                                <option value="Bachelors">Bachelors</option>
+                                <option value="Masters">Masters</option>
+                                <option value="Ph.D">Ph.D</option>
+                            </select>
+                        </FormGroup>
+                    </Column>
+                    <Column>
+                        <FormGroup>
+                            <label htmlFor="contract">Contract Type</label>
+                            <select
+                                name="contract"
+                                value={contract}
+                                onChange={this.handleChange}
+                            >
+                                <option value="full-time">full-time</option>
+                                <option value="part-time">part-time</option>
+                                <option value="contract">contract</option>
+                                <option value="contract-to-hire">
+                                    contract-to-hire
+                                </option>
+                            </select>
+                        </FormGroup>
+                        <FormGroup>
+                            <CheckboxGroup>
+                                <label htmlFor="temp">Temp?</label>
+                                <Checkbox
+                                    type="checkbox"
+                                    name="temp"
+                                    value={temp}
+                                    onChange={this.handleChange}
+                                />
+                            </CheckboxGroup>
+                        </FormGroup>
+                        <FormGroup>
+                            <CheckboxGroup>
+                                <label htmlFor="arbitraryRelocation">
+                                    Arbitrary Relocation Required?
+                                </label>
+                                <Checkbox
+                                    type="checkbox"
+                                    name="arbitraryRelocation"
+                                    value={arbitraryRelocation}
+                                    onChange={this.handleChange}
+                                />
+                            </CheckboxGroup>
+                        </FormGroup>
+                        <FormGroup>
+                            <CheckboxGroup>
+                                <label htmlFor="givenReferral">Referral?</label>
+                                <Checkbox
+                                    type="checkbox"
+                                    name="givenReferral"
+                                    value={givenReferral}
+                                    onChange={this.handleChange}
+                                />
+                            </CheckboxGroup>
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="jobDescriptionLink">
+                                Link to Job Description
+                            </label>
+                            <Input
+                                type="url"
+                                name="jobDescriptionLink"
+                                value={jobDescriptionLink}
+                                onChange={this.handleChange}
+                            />
+                            {submitted && errors.jobDescriptionLink && (
+                                <HelpBlock>
+                                    {errors.jobDescriptionLink}
+                                </HelpBlock>
+                            )}
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="companyLinkedIn">
+                                Company LinkedIn
+                            </label>
+                            <Input
+                                type="url"
+                                name="companyLinkedIn"
+                                value={companyLinkedIn}
+                                onChange={this.handleChange}
+                            />
+                            {submitted && errors.companyLinkedIn && (
+                                <HelpBlock>{errors.companyLinkedIn}</HelpBlock>
+                            )}
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="expectedSalary">
+                                Expected Salary
+                            </label>
+                            <Input
+                                type="number"
+                                name="expectedSalary"
+                                value={expectedSalary}
+                                onChange={this.handleChange}
+                            />
+                            {errors.expectedSalary && (
+                                <HelpBlock>{errors.expectedSalary}</HelpBlock>
+                            )}
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="field">Job Field</label>
+                            <Input
+                                type="text"
+                                name="field"
+                                value={field}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
 
-                    <FormGroup>
-                        <Button disable={true}>Submit</Button>
-                        <Button onClick={() => this.props.history.goBack()}>
-                            Cancel
-                        </Button>
-                    </FormGroup>
-                </form>
-            </FormContainer>
+                        <FormGroup>
+                            <Button disable={true}>Submit</Button>
+                            <Button onClick={() => this.props.history.goBack()}>
+                                Cancel
+                            </Button>
+                        </FormGroup>
+                    </Column>
+                </FormContainer>
+            </React.Fragment>
         );
     }
 }

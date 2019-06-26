@@ -5,14 +5,16 @@ import styled from 'styled-components';
 // ****************************************
 
 // Form Container
-export const FormContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+//! Add media queries for responsivity.
+export const FormContainer = styled.form`
+    display: grid;
+    justify-content: space-around;
+    grid-template-columns: auto auto auto;
     background-color: white;
     font-family: 'Open Sans', sans-serif;
 `;
+FormContainer.displayName = 'FormContainer';
+
 // H2 Text
 export const H2Text = styled.h2`
     font-family: 'Open Sans', sans-serif;
@@ -24,6 +26,7 @@ export const H2Text = styled.h2`
     text-align: center;
     width: 220px;
 `;
+H2Text.displayName = 'H2Text';
 
 // Form Group
 export const FormGroup = styled.div`
@@ -31,6 +34,7 @@ export const FormGroup = styled.div`
     flex-direction: column;
     margin-bottom: 8px;
 `;
+FormGroup.displayName = 'FormGroup';
 
 // Input
 export const Input = styled.input`
@@ -42,6 +46,20 @@ export const Input = styled.input`
     box-shadow: 1px 1px 4px #ebebeb;
     outline: none;
 `;
+Input.displayName = 'Input';
+
+export const Checkbox = styled.input`
+    width: 20px;
+    border: none;
+    outline: none;
+`;
+
+export const CheckboxGroup = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+`;
 
 // Help Block
 export const HelpBlock = styled.div`
@@ -51,6 +69,7 @@ export const HelpBlock = styled.div`
     margin: 2px;
     text-align: center;
 `;
+HelpBlock.displayName = 'HelpBlock';
 
 // Primary Button
 export const Button = styled.button`
@@ -67,8 +86,12 @@ export const Button = styled.button`
         background: #a1d6e2;
         color: #fff;
     }
-
-    &:disabled {
-        color: red;
-    }
 `;
+Button.displayName = 'Button';
+
+export const Column = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+`;
+Column.displayName = 'Colummn';

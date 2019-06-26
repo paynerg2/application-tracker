@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { longStackSupport } from 'q';
 
 const InterviewContainer = styled.select`
     width: 88%;
