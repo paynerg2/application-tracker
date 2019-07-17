@@ -1,11 +1,42 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
+import Loader from 'react-loader-spinner';
 
 import { LineGraph } from '../_components/LineGraph';
 import { PieChart } from '../_components/PieChart';
 import { applicationActions, interviewActions } from '../_actions';
 import { ScatterChart } from '../_components/ScatterChart/ScatterChart';
+
+const Container = styled.div`
+    display: grid;
+    grid-template-columns: 60% 30%;
+    grid-template-rows: auto auto;
+
+    @media (max-width: 1200px) {
+        display: flex;
+        flex-direction: column;
+    }
+`;
+Container.displayName = 'Container';
+
+const Data = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 30px;
+    margin: 20px;
+    border: solid 1px rgba(0, 0, 0, 0.0975);
+    border-radius: 3px;
+`;
+Data.displayName = 'Data';
+
+const TextData = styled.div`
+    padding: 30px;
+    margin: 20px;
+`;
+TextData.displayName = 'TextData';
 
 class DataPage extends Component {
     componentDidMount() {
@@ -23,7 +54,7 @@ class DataPage extends Component {
         return d.setDate(d.getDate() + days);
     }
 
-    getDates(startDate, stopDate) {
+    getDates(startDate, stopDate = new Date()) {
         let dateArray = [];
         let currentDate = startDate;
         while (currentDate <= stopDate) {
@@ -36,9 +67,8 @@ class DataPage extends Component {
     initCounts(arr) {
         let count = {};
         const input = arr.map(a => new Date(a));
-        const maxDate = new Date(Math.max.apply(null, input));
         const minDate = new Date(Math.min.apply(null, input));
-        const dateArray = this.getDates(minDate, maxDate);
+        const dateArray = this.getDates(minDate);
         console.log('date array');
         console.log(dateArray);
 
@@ -207,7 +237,7 @@ class DataPage extends Component {
     }
 
     render() {
-        const { applicationList, interviewList } = this.props;
+        const { applicationList, interviewList, loading } = this.props;
         const months = 6;
 
         const submissionData = this.getApplicationSubmissionChartData();
@@ -219,49 +249,76 @@ class DataPage extends Component {
         const fieldData = this.getJobFieldData();
         const successfulApplicationSkillsData = this.getSuccessfulApplicationSkillsData();
         console.log(successfulApplicationSkillsData);
-        return (
-            <React.Fragment>
-                <div>Total Applications Sent: {applicationList.length}</div>
-                <div>Total Interviews received: {interviewList.length}</div>
-                <div>
-                    Submitted applications to {recentSubmissions.length}{' '}
-                    companies in the past {months} months
-                </div>
-                <div>
-                    Rejected by {rejectionData.length} companies in the past{' '}
-                    {months} months
-                </div>
-                <LineGraph data={submissionData} />
-                <PieChart data={skillData} title="Main Skill" />
-                <PieChart data={fieldData} title="Job Field" />
-                <ScatterChart data={successfulApplicationSkillsData} />
-                <div>
-                    Submitted to the following companies in the past {months}{' '}
-                    months:
-                    <ul>
-                        {recentSubmissions.map(company => (
-                            <li>{company}</li>
-                        ))}
-                    </ul>
-                </div>
-                <div>
-                    Rejected by the following companies in the past {months}{' '}
-                    months:
-                    <ul>
-                        {rejectionData.map(company => (
-                            <li>{company}</li>
-                        ))}
-                    </ul>
-                </div>
-            </React.Fragment>
+        return loading ? (
+            <div>
+                <Loader
+                    type="ThreeDots"
+                    color="#1995ad"
+                    height="50"
+                    width="50"
+                />
+            </div>
+        ) : (
+            <Container>
+                <Data>
+                    <LineGraph data={submissionData} />
+                </Data>
+                <Data>
+                    <PieChart data={skillData} title="Main Skill" />
+                    <PieChart data={fieldData} title="Job Field" />
+                </Data>
+
+                <Data>
+                    <ScatterChart data={successfulApplicationSkillsData} />
+                </Data>
+                <TextData>
+                    <div>
+                        <div>
+                            Total Applications Sent: {applicationList.length}
+                        </div>
+                        <div>
+                            Total Interviews received: {interviewList.length}
+                        </div>
+                        <div>
+                            Submitted applications to {recentSubmissions.length}{' '}
+                            companies in the past {months} months
+                        </div>
+                        <div>
+                            Rejected by {rejectionData.length} companies in the
+                            past {months} months
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            Submitted to the following companies in the past{' '}
+                            {months} months:
+                            <ul>
+                                {recentSubmissions.map(company => (
+                                    <li>{company}</li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            Rejected by the following companies in the past{' '}
+                            {months} months:
+                            <ul>
+                                {rejectionData.map(company => (
+                                    <li>{company}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </TextData>
+            </Container>
         );
     }
 }
 
 function mapStateToProps(state) {
-    const { applicationList } = state.applications;
+    const { applicationList, loading } = state.applications;
     const { interviewList } = state.interviews;
     return {
+        loading: loading || state.interviews.loading,
         applicationList,
         interviewList
     };

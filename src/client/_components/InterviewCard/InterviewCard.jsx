@@ -6,6 +6,13 @@ import styled from 'styled-components';
 
 import { interviewActions } from '../../_actions';
 import { CardListItem, Button } from '../Card.styles';
+import {
+    DateDisplay,
+    DateNumber,
+    Month,
+    Day,
+    Time
+} from './InterviewCard.styles';
 import { ReactComponent as EditIcon } from '../../_assets/icons8-edit-50.svg';
 import { ReactComponent as DeleteIcon } from '../../_assets/icons8-trash-50.svg';
 import { ReactComponent as DownChevron } from '../../_assets/down-chevron.svg';
@@ -43,7 +50,8 @@ class InterviewCard extends Component {
         super(props);
 
         this.state = {
-            isSelected: false
+            isSelected: false,
+            showEditButtons: false
         };
 
         this.handleDelete = this.handleDelete.bind(this);
@@ -80,21 +88,35 @@ class InterviewCard extends Component {
             _id,
             applicationId
         } = interview;
+        const { company } = this.props;
         return (
             <React.Fragment>
                 <LeftColumn>
                     <div>
                         <Header>
-                            <Title>Company Name</Title>
+                            <Title>{company}</Title>
                             <div>{`round ${round}`}</div>
                         </Header>
                     </div>
-                    <div>{contact}</div>
+                    <div>{location}</div>
+                    <div>{interviewType}</div>
+                    <div>{`Contact: ${contact}`}</div>
                     <div>{response}</div>
-                    <div>{offer}</div>
+                    <div>{offer ? `Offer: ${offer}` : ''}</div>
                 </LeftColumn>
                 <RightColumn>
-                    {this.state.isSelected ? (
+                    <div>
+                        <div
+                            onClick={() =>
+                                this.setState({
+                                    showEditButtons: !this.state.showEditButtons
+                                })
+                            }
+                        >
+                            {!this.state.showEditButtons && <DownChevron />}
+                        </div>
+                    </div>
+                    {this.state.showEditButtons && (
                         <div>
                             <Link
                                 to={`applications/${applicationId}/interviews/${_id}`}
@@ -107,12 +129,12 @@ class InterviewCard extends Component {
                                 <DeleteIcon />
                             </Button>
                         </div>
-                    ) : (
-                        <DownChevron />
-                    )}
-                    <div>{this.formatDate(startTime)}</div>
-                    <div>{location}</div>
-                    <div>{interviewType}</div>
+                    )}{' '}
+                    <DateDisplay>
+                        <Month>May</Month>
+                        <DateNumber>03</DateNumber>
+                        <Time>2:00 PM</Time>
+                    </DateDisplay>
                 </RightColumn>
             </React.Fragment>
         );
@@ -125,8 +147,14 @@ class InterviewCard extends Component {
         }
         return (
             <CardListItem
+                onClick={() =>
+                    this.state.showEditButtons &&
+                    this.setState({ showEditButtons: false })
+                }
                 onMouseEnter={() => this.setState({ isSelected: true })}
-                onMouseLeave={() => this.setState({ isSelected: false })}
+                onMouseLeave={() =>
+                    this.setState({ isSelected: false, showEditButtons: false })
+                }
             >
                 {this.renderCard(interview)}
             </CardListItem>
@@ -136,10 +164,9 @@ class InterviewCard extends Component {
 
 InterviewCard.propTypes = {
     interview: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    company: PropTypes.string
 };
-
-function mapStateToProps(state) {}
 
 const connectedInterviewCard = connect(null)(InterviewCard);
 export { connectedInterviewCard as InterviewCard };

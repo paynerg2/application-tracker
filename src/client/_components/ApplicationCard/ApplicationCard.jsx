@@ -170,6 +170,7 @@ class ApplicationCard extends Component {
                                 }
                             />
                             <ProgressBar
+                                data-tip="additional skills met"
                                 fill={
                                     additionalSkillsTotal > 0
                                         ? (additionalSkillsMet /
@@ -190,7 +191,7 @@ class ApplicationCard extends Component {
                                 })
                             }
                         >
-                            <DownChevron />
+                            {!this.state.showEditButtons && <DownChevron />}
                         </div>
                         {this.state.showEditButtons && (
                             <div>
@@ -215,8 +216,14 @@ class ApplicationCard extends Component {
     render() {
         return (
             <CardListItem
+                onClick={() =>
+                    this.state.showEditButtons &&
+                    this.setState({ showEditButtons: false })
+                }
                 onMouseEnter={() => this.setState({ isSelected: true })}
-                onMouseLeave={() => this.setState({ isSelected: false })}
+                onMouseLeave={() =>
+                    this.setState({ isSelected: false, showEditButtons: false })
+                }
             >
                 {this.renderCard(this.props.application)}
             </CardListItem>

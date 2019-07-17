@@ -2,14 +2,20 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { interviewActions } from '../../_actions';
+import { validateField, validateForm } from '../../_helpers/validator';
 
 import {
+    PageContainer,
     FormContainer,
     H2Text,
     FormGroup,
+    Column,
     Input,
+    Checkbox,
+    CheckboxGroup,
     HelpBlock,
-    Button
+    Button,
+    ButtonContainer
 } from '../../AuthPages/form';
 
 class CreateInterviewPage extends Component {
@@ -28,7 +34,11 @@ class CreateInterviewPage extends Component {
             offer: 0,
             interviewType: '',
             round: 1,
-            notes: ''
+            notes: '',
+            errors: {
+                offer: '',
+                round: ''
+            }
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -58,32 +68,36 @@ class CreateInterviewPage extends Component {
 
     handleChange(e) {
         const { name, value } = e.target;
-        this.setState({ [name]: value });
+        this.setState({ [name]: value }, () =>
+            this.validate(name, value, this.state)
+        );
     }
 
     handleSubmit(e) {
         e.preventDefault();
 
         this.setState({ submitted: true });
-        const { startTime, applicationId } = this.state;
+        const { startTime, applicationId, errors } = this.state;
         const { dispatch } = this.props;
         const user = JSON.parse(localStorage.getItem('user'));
-        if (user && applicationId && startTime) {
+        const valid = validateForm(errors);
+        if (user && applicationId && startTime && valid) {
             const { submitted, interviewId, ...interviewParams } = this.state;
 
             const newInterview = {
                 ...interviewParams,
                 user: user._id
             };
-            console.log(newInterview);
 
             interviewId
                 ? dispatch(interviewActions.update(interviewId, newInterview))
                 : dispatch(interviewActions.create(newInterview));
-        } else {
-            console.log(this.props);
-            console.log(this.state);
         }
+    }
+
+    validate(fieldName, value, state) {
+        const errors = validateField(fieldName, value, state);
+        this.setState({ errors: errors });
     }
 
     render() {
@@ -101,106 +115,120 @@ class CreateInterviewPage extends Component {
             notes
         } = this.state;
         return (
-            <FormContainer>
+            <PageContainer>
                 <H2Text>{interviewId ? 'Edit' : 'Add a new '}Interview</H2Text>
-                <form
+                <FormContainer
                     name="form"
                     onSubmit={this.handleSubmit}
                     autoComplete="off"
                 >
-                    <FormGroup>
-                        <label htmlFor="startTime">Start Time</label>
-                        <Input
-                            type="datetime-local"
-                            name="startTime"
-                            value={startTime}
-                            onChange={this.handleChange}
-                        />
-                        {submitted && !startTime && (
-                            <HelpBlock>Start Time is required</HelpBlock>
-                        )}
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="location">Location</label>
-                        <Input
-                            type="text"
-                            name="location"
-                            value={location}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="contact">Contact</label>
-                        <Input
-                            type="text"
-                            name="contact"
-                            value={contact}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="followUpSent">Follow Up Sent?</label>
-                        <Input
-                            type="checkbox"
-                            name="followUpSent"
-                            value={followUpSent}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="response">Response</label>
-                        <Input
-                            type="checkbox"
-                            name="response"
-                            value={response}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="offer">Offer</label>
-                        <Input
-                            type="number"
-                            name="offer"
-                            value={offer}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="interviewType">Interview Type</label>
-                        <Input
-                            type="text"
-                            name="interviewType"
-                            value={interviewType}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="round">Round</label>
-                        <Input
-                            type="number"
-                            name="round"
-                            value={round}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <label htmlFor="notes">Notes</label>
-                        <Input
-                            type="text"
-                            name="notes"
-                            value={notes}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
+                    <Column>
+                        <FormGroup>
+                            <label htmlFor="startTime">Start Time</label>
+                            <Input
+                                type="datetime-local"
+                                name="startTime"
+                                value={startTime}
+                                onChange={this.handleChange}
+                            />
+                            {submitted && !startTime && (
+                                <HelpBlock>Start Time is required</HelpBlock>
+                            )}
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="location">Location</label>
+                            <Input
+                                type="text"
+                                name="location"
+                                value={location}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="contact">Contact</label>
+                            <Input
+                                type="text"
+                                name="contact"
+                                value={contact}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <CheckboxGroup>
+                                <label htmlFor="followUpSent">
+                                    Follow Up Sent?
+                                </label>
+                                <Checkbox
+                                    type="checkbox"
+                                    name="followUpSent"
+                                    value={followUpSent}
+                                    onChange={this.handleChange}
+                                />
+                            </CheckboxGroup>
+                        </FormGroup>
+                        <FormGroup>
+                            <CheckboxGroup>
+                                <label htmlFor="response">Response</label>
+                                <Checkbox
+                                    type="checkbox"
+                                    name="response"
+                                    value={response}
+                                    onChange={this.handleChange}
+                                />
+                            </CheckboxGroup>
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="offer">Offer</label>
+                            <Input
+                                type="number"
+                                name="offer"
+                                value={offer}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="interviewType">
+                                Interview Type
+                            </label>
+                            <Input
+                                type="text"
+                                name="interviewType"
+                                value={interviewType}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="round">Round</label>
+                            <Input
+                                type="number"
+                                name="round"
+                                value={round}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <label htmlFor="notes">Notes</label>
+                            <Input
+                                type="text"
+                                name="notes"
+                                value={notes}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
 
-                    <FormGroup>
-                        <Button>Submit</Button>
-                        <Button onClick={() => this.props.history.goBack()}>
-                            Cancel
-                        </Button>
-                    </FormGroup>
-                </form>
-            </FormContainer>
+                        <ButtonContainer>
+                            <FormGroup>
+                                <Button>Submit</Button>
+                                <Button
+                                    onClick={() => this.props.history.goBack()}
+                                >
+                                    Cancel
+                                </Button>
+                            </FormGroup>
+                        </ButtonContainer>
+                    </Column>
+                </FormContainer>
+            </PageContainer>
         );
     }
 }
