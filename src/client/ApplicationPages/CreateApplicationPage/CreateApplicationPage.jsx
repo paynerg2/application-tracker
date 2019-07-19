@@ -88,10 +88,10 @@ class CreateApplicationPage extends Component {
                 new Date(selectedApplication.datePosted)
             );
             if (selectedApplication) {
-                selectedApplication.datePosted = formattedPostingDate;
-                selectedApplication.dateApplicationSent = formattedSubmissionDate;
                 this.setState({
-                    ...selectedApplication
+                    ...selectedApplication,
+                    datePosted: formattedPostingDate,
+                    dateApplicationSent: formattedSubmissionDate
                 });
             }
         }

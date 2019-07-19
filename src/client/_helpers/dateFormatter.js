@@ -1,17 +1,58 @@
-export const getDateFormattedForInput = date => {
-    let year = date.getFullYear();
-    let month = (1 + date.getMonth()).toString().padStart(2, '0');
-    let day = date
+export const getPaddedMonth = date => {
+    return (1 + date.getMonth()).toString().padStart(2, '0');
+};
+
+export const getMonthName = date => {
+    let months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+    ];
+    return months[date.getMonth()];
+};
+
+export const getPaddedDay = date => {
+    return date
         .getDate()
         .toString()
         .padStart(2, '0');
+};
+
+export const getDateFormattedForInput = date => {
+    let year = date.getFullYear();
+    let month = getPaddedMonth(date);
+    let day = getPaddedDay(date);
 
     return year + '-' + month + '-' + day;
 };
 
+export const getTime = dateTime => {
+    // Returns correctly formatted time, removing any leading zeros
+    // Trim to remove leading space first
+    let time = getDateFormattedForList(dateTime)
+        .split(',')[2]
+        .trim()
+        .replace(/^0+/, '');
+    return time;
+};
+
 export const getDateTimeFormattedForInput = dateTime => {
-    let isoDateString = new Date(dateTime).toISOString();
-    return isoDateString.substring(0, isoDateString.length - 1);
+    var date = new Date(dateTime);
+    // Slice to remove trailing Z & make compatible with datetime-local
+    // HTML5 element
+    var isoDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+        .toISOString()
+        .slice(0, -1);
+    return isoDate;
 };
 
 export const getTimeZoneCorrectedDate = value => {

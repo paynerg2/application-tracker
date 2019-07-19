@@ -7,6 +7,7 @@ export const DateDisplay = styled.div`
     height: 115px;
     margin: 4px;
 `;
+DateDisplay.displayName = 'DateDisplay';
 
 export const DateNumber = styled.div`
     display: flex;
@@ -19,6 +20,7 @@ export const DateNumber = styled.div`
     font-size: 25px;
     text-align: center;
 `;
+DateNumber.displayName = 'DateNumber';
 
 export const Month = styled.div`
     display: flex;
@@ -30,6 +32,7 @@ export const Month = styled.div`
     height: 16.6%;
     width: 100%;
 `;
+Month.displayName = 'Month';
 
 export const Time = styled.div`
     display: flex;
@@ -41,3 +44,4 @@ export const Time = styled.div`
     height: 16.6%;
     width: 100%;
 `;
+Time.displayName = 'Time';

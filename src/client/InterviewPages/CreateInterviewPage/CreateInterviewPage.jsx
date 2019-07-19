@@ -16,6 +16,7 @@ import {
     CheckboxGroup,
     HelpBlock,
     Button,
+    CancelButton,
     ButtonContainer
 } from '../../AuthPages/form';
 
@@ -65,8 +66,10 @@ class CreateInterviewPage extends Component {
                 const formattedStartTime = getDateTimeFormattedForInput(
                     selectedInterview.startTime
                 );
-                selectedInterview.startTime = formattedStartTime;
-                this.setState({ ...selectedInterview });
+                this.setState({
+                    ...selectedInterview,
+                    startTime: formattedStartTime
+                });
             }
         }
     }
@@ -224,11 +227,11 @@ class CreateInterviewPage extends Component {
                         <ButtonContainer>
                             <FormGroup>
                                 <Button>Submit</Button>
-                                <Button
+                                <CancelButton
                                     onClick={() => this.props.history.goBack()}
                                 >
                                     Cancel
-                                </Button>
+                                </CancelButton>
                             </FormGroup>
                         </ButtonContainer>
                     </Column>

@@ -6,16 +6,17 @@ import styled from 'styled-components';
 
 import { interviewActions } from '../../_actions';
 import { CardListItem, Button } from '../Card.styles';
-import {
-    DateDisplay,
-    DateNumber,
-    Month,
-    Day,
-    Time
-} from './InterviewCard.styles';
+import { DateDisplay, DateNumber, Month, Time } from './InterviewCard.styles';
 import { ReactComponent as EditIcon } from '../../_assets/icons8-edit-50.svg';
 import { ReactComponent as DeleteIcon } from '../../_assets/icons8-trash-50.svg';
 import { ReactComponent as DownChevron } from '../../_assets/down-chevron.svg';
+import {
+    getPaddedMonth,
+    getMonthName,
+    getPaddedDay,
+    getTime,
+    getTimeZoneCorrectedDate
+} from '../../_helpers/dateFormatter';
 
 const Header = styled.div`
     display: flex;
@@ -33,7 +34,7 @@ Title.displayName = 'Title';
 const LeftColumn = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    height: 100%;
 `;
 LeftColumn.displayName = 'LeftColumn';
 
@@ -44,6 +45,28 @@ const RightColumn = styled.div`
     align-items: center;
 `;
 RightColumn.displayName = 'RightColumn';
+
+const Location = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+Location.displayName = 'Location';
+
+const InfoSection = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+`;
+InfoSection.displayName = 'InfoSection';
+
+const NotesSection = styled.div`
+    border-left: solid 1px rgba(0, 0, 0, 0.0975);
+    border-top: solid 1px rgba(0, 0, 0, 0.0975);
+    height: auto;
+    padding: 5px;
+    font-size: 12px;
+`;
+NotesSection.displayName = 'NotesSection';
 
 class InterviewCard extends Component {
     constructor(props) {
@@ -88,21 +111,28 @@ class InterviewCard extends Component {
             _id,
             applicationId
         } = interview;
+        const startTimeAsDate = new getTimeZoneCorrectedDate(startTime);
         const { company } = this.props;
         return (
             <React.Fragment>
                 <LeftColumn>
-                    <div>
-                        <Header>
-                            <Title>{company}</Title>
-                            <div>{`round ${round}`}</div>
-                        </Header>
-                    </div>
-                    <div>{location}</div>
-                    <div>{interviewType}</div>
-                    <div>{`Contact: ${contact}`}</div>
-                    <div>{response}</div>
-                    <div>{offer ? `Offer: ${offer}` : ''}</div>
+                    <Header>
+                        <Title>{company}</Title>
+                        <div>{`round ${round}`}</div>
+                    </Header>
+                    <InfoSection>
+                        <div>
+                            <Location>
+                                <div>{location}</div>
+                                <div>{interviewType}</div>
+                            </Location>
+                            <div>{`Contact: ${contact}`}</div>
+                            {response && <div>{response}</div>}
+                            {offer !== 0 && <div>{`Offer: ${offer}`}</div>}
+                            <div>Notes</div>
+                        </div>
+                        <NotesSection>{notes}</NotesSection>
+                    </InfoSection>
                 </LeftColumn>
                 <RightColumn>
                     <div>
@@ -131,9 +161,9 @@ class InterviewCard extends Component {
                         </div>
                     )}{' '}
                     <DateDisplay>
-                        <Month>May</Month>
-                        <DateNumber>03</DateNumber>
-                        <Time>2:00 PM</Time>
+                        <Month>{getMonthName(startTimeAsDate)}</Month>
+                        <DateNumber>{getPaddedDay(startTimeAsDate)}</DateNumber>
+                        <Time>{getTime(startTime)}</Time>
                     </DateDisplay>
                 </RightColumn>
             </React.Fragment>

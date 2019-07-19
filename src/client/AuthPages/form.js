@@ -120,6 +120,17 @@ export const Button = styled.button`
 `;
 Button.displayName = 'Button';
 
+export const CancelButton = styled(Button)`
+    background: grey;
+    color: #fff;
+
+    &:hover {
+        background: darkgrey;
+        color: #fff;
+    }
+`;
+CancelButton.displayName = 'CancelButton';
+
 export const Column = styled.div`
     display: flex;
     flex-direction: column;
