@@ -6,6 +6,18 @@ import styled from 'styled-components';
 
 import { userActions } from '../../_actions';
 
+const DesktopHeader = styled.div`
+    @media (max-width: 760px) {
+        display: none;
+    }
+`;
+
+const MobileHeader = styled.div`
+    @media (min-width: 760px) {
+        display: none;
+    }
+`;
+
 const HeaderContainer = styled.div`
     width: 100%;
     height: 10vh;
@@ -13,6 +25,16 @@ const HeaderContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.4em;
+`;
+
+const MobileHeaderContainer = styled.div`
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     font-family: 'Open Sans', sans-serif;
     font-size: 1.4em;
 `;
@@ -63,8 +85,14 @@ const NavigationLink = styled(NavLink)`
 
     &.is-active {
         text-decoration: none;
-        color: #1995ad;
-        border-bottom: solid 3px #1995ad;
+        color: white;
+        background-color: #1995ad;
+
+        @media (min-width: 760px) {
+            color: #1995ad;
+            background-color: white;
+            border-bottom: solid 3px #1995ad;
+        }
     }
 `;
 
@@ -75,6 +103,22 @@ const NavButton = styled.button`
     color: #1995ad;
     border: none;
     background-color: transparent;
+`;
+
+const MenuIcon = styled.div`
+    align-self: flex-end;
+    margin-right: 20px;
+    color: #666;
+    height: 45px;
+    padding: 5px;
+    font-style: bold;
+    border-radius: 6px;
+    border: 1px solid #f1f1f2;
+
+    &:hover {
+        background-color: #1995ad;
+        color: white;
+    }
 `;
 
 const HeaderLeft = styled.div`
@@ -93,6 +137,10 @@ class Header extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            isExpanded: false
+        };
+
         this.logout = this.logout.bind(this);
     }
     logout() {
@@ -103,53 +151,110 @@ class Header extends Component {
     render() {
         const { user } = this.props;
         return (
-            <HeaderContainer>
-                <HeaderLeft>
-                    <Brand to="/">trackr</Brand>
-                    <NavigationLink exact to="/" activeClassName="is-active">
-                        Applications
-                    </NavigationLink>
-                    <NavigationLink
-                        exact
-                        to="/interviews"
-                        activeClassName="is-active"
-                    >
-                        Interviews
-                    </NavigationLink>
-                    <NavigationLink
-                        exact
-                        to="/data"
-                        activeClassName="is-active"
-                    >
-                        Data
-                    </NavigationLink>
-                    <NavigationLink
-                        to="/applications"
-                        activeClassName="is-active"
-                    >
-                        Add New
-                    </NavigationLink>
-                </HeaderLeft>
-                <HeaderRight>
-                    {user ? (
-                        <React.Fragment>
-                            <Nav>{user.username}</Nav>
-                            <Nav>
-                                <NavButton onClick={this.logout}>
-                                    Logout
-                                </NavButton>
-                            </Nav>
-                        </React.Fragment>
-                    ) : (
-                        <React.Fragment>
-                            <NavigationLink to="/login">Login</NavigationLink>
-                            <NavigationLink to="/register">
-                                Sign up
+            <React.Fragment>
+                <DesktopHeader>
+                    <HeaderContainer>
+                        <HeaderLeft>
+                            <Brand to="/">trackr</Brand>
+                            <NavigationLink
+                                exact
+                                to="/"
+                                activeClassName="is-active"
+                            >
+                                Applications
                             </NavigationLink>
-                        </React.Fragment>
-                    )}
-                </HeaderRight>
-            </HeaderContainer>
+                            <NavigationLink
+                                exact
+                                to="/interviews"
+                                activeClassName="is-active"
+                            >
+                                Interviews
+                            </NavigationLink>
+                            <NavigationLink
+                                exact
+                                to="/data"
+                                activeClassName="is-active"
+                            >
+                                Data
+                            </NavigationLink>
+                            <NavigationLink
+                                to="/applications"
+                                activeClassName="is-active"
+                            >
+                                Add New
+                            </NavigationLink>
+                        </HeaderLeft>
+                        <HeaderRight>
+                            {user ? (
+                                <React.Fragment>
+                                    <Nav>{user.username}</Nav>
+                                    <Nav>
+                                        <NavButton onClick={this.logout}>
+                                            Logout
+                                        </NavButton>
+                                    </Nav>
+                                </React.Fragment>
+                            ) : (
+                                <React.Fragment>
+                                    <NavigationLink to="/login">
+                                        Login
+                                    </NavigationLink>
+                                    <NavigationLink to="/register">
+                                        Sign up
+                                    </NavigationLink>
+                                </React.Fragment>
+                            )}
+                        </HeaderRight>
+                    </HeaderContainer>
+                </DesktopHeader>
+                <MobileHeader>
+                    <MobileHeaderContainer>
+                        <HeaderContainer>
+                            <Brand to="/">trackr</Brand>
+                            <MenuIcon
+                                onClick={() =>
+                                    this.setState({
+                                        isExpanded: !this.state.isExpanded
+                                    })
+                                }
+                            >
+                                Menu
+                            </MenuIcon>
+                        </HeaderContainer>
+                        {this.state.isExpanded && (
+                            <MobileHeaderContainer>
+                                <NavigationLink
+                                    exact
+                                    to="/"
+                                    activeClassName="is-active"
+                                >
+                                    Applications
+                                </NavigationLink>
+                                <NavigationLink
+                                    exact
+                                    to="/interviews"
+                                    activeClassName="is-active"
+                                >
+                                    Interviews
+                                </NavigationLink>
+                                <NavigationLink
+                                    exact
+                                    to="/data"
+                                    activeClassName="is-active"
+                                >
+                                    Data
+                                </NavigationLink>
+                                <NavigationLink
+                                    to="/applications"
+                                    activeClassName="is-active"
+                                >
+                                    Add New
+                                </NavigationLink>
+                            </MobileHeaderContainer>
+                        )}
+                    </MobileHeaderContainer>
+                </MobileHeader>
+            </React.Fragment>
         );
     }
 }

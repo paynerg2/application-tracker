@@ -8,35 +8,17 @@ import { LineGraph } from '../_components/LineGraph';
 import { PieChart } from '../_components/PieChart';
 import { applicationActions, interviewActions } from '../_actions';
 import { ScatterChart } from '../_components/ScatterChart/ScatterChart';
-
-const Container = styled.div`
-    display: grid;
-    grid-template-columns: 60% 30%;
-    grid-template-rows: auto auto;
-
-    @media (max-width: 1200px) {
-        display: flex;
-        flex-direction: column;
-    }
-`;
-Container.displayName = 'Container';
-
-const Data = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    padding: 30px;
-    margin: 20px;
-    border: solid 1px rgba(0, 0, 0, 0.0975);
-    border-radius: 3px;
-`;
-Data.displayName = 'Data';
-
-const TextData = styled.div`
-    padding: 30px;
-    margin: 20px;
-`;
-TextData.displayName = 'TextData';
+import {
+    Container,
+    Data,
+    TextData,
+    TextDataHeader,
+    AllTimeData,
+    SixMonthsData,
+    TextHeader,
+    CompanyContainer,
+    Company
+} from './DataPage.styles';
 
 class DataPage extends Component {
     componentDidMount() {
@@ -198,6 +180,14 @@ class DataPage extends Component {
         return submittedApplications;
     }
 
+    getOpenSubmissions(months) {
+        const submittedApplications = this.getSubmissions(months);
+        const OpenApplications = submittedApplications.filter(
+            app => app.response !== 'Rejected'
+        );
+        return OpenApplications.map(app => app.company);
+    }
+
     getSuccessfulApplications() {
         const { applicationList } = this.props;
         const successfulApplications = applicationList.filter(
@@ -243,9 +233,7 @@ class DataPage extends Component {
         const submissionData = this.getApplicationSubmissionChartData();
         const skillData = this.getSkillChartData();
         const rejectionData = this.getRejections(months);
-        const recentSubmissions = this.getSubmissions(months).map(
-            app => app.company
-        );
+        const openSubmissions = this.getOpenSubmissions(months);
         const fieldData = this.getJobFieldData();
         const successfulApplicationSkillsData = this.getSuccessfulApplicationSkillsData();
         console.log(successfulApplicationSkillsData);
@@ -272,42 +260,36 @@ class DataPage extends Component {
                     <ScatterChart data={successfulApplicationSkillsData} />
                 </Data>
                 <TextData>
-                    <div>
+                    <TextDataHeader>All Time</TextDataHeader>
+                    <AllTimeData>
                         <div>
-                            Total Applications Sent: {applicationList.length}
+                            <h4>Applications</h4>
+                            <h4>{applicationList.length}</h4>
                         </div>
                         <div>
-                            Total Interviews received: {interviewList.length}
+                            <h4>Interviews</h4>
+                            <h4>{interviewList.length}</h4>
                         </div>
+                    </AllTimeData>
+                    <SixMonthsData>
+                        <TextDataHeader>Last Six Months</TextDataHeader>
                         <div>
-                            Submitted applications to {recentSubmissions.length}{' '}
-                            companies in the past {months} months
-                        </div>
-                        <div>
-                            Rejected by {rejectionData.length} companies in the
-                            past {months} months
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            Submitted to the following companies in the past{' '}
-                            {months} months:
-                            <ul>
-                                {recentSubmissions.map(company => (
-                                    <li>{company}</li>
+                            <TextHeader>Open Submissions</TextHeader>
+                            <CompanyContainer>
+                                {openSubmissions.map(company => (
+                                    <Company>{company}</Company>
                                 ))}
-                            </ul>
+                            </CompanyContainer>
                         </div>
                         <div>
-                            Rejected by the following companies in the past{' '}
-                            {months} months:
-                            <ul>
+                            <TextHeader>Rejections</TextHeader>
+                            <CompanyContainer>
                                 {rejectionData.map(company => (
-                                    <li>{company}</li>
+                                    <Company>{company}</Company>
                                 ))}
-                            </ul>
+                            </CompanyContainer>
                         </div>
-                    </div>
+                    </SixMonthsData>
                 </TextData>
             </Container>
         );
