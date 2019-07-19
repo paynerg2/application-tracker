@@ -93,7 +93,7 @@ class DataPage extends Component {
                             <TextHeader>Open Submissions</TextHeader>
                             <CompanyContainer>
                                 {openSubmissions.map(company => (
-                                    <Company>{company}</Company>
+                                    <Company key={company}>{company}</Company>
                                 ))}
                             </CompanyContainer>
                         </div>
