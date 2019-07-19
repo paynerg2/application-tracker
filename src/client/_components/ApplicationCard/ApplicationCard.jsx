@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 
 import { applicationActions, interviewActions } from '../../_actions';
 import { ProgressBar } from '../ProgressBar';
@@ -12,46 +11,15 @@ import { ReactComponent as EditIcon } from '../../_assets/icons8-edit-50.svg';
 import { ReactComponent as DeleteIcon } from '../../_assets/icons8-trash-50.svg';
 import { ReactComponent as DownChevron } from '../../_assets/down-chevron.svg';
 import { iconSelector } from '../../_helpers/iconSelector';
-
-const RightColumn = styled.div`
-    display: grid;
-    grid-template-rows: 30% 30% 30%;
-    justify-items: center;
-    align-items: center;
-    align-content: space-between;
-`;
-RightColumn.displayName = 'RightColumn';
-
-const LeftColumn = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-`;
-LeftColumn.displayName = 'LeftColumn';
-
-const Bottom = styled.div`
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    justify-content: space-between;
-`;
-Bottom.displayName = 'Bottom';
-
-const Title = styled.div`
-    font-weight: bold;
-    border-bottom: solid 1px rgba(0, 0, 0, 0.0975);
-`;
-Title.displayName = 'Title';
-
-const Location = styled.div`
-    font-style: italic;
-`;
-Location.displayName = 'Location';
-
-const UpdateButton = styled(Button)`
-    box-shadow: 1px 2px 6px 1px darkgrey;
-`;
-UpdateButton.displayName = 'UpdateButton';
+import { getSimpleFormattedDate } from '../../_helpers/dateFormatter';
+import {
+    RightColumn,
+    LeftColumn,
+    Bottom,
+    Title,
+    Location,
+    UpdateButton
+} from './ApplicationCard.styles';
 
 class ApplicationCard extends Component {
     constructor(props) {
@@ -90,18 +58,6 @@ class ApplicationCard extends Component {
                 })
             );
         }
-
-        if (e.target.value === 'Interview') {
-            this.props.history.push(`applications/${id}/interviews`);
-        }
-    }
-
-    formatDate(date) {
-        if (date) {
-            const d = new Date(date);
-            return d.toLocaleDateString('en-US');
-        }
-        return '';
     }
 
     renderCard = application => {
@@ -130,7 +86,7 @@ class ApplicationCard extends Component {
 
                     <Bottom>
                         <div>
-                            {interviews.length === 0 && (
+                            {response !== 'Interview' && (
                                 <Dropdown
                                     value={response}
                                     onChange={e => this.handleResponseUpdate(e)}
@@ -207,7 +163,7 @@ class ApplicationCard extends Component {
                         )}
                     </div>
                     <div>{iconSelector(mainSkill)}</div>
-                    <div>{this.formatDate(dateApplicationSent)}</div>
+                    <div>{getSimpleFormattedDate(dateApplicationSent)}</div>
                 </RightColumn>
             </React.Fragment>
         );

@@ -79,10 +79,32 @@ class CreateApplicationPage extends Component {
             const selectedApplication = applicationList.find(
                 app => app._id === params.applicationId
             );
+
+            // Format to a value the date input accepts
+            const formattedSubmissionDate = this.getFormattedDate(
+                new Date(selectedApplication.dateApplicationSent)
+            );
+            const formattedPostingDate = this.getFormattedDate(
+                new Date(selectedApplication.datePosted)
+            );
             if (selectedApplication) {
-                this.setState({ ...selectedApplication });
+                selectedApplication.datePosted = formattedPostingDate;
+                selectedApplication.dateApplicationSent = formattedSubmissionDate;
+                this.setState({
+                    ...selectedApplication
+                });
             }
         }
+    }
+    getFormattedDate(date) {
+        let year = date.getFullYear();
+        let month = (1 + date.getMonth()).toString().padStart(2, '0');
+        let day = date
+            .getDate()
+            .toString()
+            .padStart(2, '0');
+
+        return year + '-' + month + '-' + day;
     }
 
     handleChange(e) {
@@ -153,6 +175,8 @@ class CreateApplicationPage extends Component {
             field,
             errors
         } = this.state;
+        console.log('from render:');
+        console.log(this.state);
         return (
             <React.Fragment>
                 <PageContainer>

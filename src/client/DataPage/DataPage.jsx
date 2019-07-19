@@ -101,7 +101,7 @@ class DataPage extends Component {
                             <TextHeader>Rejections</TextHeader>
                             <CompanyContainer>
                                 {rejectionData.map(company => (
-                                    <Company>{company}</Company>
+                                    <Company key={company}>{company}</Company>
                                 ))}
                             </CompanyContainer>
                         </div>

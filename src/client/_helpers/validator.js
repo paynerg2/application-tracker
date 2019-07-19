@@ -1,3 +1,5 @@
+import { getTimeZoneCorrectedDate } from './dateFormatter';
+
 export const validateField = (fieldName, value, state) => {
     let expression;
     let { errors } = state;
@@ -141,11 +143,3 @@ export const validateForm = errors => {
     }
     return valid;
 };
-
-function getTimeZoneCorrectedDate(value) {
-    let valueAsDate = new Date(value);
-    valueAsDate.setMinutes(
-        valueAsDate.getMinutes() + valueAsDate.getTimezoneOffset()
-    );
-    return valueAsDate;
-}

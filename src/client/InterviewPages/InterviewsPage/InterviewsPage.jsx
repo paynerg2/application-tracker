@@ -10,8 +10,12 @@ import { InterviewCard } from '../../_components/InterviewCard';
 class InterviewsPage extends Component {
     componentDidMount() {
         const { dispatch } = this.props;
-        dispatch(interviewActions.getAll());
-        dispatch(applicationActions.getAll());
+        if (this.props.applicationList.length === 0) {
+            dispatch(interviewActions.getAll());
+        }
+        if (this.props.interviewList.length === 0) {
+            dispatch(applicationActions.getAll());
+        }
     }
 
     render() {

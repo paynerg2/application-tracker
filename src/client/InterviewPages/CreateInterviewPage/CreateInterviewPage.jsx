@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { interviewActions } from '../../_actions';
 import { validateField, validateForm } from '../../_helpers/validator';
+import { getDateTimeFormattedForInput } from '../../_helpers/dateFormatter';
 
 import {
     PageContainer,
@@ -61,6 +62,10 @@ class CreateInterviewPage extends Component {
                 interview => interview._id === params.interviewId
             );
             if (selectedInterview) {
+                const formattedStartTime = getDateTimeFormattedForInput(
+                    selectedInterview.startTime
+                );
+                selectedInterview.startTime = formattedStartTime;
                 this.setState({ ...selectedInterview });
             }
         }
@@ -116,7 +121,7 @@ class CreateInterviewPage extends Component {
         } = this.state;
         return (
             <PageContainer>
-                <H2Text>{interviewId ? 'Edit' : 'Add a new '}Interview</H2Text>
+                <H2Text>{interviewId ? 'Edit ' : 'Add a new '}Interview</H2Text>
                 <FormContainer
                     name="form"
                     onSubmit={this.handleSubmit}
