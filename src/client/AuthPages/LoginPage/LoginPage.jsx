@@ -7,6 +7,7 @@ import {
     FormContainer,
     H2Text,
     FormGroup,
+    Column,
     Input,
     HelpBlock,
     Button
@@ -49,13 +50,13 @@ class LoginPage extends Component {
         const { loggingIn } = this.props;
         const { username, password, submitted } = this.state;
         return (
-            <FormContainer>
-                <H2Text>Login</H2Text>
-                <form
-                    name="form"
-                    onSubmit={this.handleSubmit}
-                    autoComplete="off"
-                >
+            <FormContainer
+                name="form"
+                onSubmit={this.handleSubmit}
+                autoComplete="off"
+            >
+                <Column>
+                    <H2Text>Login</H2Text>
                     <FormGroup>
                         <label htmlFor="username">Username</label>
                         <Input
@@ -84,7 +85,7 @@ class LoginPage extends Component {
                         <Button>Login</Button>
                         {loggingIn && <img src="#" alt="spinner" />}
                     </FormGroup>
-                </form>
+                </Column>
             </FormContainer>
         );
     }

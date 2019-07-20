@@ -7,6 +7,7 @@ import {
     FormContainer,
     H2Text,
     FormGroup,
+    Column,
     Input,
     HelpBlock,
     Button
@@ -53,13 +54,13 @@ class RegistrationPage extends Component {
     render() {
         const { username, password, location, submitted } = this.state;
         return (
-            <FormContainer>
-                <H2Text>Create a New Account</H2Text>
-                <form
-                    name="form"
-                    onSubmit={this.handleSubmit}
-                    autoComplete="off"
-                >
+            <FormContainer
+                name="form"
+                onSubmit={this.handleSubmit}
+                autoComplete="off"
+            >
+                <Column>
+                    <H2Text>Create a New Account</H2Text>
                     <FormGroup>
                         <label htmlFor="username">Username</label>
                         <Input
@@ -96,7 +97,7 @@ class RegistrationPage extends Component {
                     <FormGroup>
                         <Button>Register</Button>
                     </FormGroup>
-                </form>
+                </Column>
             </FormContainer>
         );
     }
