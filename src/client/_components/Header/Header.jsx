@@ -20,7 +20,7 @@ const MobileHeader = styled.div`
 
 const HeaderContainer = styled.div`
     width: 100%;
-    height: 10vh;
+    height: 11vh;
     background-color: #fff;
     display: flex;
     flex-direction: row;
@@ -70,6 +70,14 @@ const Nav = styled.div`
     color: #1995ad;
 `;
 
+const MobileNavLinkContainer = styled.div`
+    overflow: hidden;
+    height: auto;
+    max-height: ${props => (props.isExpanded ? '1000px' : '0')};
+    transition: max-height 0.5s ease-out;
+`;
+MobileNavLinkContainer.displayName = 'MobileNavLinkContainer';
+
 const NavigationLink = styled(NavLink)`
     margin: 5px;
     padding: 6px;
@@ -95,6 +103,11 @@ const NavigationLink = styled(NavLink)`
         }
     }
 `;
+NavigationLink.displayName = 'NavigationLink';
+
+const MobileNavLink = styled(NavigationLink)`
+    padding-left: 29px;
+`;
 
 const NavButton = styled.button`
     text-decoration: none;
@@ -114,6 +127,7 @@ const MenuIcon = styled.div`
     font-style: bold;
     border-radius: 6px;
     border: 1px solid #f1f1f2;
+    transition: all 0.5s ease-in;
 
     &:hover {
         background-color: #1995ad;
@@ -143,6 +157,11 @@ class Header extends Component {
 
         this.logout = this.logout.bind(this);
     }
+
+    onNavMenuClick() {
+        this.setState({ isExpanded: !this.state.isExpanded });
+    }
+
     logout() {
         const { dispatch } = this.props;
         dispatch(userActions.logout());
@@ -150,6 +169,7 @@ class Header extends Component {
 
     render() {
         const { user } = this.props;
+        const { isExpanded } = this.state;
         return (
             <React.Fragment>
                 <DesktopHeader>
@@ -211,47 +231,57 @@ class Header extends Component {
                     <MobileHeaderContainer>
                         <HeaderContainer>
                             <Brand to="/">trackr</Brand>
-                            <MenuIcon
-                                onClick={() =>
-                                    this.setState({
-                                        isExpanded: !this.state.isExpanded
-                                    })
-                                }
-                            >
-                                Menu
-                            </MenuIcon>
+                            {user && (
+                                <MenuIcon onClick={() => this.onNavMenuClick()}>
+                                    Menu
+                                </MenuIcon>
+                            )}
                         </HeaderContainer>
-                        {this.state.isExpanded && (
+                        <MobileNavLinkContainer isExpanded={isExpanded}>
                             <MobileHeaderContainer>
-                                <NavigationLink
+                                <MobileNavLink
                                     exact
                                     to="/"
                                     activeClassName="is-active"
+                                    onClick={() => this.onNavMenuClick()}
                                 >
                                     Applications
-                                </NavigationLink>
-                                <NavigationLink
+                                </MobileNavLink>
+                                <MobileNavLink
                                     exact
                                     to="/interviews"
                                     activeClassName="is-active"
+                                    onClick={() => this.onNavMenuClick()}
                                 >
                                     Interviews
-                                </NavigationLink>
-                                <NavigationLink
+                                </MobileNavLink>
+                                <MobileNavLink
                                     exact
                                     to="/data"
                                     activeClassName="is-active"
+                                    onClick={() => this.onNavMenuClick()}
                                 >
                                     Data
-                                </NavigationLink>
-                                <NavigationLink
+                                </MobileNavLink>
+                                <MobileNavLink
                                     to="/applications"
                                     activeClassName="is-active"
+                                    onClick={() => this.onNavMenuClick()}
                                 >
                                     Add New
-                                </NavigationLink>
+                                </MobileNavLink>
+                                <MobileNavLink
+                                    to="#"
+                                    activeClassName="is-active"
+                                    onClick={() => {
+                                        this.onNavMenuClick();
+                                        this.logout();
+                                    }}
+                                >
+                                    Logout
+                                </MobileNavLink>
                             </MobileHeaderContainer>
-                        )}
+                        </MobileNavLinkContainer>
                     </MobileHeaderContainer>
                 </MobileHeader>
             </React.Fragment>

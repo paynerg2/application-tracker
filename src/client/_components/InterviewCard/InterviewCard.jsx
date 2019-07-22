@@ -118,7 +118,7 @@ class InterviewCard extends Component {
                 <LeftColumn>
                     <Header>
                         <Title>{company}</Title>
-                        <div>{`round ${round}`}</div>
+                        <div>{`Round ${round}`}</div>
                     </Header>
                     <InfoSection>
                         <div>
