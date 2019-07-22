@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import Loader from 'react-loader-spinner';
 
 import { userActions } from '../../_actions';
 import {
@@ -82,8 +83,16 @@ class LoginPage extends Component {
                         )}
                     </FormGroup>
                     <FormGroup>
-                        <Button>Login</Button>
-                        {loggingIn && <img src="#" alt="spinner" />}
+                        {loggingIn ? (
+                            <Loader
+                                type="ThreeDots"
+                                color="#1995ad"
+                                height="50"
+                                width="50"
+                            />
+                        ) : (
+                            <Button>Login</Button>
+                        )}
                     </FormGroup>
                 </Column>
             </FormContainer>
