@@ -8,6 +8,7 @@ import { getDateTimeFormattedForInput } from '../../_helpers/dateFormatter';
 import {
     PageContainer,
     FormContainer,
+    FieldContainer,
     H2Text,
     FormGroup,
     Column,
@@ -124,117 +125,122 @@ class CreateInterviewPage extends Component {
         } = this.state;
         return (
             <PageContainer>
-                <H2Text>{interviewId ? 'Edit ' : 'Add a new '}Interview</H2Text>
                 <FormContainer
                     name="form"
                     onSubmit={this.handleSubmit}
                     autoComplete="off"
                 >
-                    <Column>
-                        <FormGroup>
-                            <label htmlFor="startTime">Start Time</label>
-                            <Input
-                                type="datetime-local"
-                                name="startTime"
-                                value={startTime}
-                                onChange={this.handleChange}
-                            />
-                            {submitted && !startTime && (
-                                <HelpBlock>Start Time is required</HelpBlock>
-                            )}
-                        </FormGroup>
-                        <FormGroup>
-                            <label htmlFor="location">Location</label>
-                            <Input
-                                type="text"
-                                name="location"
-                                value={location}
-                                onChange={this.handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <label htmlFor="contact">Contact</label>
-                            <Input
-                                type="text"
-                                name="contact"
-                                value={contact}
-                                onChange={this.handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <CheckboxGroup>
-                                <label htmlFor="followUpSent">
-                                    Follow Up Sent?
-                                </label>
-                                <Checkbox
-                                    type="checkbox"
-                                    name="followUpSent"
-                                    value={followUpSent}
-                                    onChange={this.handleChange}
-                                />
-                            </CheckboxGroup>
-                        </FormGroup>
-                        <FormGroup>
-                            <CheckboxGroup>
-                                <label htmlFor="response">Response</label>
-                                <Checkbox
-                                    type="checkbox"
-                                    name="response"
-                                    value={response}
-                                    onChange={this.handleChange}
-                                />
-                            </CheckboxGroup>
-                        </FormGroup>
-                        <FormGroup>
-                            <label htmlFor="offer">Offer</label>
-                            <Input
-                                type="number"
-                                name="offer"
-                                value={offer}
-                                onChange={this.handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <label htmlFor="interviewType">
-                                Interview Type
-                            </label>
-                            <Input
-                                type="text"
-                                name="interviewType"
-                                value={interviewType}
-                                onChange={this.handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <label htmlFor="round">Round</label>
-                            <Input
-                                type="number"
-                                name="round"
-                                value={round}
-                                onChange={this.handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <label htmlFor="notes">Notes</label>
-                            <Input
-                                type="text"
-                                name="notes"
-                                value={notes}
-                                onChange={this.handleChange}
-                            />
-                        </FormGroup>
-
-                        <ButtonContainer>
+                    <H2Text>
+                        {interviewId ? 'Edit ' : 'Add a new '}Interview
+                    </H2Text>
+                    <FieldContainer>
+                        <Column>
                             <FormGroup>
-                                <Button>Submit</Button>
-                                <CancelButton
-                                    onClick={() => this.props.history.goBack()}
-                                >
-                                    Cancel
-                                </CancelButton>
+                                <label htmlFor="startTime">Start Time</label>
+                                <Input
+                                    type="datetime-local"
+                                    name="startTime"
+                                    value={startTime}
+                                    onChange={this.handleChange}
+                                />
+                                {submitted && !startTime && (
+                                    <HelpBlock>
+                                        Start Time is required
+                                    </HelpBlock>
+                                )}
                             </FormGroup>
-                        </ButtonContainer>
-                    </Column>
+                            <FormGroup>
+                                <label htmlFor="location">Location</label>
+                                <Input
+                                    type="text"
+                                    name="location"
+                                    value={location}
+                                    onChange={this.handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label htmlFor="contact">Contact</label>
+                                <Input
+                                    type="text"
+                                    name="contact"
+                                    value={contact}
+                                    onChange={this.handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <CheckboxGroup>
+                                    <label htmlFor="followUpSent">
+                                        Follow Up Sent?
+                                    </label>
+                                    <Checkbox
+                                        type="checkbox"
+                                        name="followUpSent"
+                                        value={followUpSent}
+                                        onChange={this.handleChange}
+                                    />
+                                </CheckboxGroup>
+                            </FormGroup>
+                            <FormGroup>
+                                <CheckboxGroup>
+                                    <label htmlFor="response">Response</label>
+                                    <Checkbox
+                                        type="checkbox"
+                                        name="response"
+                                        value={response}
+                                        onChange={this.handleChange}
+                                    />
+                                </CheckboxGroup>
+                            </FormGroup>
+                            <FormGroup>
+                                <label htmlFor="offer">Offer</label>
+                                <Input
+                                    type="number"
+                                    name="offer"
+                                    value={offer}
+                                    onChange={this.handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label htmlFor="interviewType">
+                                    Interview Type
+                                </label>
+                                <Input
+                                    type="text"
+                                    name="interviewType"
+                                    value={interviewType}
+                                    onChange={this.handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label htmlFor="round">Round</label>
+                                <Input
+                                    type="number"
+                                    name="round"
+                                    value={round}
+                                    onChange={this.handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <label htmlFor="notes">Notes</label>
+                                <Input
+                                    type="text"
+                                    name="notes"
+                                    value={notes}
+                                    onChange={this.handleChange}
+                                />
+                            </FormGroup>
+                        </Column>
+                    </FieldContainer>
+                    <ButtonContainer>
+                        <FormGroup>
+                            <Button>Submit</Button>
+                            <CancelButton
+                                onClick={() => this.props.history.goBack()}
+                            >
+                                Cancel
+                            </CancelButton>
+                        </FormGroup>
+                    </ButtonContainer>
                 </FormContainer>
             </PageContainer>
         );

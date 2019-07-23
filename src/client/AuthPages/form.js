@@ -13,11 +13,18 @@ export const PageContainer = styled.div`
 // Form Container
 export const FormContainer = styled.form`
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     font-family: 'Open Sans', sans-serif;
 `;
 FormContainer.displayName = 'FormContainer';
+
+export const FieldContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+`;
+FieldContainer.displayName = 'FieldContainer';
 
 // H2 Text
 export const H2Text = styled.h2`

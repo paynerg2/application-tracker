@@ -131,6 +131,8 @@ export const validateField = (fieldName, value, state) => {
             break;
     }
 
+    console.log('errors from validator:');
+    console.log(errors);
     return errors;
 };
 
