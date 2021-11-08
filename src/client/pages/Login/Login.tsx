@@ -1,17 +1,8 @@
 import React from 'react';
 import Button from '../../components/Button/button';
-import {
-    Layout,
-    Container,
-    Form,
-    FormHeader,
-    FormSection,
-    ImageSection,
-    Input,
-    Image,
-    Label,
-    Link,
-} from './Login.styles';
+import Link from '../../components/Link/link';
+import { FormHeader, Input, Label } from '../../components/Form/form';
+import { Layout, Container, Form, ImageSection, FormSection, Image } from './Login.styles';
 import LoginImage from '../../assets/login_image.svg';
 
 function Login() {

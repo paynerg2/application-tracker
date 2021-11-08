@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link as RouterLink } from 'react-router-dom';
 
 /**
  * Structural Elements
@@ -8,10 +7,13 @@ import { Link as RouterLink } from 'react-router-dom';
 export const Layout = styled.div`
     display: flex;
     min-height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     @media (min-width: 600px) {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: center;
         align-items: center;
     }
@@ -19,14 +21,18 @@ export const Layout = styled.div`
 
 export const Container = styled.div`
     height: auto;
-    width: 62vw;
-    min-width: 630px;
-    max-width: 1200px;
+    width: 100vw;
+    //max-width: 100%;
+    box-sizing: border-box;
+
     background-color: ${(props) => props.theme.color.white};
     border-radius: ${(props) => props.theme.borders.radius};
     box-shadow: ${(props) => props.theme.borders.shadow};
 
     @media (min-width: 600px) {
+        width: 62vw;
+        min-width: 630px;
+        max-width: 1200px;
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
@@ -41,53 +47,31 @@ export const Form = styled.form`
 `;
 
 const Section = styled.section`
-    width: 43%;
     margin: 5vh 0;
+
+    @media (min-width: ${(props) => props.theme.breakpoint.mobile}) {
+        width: 37%;
+    }
 `;
 export const FormSection = styled(Section)`
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    gap: 4vh;
+    gap: 5vh;
+    margin: 5vmin;
 `;
+export const ImageSection = styled(Section)`
+    display: none;
 
-export const ImageSection = styled(Section)``;
-
-/**
- * Form Components
- */
-
-export const FormHeader = styled.h2`
-    font-family: ${(props) => props.theme.font.secondary};
-    font-size: 2rem;
-    font-weight: 700;
-    color: ${(props) => props.theme.color.desaturatedGray};
-    margin: 0;
-`;
-
-export const Label = styled.label`
-    font-size: 1rem;
-    font-weight: 600;
-    margin-top: 2vh;
-    margin-bottom: 0.5vh;
-`;
-
-export const Input = styled.input`
-    text-align: left;
-    font-size: 1rem;
-    border-radius: ${(props) => props.theme.borders.radius};
-    border: solid 1px rgba(0, 0, 0, 0.15);
-    color: ${(props) => props.theme.color.desaturatedGray};
-    padding: 1rem;
+    @media (min-width: ${(props) => props.theme.breakpoint.mobile}) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-items: flex-end;
+    }
 `;
 
 export const Image = styled.img`
     height: 100%;
     width: 100%;
-`;
-
-export const Link = styled(RouterLink)`
-    color: ${(props) => props.theme.color.link};
-    text-decoration: none;
-    font-weight: 500;
 `;
