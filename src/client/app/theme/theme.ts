@@ -11,6 +11,7 @@ export const theme = {
     },
     breakpoint: {
         laptop: '1200px',
+        mobile: '600px',
     },
     borders: {
         radius: '1vmin',

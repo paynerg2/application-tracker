@@ -9,9 +9,9 @@ const Container = styled.div`
     min-height: 100vh;
     min-width: 100vw;
     background-image: url(${mobileBackground});
-    background-size: 100% 100%;
+    background-size: cover;
 
-    @media (min-width: 600px) {
+    @media (min-width: ${(props) => props.theme.breakpoint.mobile}) {
         background-image: url(${desktopBackground});
     }
 `;
