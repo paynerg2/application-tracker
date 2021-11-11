@@ -10,18 +10,19 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
 };
 
-async function authenticate({ username, password }) {
-    const user = await User.findOne({ username });
-    console.log(user.username);
+async function authenticate({ email, password }) {
+    console.log('authenticating...');
+    const user = await User.findOne({ email });
+    console.log(user);
     if (user && bcrypt.compareSync(password, user.hash)) {
         const { hash, ...userWithoutHash } = user.toObject();
         const token = jwt.sign({ sub: user.id }, config.secret);
         return {
             ...userWithoutHash,
-            token
+            token,
         };
     }
 }
@@ -36,8 +37,8 @@ async function getById(id) {
 
 async function create(userParam) {
     // validate
-    if (await User.findOne({ username: userParam.username })) {
-        throw Error('Username "' + userParam.username + '" is already taken');
+    if (await User.findOne({ username: userParam.email })) {
+        throw Error('Email "' + userParam.email + '" is already taken');
     }
 
     const user = new User(userParam);
@@ -56,10 +57,7 @@ async function update(id, userParam) {
 
     // validate
     if (!user) throw Error('User not found');
-    if (
-        user.username !== userParam.username &&
-        (await User.findOne({ username: userParam.username }))
-    ) {
+    if (user.username !== userParam.email && (await User.findOne({ email: userParam.email }))) {
         throw Error('Username "' + userParam.username + '" is already taken.');
     }
 
