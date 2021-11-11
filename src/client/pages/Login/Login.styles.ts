@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 export const Layout = styled.div`
     display: flex;
-    min-height: 100vh;
+    min-height: 90vh;
     flex-direction: column;
     justify-content: center;
     align-items: center;

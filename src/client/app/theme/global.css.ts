@@ -11,6 +11,8 @@ export default createGlobalStyle`
 
     button {
         border: none;
+        font-family : inherit;
+        font-size: 1em;
     }
 
     a, a:visited, a:hover, a:active {
