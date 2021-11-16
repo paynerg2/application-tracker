@@ -8,3 +8,9 @@ export type LoginResponse = {
     id: string;
     token: string;
 };
+
+export type SignUpForm = LoginForm & {
+    fullName: string;
+    location: string;
+    confirmPassword: string;
+};
