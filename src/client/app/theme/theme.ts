@@ -3,7 +3,9 @@ export const theme = {
         primaryBlue: '#006F83',
         white: '#FFF',
         desaturatedGray: '#4F4F4F',
+        darkGray: '#444',
         link: '#7E77FF',
+        error: '#FF7E7E',
     },
     font: {
         primary: 'Montserrat',

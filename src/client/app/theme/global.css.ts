@@ -17,5 +17,15 @@ export default createGlobalStyle`
 
     a, a:visited, a:hover, a:active {
     text-decoration: none;
+
+    ul {
+        /* Remove default list styles */
+        list-style-type: none;
+        margin: 0;
+        padding-left: 0;
+    }
+    li {
+        list-style-type: none;
+    }
 }
 `;
