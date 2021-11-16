@@ -36,4 +36,12 @@ export const StepIndicator = styled.li<Props>`
             display: none;
         }
     }
+
+    &:first-child {
+        margin-left: 0;
+    }
+`;
+
+export const StepContainer = styled.ul`
+    padding: 0;
 `;

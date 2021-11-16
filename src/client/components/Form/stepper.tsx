@@ -1,5 +1,5 @@
 import React from 'react';
-import { StepIndicator } from './stepper.styles';
+import { StepIndicator, StepContainer } from './stepper.styles';
 
 /**
  * Generates a stepper for multi-step forms.
@@ -14,11 +14,11 @@ interface Props {
 
 function Stepper({ steps, currentStep }: Props) {
     return (
-        <ul>
+        <StepContainer>
             {Array.from(Array(steps).keys()).map((x) => (
                 <StepIndicator active={x + 1 === currentStep}>{(x + 1).toString()}</StepIndicator>
             ))}
-        </ul>
+        </StepContainer>
     );
 }
 
