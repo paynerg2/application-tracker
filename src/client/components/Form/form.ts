@@ -21,3 +21,90 @@ export const Error = styled.div`
     color: ${(props) => props.theme.color.error};
     margin: 0.1vh 0;
 `;
+
+export const Image = styled.img`
+    height: 100%;
+    width: 100%;
+`;
+
+/**
+ * Structural Elements
+ */
+export const Layout = styled.div`
+    display: flex;
+    min-height: 90vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    @media (min-width: ${(props) => props.theme.breakpoint.mobile}) {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+`;
+
+export const Container = styled.div`
+    width: 100vw;
+    height: 80vh;
+    min-width: 400px;
+    box-sizing: border-box;
+
+    background-color: ${(props) => props.theme.color.white};
+    border-radius: ${(props) => props.theme.borders.radius};
+    box-shadow: ${(props) => props.theme.borders.shadow};
+
+    @media (min-width: ${(props) => props.theme.breakpoint.mobile}) {
+        min-height: fit-content;
+        width: 62vw;
+        min-width: 700px;
+        max-width: 1200px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+`;
+
+export const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+`;
+
+const Section = styled.section`
+    @media (min-width: ${(props) => props.theme.breakpoint.mobile}) {
+        width: 50%;
+    }
+`;
+
+export const FormSection = styled(Section)`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 5vmin;
+    padding: 5vmax 5vmax;
+    box-sizing: border-box;
+`;
+
+export const ImageSection = styled(Section)`
+    display: none;
+    background-color: ${(props) => props.theme.color.lightBlue};
+    padding: 0;
+    box-sizing: border-box;
+
+    @media (min-width: ${(props) => props.theme.breakpoint.mobile}) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-items: flex-end;
+        padding: 0;
+    }
+`;
+
+export const ButtonSection = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 1vmin;
+`;
