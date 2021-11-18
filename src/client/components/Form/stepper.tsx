@@ -16,7 +16,9 @@ function Stepper({ steps, currentStep }: Props) {
     return (
         <StepContainer>
             {Array.from(Array(steps).keys()).map((x) => (
-                <StepIndicator active={x + 1 === currentStep}>{(x + 1).toString()}</StepIndicator>
+                <StepIndicator key={x} active={x + 1 === currentStep}>
+                    {(x + 1).toString()}
+                </StepIndicator>
             ))}
         </StepContainer>
     );

@@ -44,4 +44,5 @@ export const StepIndicator = styled.li<Props>`
 
 export const StepContainer = styled.ul`
     padding: 0;
+    margin: 0;
 `;
