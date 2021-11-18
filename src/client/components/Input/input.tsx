@@ -13,7 +13,7 @@ export const StyledInput = styled.input`
     border-radius: ${(props) => props.theme.borders.radius};
     border: solid 1px rgba(0, 0, 0, 0.15);
     color: ${(props) => props.theme.color.desaturatedGray};
-    padding: 1rem;
+    padding: 0.75rem;
     box-sizing: border-box;
 
     &:focus,
