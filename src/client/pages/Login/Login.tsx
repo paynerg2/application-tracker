@@ -1,13 +1,22 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+
+import { useLoginMutation } from '../../services/authApi';
+import { LoginForm } from '../../../types';
 import Button from '../../components/Button/button';
 import Input from '../../components/Input/input';
 import Link from '../../components/Link/link';
-import { FormHeader } from '../../components/Form/form';
-import { Layout, Container, Form, ImageSection, FormSection, Image } from './Login.styles';
+import {
+    FormHeader,
+    Error,
+    Layout,
+    Container,
+    Form,
+    FormSection,
+    Image,
+} from '../../components/Form/form';
+import { ImageSection } from './Login.styles';
 import LoginImage from '../../assets/login_image.svg';
-import { useLoginMutation } from '../../services/authApi';
-import { LoginForm } from '../../../types';
 
 function Login() {
     const {
@@ -20,7 +29,6 @@ function Login() {
     const onSubmit = async (data: LoginForm) => {
         try {
             const loginResponse = await login(data).unwrap();
-            console.log(loginResponse);
             // TODO: redirect to destination
         } catch (error) {
             // TODO: implement central error handling
@@ -34,7 +42,7 @@ function Login() {
                     <FormHeader>Login</FormHeader>
                     <Form id="loginForm" onSubmit={handleSubmit(onSubmit)}>
                         <Input id="email" label="Email" register={register} required type="text" />
-                        {errors.email && <span>This field is required</span>}
+                        <Error>{errors.email ? 'Required' : ' '}</Error>
                         <Input
                             id="password"
                             label="Password"
@@ -42,18 +50,22 @@ function Login() {
                             required
                             type="password"
                         />
-                        {errors.password && <span>This field is required</span>}
-                        <Link style={{ textAlign: 'right', marginTop: '1vh' }} to="#">
-                            Forgot password?
-                        </Link>
+                        <Error>{errors.password ? 'Required' : ' '}</Error>
                     </Form>
 
-                    <Button type="submit" form="loginForm">
+                    <Button
+                        disabled={errors.email || errors.password}
+                        type="submit"
+                        form="loginForm"
+                    >
                         Login
                     </Button>
-                    <p style={{ textAlign: 'center' }}>
-                        Not registered yet? <Link to="#">Create an account</Link>
-                    </p>
+                    <section style={{ textAlign: 'center' }}>
+                        <Link to="#">Forgot password?</Link>
+                        <p>
+                            Not registered yet? <Link to="#">Create an account</Link>
+                        </p>
+                    </section>
                 </FormSection>
                 <ImageSection>
                     <Image aria-hidden={true} src={LoginImage} alt="Login Image" />
