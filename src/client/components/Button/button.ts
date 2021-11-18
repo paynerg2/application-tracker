@@ -1,17 +1,25 @@
 import styled from 'styled-components';
 
-const Button = styled.button`
-    //width: 100%;
-    height: 4rem;
+const Button = styled.button<{ inverted?: boolean }>`
+    width: 100%;
     padding: 1rem;
     text-align: center;
     font-weight: 700;
-    font-size: 1.625rem;
+    font-size: 1rem;
     border-radius: ${(props) => props.theme.borders.radius};
-    background-color: ${(props) => props.theme.color.primaryBlue};
-    color: ${(props) => props.theme.color.white};
+    border: 1px solid ${(props) => props.theme.color.primaryBlue};
+    background-color: ${(props) =>
+        props.inverted ? props.theme.color.white : props.theme.color.primaryBlue};
+    color: ${(props) =>
+        props.inverted ? props.theme.color.desaturatedGray : props.theme.color.white};
     cursor: pointer;
     box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 3vmin;
 
     @media (${(props) => props.theme.breakpoint.mobile}) {
         max-width: 50vw;
