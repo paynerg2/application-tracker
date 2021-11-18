@@ -1,10 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useHistory } from 'react-router';
 
 import Logo from '../../assets/Dark_Logo.svg';
 import Button from '../Button/button';
 import { FooterContainer, Layout } from './footer.styles';
+import Link from '../Link/link';
 
 function Footer() {
     const history = useHistory();
@@ -20,14 +20,17 @@ function Footer() {
                         <br />
                         <span style={{ fontSize: '3rem', fontWeight: 700 }}>Get Started?</span>
                     </h2>
-                    <Button onClick={() => history.push('/signup')} style={{ fontSize: '1.5rem' }}>
+                    <Button
+                        onClick={() => history.push('/signup')}
+                        style={{ fontSize: '1.5rem', minWidth: '300px' }}
+                    >
                         Create an Account
                     </Button>
                 </section>
                 <br />
                 <p>
                     Copyright &copy; 2020 Trackr. All Rights Reserved.{''}
-                    <a href="#"> Privacy Policy</a> <a href="#">Terms of Use</a>
+                    <Link to="#"> Privacy Policy</Link> <Link to="#">Terms of Use</Link>
                 </p>
             </FooterContainer>
         </Layout>
