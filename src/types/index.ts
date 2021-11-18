@@ -11,6 +11,4 @@ export type LoginResponse = {
 
 export type SignUpForm = LoginForm & {
     fullName: string;
-    location: string;
-    confirmPassword: string;
 };
