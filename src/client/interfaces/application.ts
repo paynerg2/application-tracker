@@ -13,7 +13,7 @@ export interface Application {
     temp: boolean;
     arbitraryRelocation: boolean;
     location: string;
-    mainSkills: string;
+    mainSkill: string;
     datePosted: Date;
     dateApplicationSent: Date;
     givenReferral: boolean;
