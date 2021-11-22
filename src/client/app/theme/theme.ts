@@ -5,6 +5,8 @@ export const theme = {
         white: '#FFF',
         desaturatedGray: '#4F4F4F',
         darkGray: '#444',
+        lightGray: '#A1A1A1',
+        veryLightGray: '#F6F8F9',
         link: '#7E77FF',
         error: '#FF7E7E',
     },
