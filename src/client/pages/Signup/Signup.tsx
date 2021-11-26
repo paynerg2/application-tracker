@@ -17,6 +17,7 @@ import { SignUpForm } from '../../../types';
 import Button from '../../components/Button/button';
 import SignupImage from '../../assets/signup_image.svg';
 import GoogleIcon from '../../assets/google_icon.svg';
+import { useRegisterMutation } from '../../services/authApi';
 
 function SignUp() {
     const {
@@ -25,8 +26,16 @@ function SignUp() {
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (data: SignUpForm) => {
-        // api call
+    const [registerUser] = useRegisterMutation();
+
+    const onSubmit = async (data: SignUpForm) => {
+        console.log(data);
+        try {
+            const signupResponse = await registerUser(data).unwrap();
+            console.log(signupResponse);
+        } catch (error) {
+            //TODO: implement central error handling
+        }
     };
 
     return (

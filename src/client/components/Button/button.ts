@@ -10,8 +10,7 @@ const Button = styled.button<{ inverted?: boolean }>`
     border: 1px solid ${(props) => props.theme.color.primaryBlue};
     background-color: ${(props) =>
         props.inverted ? props.theme.color.white : props.theme.color.primaryBlue};
-    color: ${(props) =>
-        props.inverted ? props.theme.color.desaturatedGray : props.theme.color.white};
+    color: ${(props) => (props.inverted ? props.theme.color.primaryBlue : props.theme.color.white)};
     cursor: pointer;
     box-sizing: border-box;
 

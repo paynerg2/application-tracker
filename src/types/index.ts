@@ -3,12 +3,11 @@ export type LoginForm = {
     password: string;
 };
 
+export type SignUpForm = LoginForm & {
+    fullName: string;
+};
 export type LoginResponse = {
     user: string;
     id: string;
     token: string;
-};
-
-export type SignUpForm = LoginForm & {
-    fullName: string;
 };
