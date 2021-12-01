@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { useGetApplicationsQuery } from './services/api';
 import mobileBackground from './assets/Background_mobile.png';
 import desktopBackground from './assets/BG.png';
+import ScrollToTop from './common/ScrollToTop/scrollToTop';
 import Login from './pages/Login/Login';
 import Header from './components/Header/header';
 import Footer from './components/Footer/footer';
@@ -14,6 +15,7 @@ import ApplicationItem from './components/Cards/Application/applicationItem';
 import { List } from './components/List/list';
 import NotFound from './pages/404/404';
 import LandingPage from './pages/Landing/Landing';
+import Test from './pages/Test/Test';
 
 const Container = styled.div`
     min-height: 100vh;
@@ -35,17 +37,21 @@ function App() {
 
     return (
         <>
-            <Container>
-                <Header />
-                <Switch>
-                    <Route exact path="/" component={LandingPage} />
-                    <Route path="/login" component={Login} />
-                    <Route path="/signup" component={Signup} />
-                    <Route path="/404" component={NotFound} />
-                    <Redirect to="/404" />
-                </Switch>
-                <Footer />
-            </Container>
+            <BrowserRouter>
+                <Container>
+                    <Header />
+                    <ScrollToTop />
+                    <Switch>
+                        <Route exact path="/" component={LandingPage} />
+                        <Route path="/login" component={Login} />
+                        <Route path="/signup" component={Signup} />
+                        <Route path="/404" component={NotFound} />
+                        <Route path="/testing" component={Test} />
+                        <Redirect to="/404" />
+                    </Switch>
+                    <Footer />
+                </Container>
+            </BrowserRouter>
         </>
     );
 }
