@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
@@ -9,7 +9,11 @@ import App from './client/App';
 import { theme } from './client/app/theme/theme';
 import GlobalCSS from './client/app/theme/global.css';
 
-render(
+const container = document.querySelector('#root');
+const root = ReactDOM.createRoot(container);
+if (!root) throw new Error('Failed to find the root element.');
+
+root.render(
     <Provider store={store}>
         <ThemeProvider theme={theme}>
             <BrowserRouter>
@@ -17,6 +21,17 @@ render(
                 <App />
             </BrowserRouter>
         </ThemeProvider>
-    </Provider>,
-    document.querySelector('#root')
+    </Provider>
 );
+
+// render(
+//     <Provider store={store}>
+//         <ThemeProvider theme={theme}>
+//             <BrowserRouter>
+//                 <GlobalCSS />
+//                 <App />
+//             </BrowserRouter>
+//         </ThemeProvider>
+//     </Provider>,
+//     document.querySelector('#root')
+// );
