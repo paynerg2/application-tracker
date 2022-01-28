@@ -9,6 +9,8 @@ export const theme = {
         veryLightGray: '#F6F8F9',
         link: '#7E77FF',
         error: '#FF7E7E',
+        mintGreen: '#67CC8E',
+        skyBlue: '#00D8FF',
     },
     font: {
         primary: 'Montserrat',
