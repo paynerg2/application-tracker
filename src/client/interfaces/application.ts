@@ -1,3 +1,9 @@
+// Useful arrays for avoiding magic strings in forms
+// Credit to Melvin George's blog for this trick
+export const degreeLevels = ['None', 'Associates', 'Bachelors', 'Masters', 'Ph.D'] as const;
+export const contractTypes = ['full-time', 'part-time', 'contract', 'contract-to-hire'] as const;
+export const responseTypes = ['No Response', 'Rejected', 'Interview'] as const;
+
 export interface Application {
     id: string;
     jobTitle: string;
@@ -8,8 +14,8 @@ export interface Application {
     additionalSkillsTotal: number;
     additionalSkillsMet: number;
     yearsOfExperience: number;
-    degreeLevel: 'None' | 'Associates' | 'Bachelors' | 'Masters' | 'Ph.D';
-    contract: 'full-time' | 'part-time' | 'contract' | 'contract-to-hire';
+    degreeLevel: typeof degreeLevels[number];
+    contract: typeof contractTypes[number];
     temp: boolean;
     arbitraryRelocation: boolean;
     location: string;
@@ -20,6 +26,6 @@ export interface Application {
     companyLinkedIn: string;
     expectedSalary: number;
     field: string;
-    response: 'No Response' | 'Rejected' | 'Interview';
+    response: typeof responseTypes[number];
     interviewId: string[];
 }
