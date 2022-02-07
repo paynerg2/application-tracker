@@ -23,15 +23,3 @@ root.render(
         </ThemeProvider>
     </Provider>
 );
-
-// render(
-//     <Provider store={store}>
-//         <ThemeProvider theme={theme}>
-//             <BrowserRouter>
-//                 <GlobalCSS />
-//                 <App />
-//             </BrowserRouter>
-//         </ThemeProvider>
-//     </Provider>,
-//     document.querySelector('#root')
-// );
