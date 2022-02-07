@@ -21,6 +21,18 @@ export const StyledInput = styled.input`
         outline: none !important;
         box-shadow: 0 0 2px ${(props) => props.theme.color.primaryBlue};
     }
+
+    /* type="date" specific styles */
+    ::-webkit-datetime-edit-text,
+    ::-webkit-datetime-edit-month-field,
+    ::-webkit-datetime-edit-day-field,
+    ::-webkit-datetime-edit-year-field {
+        color: ${(props) => props.theme.color.lightGray};
+    }
+
+    ::-webkit-datetime-edit-text {
+        margin: 0.1em;
+    }
 `;
 
 export const Label = styled.label`
