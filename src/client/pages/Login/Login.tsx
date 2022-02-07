@@ -26,7 +26,7 @@ function Login() {
     } = useForm();
     const [login] = useLoginMutation();
 
-    const onSubmit = async (data: LoginForm) => {
+    const onSubmit = async (data: any) => {
         try {
             const loginResponse = await login(data).unwrap();
             // TODO: redirect to destination

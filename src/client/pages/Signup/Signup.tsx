@@ -28,7 +28,7 @@ function SignUp() {
 
     const [registerUser] = useRegisterMutation();
 
-    const onSubmit = async (data: SignUpForm) => {
+    const onSubmit = async (data: any) => {
         console.log(data);
         try {
             const signupResponse = await registerUser(data).unwrap();
