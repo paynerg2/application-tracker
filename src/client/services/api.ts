@@ -3,9 +3,6 @@ import { Application } from '../interfaces/application';
 import config from '../config.json';
 import { Interview } from '../interfaces/interviews';
 
-type ApplicationResponse = Application[];
-type InterviewResponse = Interview[];
-
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
@@ -25,13 +22,20 @@ export const api = createApi({
         },
     }),
     endpoints: (build) => ({
-        getApplications: build.query<ApplicationResponse, void>({
+        getApplications: build.query<Application[], void>({
             query: () => 'applications',
         }),
-        getInterviews: build.query<InterviewResponse, void>({
+        addNewApplication: build.mutation<Application, Partial<Application>>({
+            query: (initialApplication) => ({
+                url: '/applications',
+                method: 'POST',
+                body: initialApplication,
+            }),
+        }),
+        getInterviews: build.query<Interview[], void>({
             query: () => 'interviews',
         }),
     }),
 });
 
-export const { useGetApplicationsQuery, useGetInterviewsQuery } = api;
+export const { useGetApplicationsQuery, useAddNewApplicationMutation, useGetInterviewsQuery } = api;
