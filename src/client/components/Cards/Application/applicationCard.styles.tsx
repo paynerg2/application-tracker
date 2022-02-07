@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 export const Card = styled.div`
     color: ${(props) => props.theme.color.desaturatedGray};
-    height: 20vh;
-    width: 25vw;
+    height: 22vh;
+    min-height: 22vh;
+    width: 20vw;
+    min-width: 20vw;
     border-radius: ${(props) => props.theme.borders.radius};
     background: ${(props) => props.theme.color.white};
     box-shadow: 4px 4px 4px rgba(255, 255, 255, 0.3);
-    margin: 2rem;
 
     padding: 1rem;
     box-sizing: border-box;
