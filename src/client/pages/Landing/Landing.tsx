@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import Button from '../../components/Button/button';
 import LandingImage1 from '../../assets/Landing_Image1.svg';
 import LandingImage2 from '../../assets/Landing_Image2.svg';
@@ -14,6 +15,14 @@ import {
 import { Link } from 'react-router-dom';
 
 function LandingPage() {
+    const user = JSON.parse(window.localStorage.getItem('user') || '');
+    let history = useHistory();
+    if (user) {
+        //TODO: See if there's any way to fix the flicker that occurs
+        // when being redirected.
+        history.push('/applications');
+    }
+
     return (
         <Layout>
             <SimplifySection>
