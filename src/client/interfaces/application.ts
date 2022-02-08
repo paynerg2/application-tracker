@@ -23,9 +23,8 @@ export interface Application {
     datePosted: Date;
     dateApplicationSent: Date;
     givenReferral: boolean;
-    companyLinkedIn: string;
+    companyLinkedIn?: string;
     expectedSalary: number;
-    field: string;
+    field?: string;
     response: typeof responseTypes[number];
-    interviewId: string[];
 }
