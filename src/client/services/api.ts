@@ -32,10 +32,22 @@ export const api = createApi({
                 body: initialApplication,
             }),
         }),
+        // todo: Probably need to add tags and invalidate the applications tag on delete so that it refreshes the cache
+        deleteApplication: build.mutation<void, string>({
+            query: (id) => ({
+                url: `/applications/${id}`,
+                method: 'DELETE',
+            }),
+        }),
         getInterviews: build.query<Interview[], void>({
             query: () => 'interviews',
         }),
     }),
 });
 
-export const { useGetApplicationsQuery, useAddNewApplicationMutation, useGetInterviewsQuery } = api;
+export const {
+    useGetApplicationsQuery,
+    useAddNewApplicationMutation,
+    useDeleteApplicationMutation,
+    useGetInterviewsQuery,
+} = api;
