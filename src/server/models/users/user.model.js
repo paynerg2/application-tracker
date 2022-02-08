@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const Application = require('../applications/application.model');
+const Interview = require('../interviews/interview.model');
+
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
@@ -7,6 +10,8 @@ const schema = new Schema({
     createdDate: { type: Date, default: Date.now },
     location: { type: String },
     fullName: { type: String },
+    applications: [Application],
+    interviews: [Interview],
 });
 
 schema.set('toJSON', { virtuals: true });

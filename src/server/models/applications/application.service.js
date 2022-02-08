@@ -1,36 +1,49 @@
-const db = require('../../_helpers/db');
-const Application = db.Application;
+const userService = require('../users/user.service');
 
 module.exports = {
     getAll,
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
 };
 
-async function getAll() {
-    return await Application.find();
+async function getAll(token) {
+    const { user } = await userService.getUser(token);
+    return user.applications;
 }
 
-async function getById(id) {
-    return await Application.findById(id);
+async function getById(id, token) {
+    const { user } = await userService.getUser(token);
+    return user.applications.find((a) => a._id === id);
 }
 
-async function create(applicationParam) {
-    const application = new Application(applicationParam);
-    const newApplication = await application.save();
-    return newApplication;
+async function create(applicationParam, token) {
+    const { user } = await userService.getUser(token);
+
+    user.applications.push(applicationParam);
+    await user.save();
+
+    return user;
 }
 
-async function update(id, applicationParam) {
-    const applicationInDatabase = await Application.findById(id);
-    if (!applicationInDatabase) throw Error('Application not found');
+async function update(id, applicationParam, token) {
+    const { user } = await userService.getUser(token);
 
-    const updatedApplication = new Application(applicationParam);
-    await Application.findByIdAndUpdate(id, updatedApplication);
+    const index = user.applications.findIndex((a) => a.id === id);
+    if (!index) throw Error('Application not found');
+
+    // Replace the old version of the application with the new version
+    user.applications = user.applications.map((app) => (app.id === id ? applicationParam : app));
+    await user.save();
+
+    return user;
 }
 
-async function _delete(id) {
-    await Application.findByIdAndRemove(id);
+async function _delete(id, token) {
+    const { user } = await userService.getUser(token);
+    user.applications = user.applications.filter((app) => app.id !== id);
+    await user.save();
+
+    return user;
 }

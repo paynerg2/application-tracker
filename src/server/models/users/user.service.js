@@ -8,15 +8,15 @@ module.exports = {
     authenticate,
     getAll,
     getById,
+    getUser,
     create,
     update,
     delete: _delete,
 };
 
 async function authenticate({ email, password }) {
-    console.log('authenticating...');
     const user = await User.findOne({ email });
-    console.log(user);
+
     if (user && bcrypt.compareSync(password, user.hash)) {
         const { hash, ...userWithoutHash } = user.toObject();
         const token = jwt.sign({ sub: user.id }, config.secret);
@@ -24,6 +24,21 @@ async function authenticate({ email, password }) {
             ...userWithoutHash,
             token,
         };
+    }
+}
+
+async function getUser(bearerHeader) {
+    if (!bearerHeader) return { user: null };
+    try {
+        const token = bearerHeader.replace('Bearer ', '');
+        const decodedToken = jwt.verify(token, config.secret);
+        const user = await User.findById(decodedToken.sub);
+
+        return {
+            user,
+        };
+    } catch (error) {
+        return { user: null };
     }
 }
 

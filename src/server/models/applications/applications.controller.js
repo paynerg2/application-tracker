@@ -13,38 +13,36 @@ module.exports = router;
 
 function getAll(req, res, next) {
     applicationService
-        .getAll()
-        .then(applications => res.json(applications))
-        .catch(err => next(err));
+        .getAll(req.headers.authorization)
+        .then((applications) => res.json(applications))
+        .catch((err) => next(err));
 }
 
 function getById(req, res, next) {
     // respond with 404 if application not found
     applicationService
-        .getById(req.params.id)
-        .then(application =>
-            application ? res.json(application) : res.sendStatus(404)
-        )
-        .catch(err => next(err));
+        .getById(req.params.id, req.headers.authorization)
+        .then((application) => (application ? res.json(application) : res.sendStatus(404)))
+        .catch((err) => next(err));
 }
 
 function create(req, res, next) {
     applicationService
-        .create(req.body)
-        .then(() => res.json({}))
-        .catch(err => next(err));
+        .create(req.body, req.headers.authorization)
+        .then((user) => res.json(user))
+        .catch((err) => next(err));
 }
 
 function update(req, res, next) {
     applicationService
-        .update(req.params.id, req.body)
-        .then(() => res.json({}))
-        .catch(err => next(err));
+        .update(req.params.id, req.body, req.headers.authorization)
+        .then((user) => res.json(user))
+        .catch((err) => next(err));
 }
 
 function _delete(req, res, next) {
     applicationService
-        .delete(req.params.id)
-        .then(() => res.json({}))
-        .catch(err => next(err));
+        .delete(req.params.id, req.headers.authorization)
+        .then((user) => res.json(user))
+        .catch((err) => next(err));
 }
