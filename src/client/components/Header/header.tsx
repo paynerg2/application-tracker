@@ -25,7 +25,7 @@ function Header() {
                     {route.toLocaleUpperCase()}
                 </SelectedNavLink>
             ) : (
-                <NavLink key={route} to={`${route}`}>
+                <NavLink key={route} to={`/${route}`}>
                     {route.toLocaleUpperCase()}
                 </NavLink>
             )
