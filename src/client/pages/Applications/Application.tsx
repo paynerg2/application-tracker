@@ -1,6 +1,6 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { useGetApplicationsQuery } from '../../services/api';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDeleteApplicationMutation, useGetApplicationsQuery } from '../../services/api';
 import { iconSelector } from '../../_helpers/iconSelector';
 import {
     ApplicationDetails,
@@ -22,11 +22,16 @@ import Button from '../../components/Button/button';
 import EditIcon from '../../assets/clarity_edit-solid.png';
 import DeleteIcon from '../../assets/ant-design_delete-filled.png';
 
-interface ApplicationParams {
+// Note: Declared as type instead of interface to avoid a strange bug
+// insisting that id satisfy Record<string, string | undefined>
+// after react-router v6 was installed.
+// See: https://stackoverflow.com/questions/63617344/how-to-satisfy-the-constraint-of-recordstring-unknown-with-interface
+type ApplicationParams = {
     id: string;
-}
+};
 
 function Application() {
+    const navigate = useNavigate();
     const { id } = useParams<ApplicationParams>();
     const { application, ...rest } = useGetApplicationsQuery(undefined, {
         selectFromResult: ({ data, ...rest }) => ({
@@ -34,6 +39,7 @@ function Application() {
             application: data?.find((a) => a.id === id),
         }),
     });
+    const [deleteApplication, { isLoading }] = useDeleteApplicationMutation();
 
     if (rest.isLoading) {
         return <div>Loading...</div>;
@@ -76,17 +82,31 @@ function Application() {
         return color;
     };
 
+    const handleDelete = async () => {
+        // Since this component should not be routed to if an :id is not present,
+        // we insist that it exists.
+        await deleteApplication(id!);
+        navigate('/applications');
+    };
+
+    const handleEdit = () => {
+        navigate(`/applications/${application.id}/edit/1`);
+    };
+
     return (
         <>
             <TitleBanner>
                 <Container>
                     <Company>{application.company}</Company>
                     <ButtonGroup>
-                        <Button style={{ backgroundColor: `${theme.color.error}` }}>
+                        <Button
+                            style={{ backgroundColor: `${theme.color.error}` }}
+                            onClick={handleDelete}
+                        >
                             <img aria-hidden={true} src={DeleteIcon} alt="Delete Icon" />
                             <span>Delete</span>
                         </Button>
-                        <Button inverted>
+                        <Button inverted onClick={handleEdit}>
                             <img aria-hidden={true} src={EditIcon} alt="Edit Icon" />
                             <span>Edit</span>
                         </Button>

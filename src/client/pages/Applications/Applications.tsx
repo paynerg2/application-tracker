@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/button';
 import {
     ApplicationCardContainer,
@@ -24,7 +24,7 @@ function Applications() {
     const [isCardView, setIsCardView] = useState(true);
     const [filters, setFilters] = useState<string[]>([]);
     const { data, error, isLoading } = useGetApplicationsQuery();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     // Todo: Add a Skeleton (suspense?)
     if (isLoading) {
@@ -114,9 +114,7 @@ function Applications() {
                                 .map((application) => (
                                     <ApplicationListItem
                                         key={application.id}
-                                        onClick={() =>
-                                            history.push(`/applications/${application.id}`)
-                                        }
+                                        onClick={() => navigate(`/applications/${application.id}`)}
                                     >
                                         <DateContainer date={application.dateApplicationSent} />
                                         <div>
@@ -143,7 +141,7 @@ function Applications() {
             <NewApplication>
                 <h2>Add Application</h2>
                 <p>Log a new submitted application</p>
-                <Link to="/applications/new/1">
+                <Link to="new">
                     <Button inverted>New Application</Button>
                 </Link>
             </NewApplication>

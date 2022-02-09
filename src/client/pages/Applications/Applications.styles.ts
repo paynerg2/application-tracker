@@ -4,11 +4,12 @@ export const Layout = styled.div`
     display: grid;
 
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: repeat(15vh);
+    grid-template-rows: repeat(auto-fit, 24vh);
 
     row-gap: 2vh;
 
     width: 80vw;
+    min-height: 90vh;
     margin: 0 auto;
 `;
 

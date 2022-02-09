@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import NotFoundImage from '../../assets/Not_Found.svg';
@@ -28,7 +27,6 @@ const Text = styled.p`
 `;
 
 function NotFound() {
-    const history = useHistory();
     return (
         <Background>
             <img

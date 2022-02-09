@@ -19,7 +19,7 @@
         "react-hook-form": "^7.19.1",
         "react-loader-spinner": "^2.3.0",
         "react-redux": "^8.0.0-alpha.1",
-        "react-router-dom": "^5.3.0",
+        "react-router-dom": "^6.2.1",
         "react-scripts": "^3.3.0",
         "redux": "^3.7.2",
         "redux-logger": "^3.0.6",

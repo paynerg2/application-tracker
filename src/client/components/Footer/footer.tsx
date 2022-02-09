@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import Logo from '../../assets/Dark_Logo.svg';
 import Button from '../Button/button';
@@ -7,7 +7,7 @@ import { FooterContainer, Layout } from './footer.styles';
 import Link from '../Link/link';
 
 function Footer() {
-    const history = useHistory();
+    const navigate = useNavigate();
     return (
         <Layout>
             <FooterContainer>
@@ -21,7 +21,7 @@ function Footer() {
                         <span style={{ fontSize: '3rem', fontWeight: 700 }}>Get Started?</span>
                     </h2>
                     <Button
-                        onClick={() => history.push('/signup')}
+                        onClick={() => navigate('/signup')}
                         style={{ fontSize: '1.5rem', minWidth: '300px' }}
                     >
                         Create an Account
