@@ -1,6 +1,5 @@
 export interface Interview {
     id: string;
-    applicationId: string;
     startTime: Date;
     location: string;
     contact: string;
