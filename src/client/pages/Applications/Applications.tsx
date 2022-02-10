@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/button';
 import {
@@ -20,11 +20,19 @@ import { useGetApplicationsQuery } from '../../services/api';
 import { iconSelector } from '../../_helpers/iconSelector';
 
 function Applications() {
-    // todo: Replace this with hooks instead of passing callbacks
     const [isCardView, setIsCardView] = useState(true);
     const [filters, setFilters] = useState<string[]>([]);
     const { data, error, isLoading } = useGetApplicationsQuery();
+    const [filteredApplications, setFilteredApplications] = useState<Application[]>([]);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (data) {
+            // Need to act on copies of data, because sorting directly affects the object.
+            const applications = [...data];
+            setFilteredApplications(applicationHelpers.filterApplications(applications, filters));
+        }
+    }, [filters, data]);
 
     // Todo: Add a Skeleton (suspense?)
     if (isLoading) {
@@ -36,11 +44,7 @@ function Applications() {
         return <div>Something went wrong...</div>;
     }
 
-    // Need to act on copies of data, because sorting directly affects the object.
-    const groupedApplications = applicationHelpers.groupApplicationsByDate(
-        applicationHelpers.filterApplications(data, filters)
-    );
-    const applications = [...data];
+    const groupedApplications = applicationHelpers.groupApplicationsByDate(filteredApplications);
 
     const onFilterChange = (newFilter: string) => {
         if (filters.includes(newFilter)) {
@@ -104,7 +108,7 @@ function Applications() {
                             <strong>Submitted Applications</strong>
                         </h2>
                         <ApplicationListContainer>
-                            {applications
+                            {filteredApplications
                                 .sort((a, b) => {
                                     const aDate = new Date(a.dateApplicationSent);
                                     const bDate = new Date(b.dateApplicationSent);
