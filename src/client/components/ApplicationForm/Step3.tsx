@@ -5,6 +5,7 @@ import { Error } from '../../components/Form/form';
 import Button from '../../components/Button/button';
 import { StyledInput, Label } from '../../components/Input/input';
 import { theme } from '../../app/theme/theme';
+import { useParams } from 'react-router-dom';
 
 interface Props {
     register: any;
@@ -28,7 +29,13 @@ const MinorLabel = styled(Label)`
     margin-left: 2vw;
 `;
 
+type Params = {
+    id?: string | undefined;
+};
+
 function Step3({ register, errors }: Props) {
+    const { id } = useParams<Params>();
+
     return (
         <>
             <Input
@@ -36,7 +43,7 @@ function Step3({ register, errors }: Props) {
                 label="When was the job listed?"
                 register={register}
                 required
-                type="date"
+                type="datetime-local"
             />
             <Error>{errors.datePosted ? 'Required' : ''}</Error>
             <Input
@@ -44,7 +51,7 @@ function Step3({ register, errors }: Props) {
                 label="When did you apply?"
                 register={register}
                 required
-                type="date"
+                type="datetime-local"
             />
             <Error>{errors.dateApplicationSent ? 'Required' : ''}</Error>
             <TwoColumnFormInput>
@@ -85,7 +92,7 @@ function Step3({ register, errors }: Props) {
             </TwoColumnFormInput>
             <div></div>
 
-            <Button type="submit">Finish Adding Application</Button>
+            <Button type="submit">{`Finish ${id ? 'Editing' : 'Adding'} Application`}</Button>
         </>
     );
 }

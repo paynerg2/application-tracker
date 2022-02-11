@@ -41,9 +41,9 @@ function App() {
                     <Route path="signup" element={<Signup />} />
                     <Route path="applications">
                         <Route index element={<Applications />} />
-                        <Route path="new" element={<NewApplication />} />
+                        <Route path="new/*" element={<NewApplication />} />
                         <Route path=":id" element={<Application />} />
-                        <Route path="edit/:step" element={<NewApplication />} />
+                        <Route path="edit/:id/*" element={<NewApplication isEdit />} />
                     </Route>
                     <Route path="interviews" element={<Interviews />} />
                     <Route path="404" element={<NotFound />} />

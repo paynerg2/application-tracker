@@ -90,7 +90,7 @@ function Application() {
     };
 
     const handleEdit = () => {
-        navigate(`/applications/${application.id}/edit/1`);
+        navigate(`/applications/edit/${application.id}/1`);
     };
 
     return (

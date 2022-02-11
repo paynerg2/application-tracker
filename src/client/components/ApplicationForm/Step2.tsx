@@ -5,13 +5,21 @@ import { Error } from '../../components/Form/form';
 import Button from '../../components/Button/button';
 import Link from '../../components/Link/link';
 import { degreeLevels } from '../../interfaces/application';
+import { useParams } from 'react-router-dom';
 
 interface Props {
     register: any;
     errors: any;
 }
 
+type Params = {
+    id: string | undefined;
+};
+
 function Step2({ register, errors }: Props) {
+    const { id } = useParams<Params>();
+    const nextStep = id ? `/applications/edit/${id}/3` : '/applications/new/3';
+
     return (
         <>
             <Input id="location" label="Location *" register={register} required type="text" />
@@ -41,8 +49,7 @@ function Step2({ register, errors }: Props) {
                 ))}
             </Select>
             <Error>{errors.expectedYearsOfExperience ? 'Required' : ''}</Error>
-            <Link to="/applications/new/3">
-                {' '}
+            <Link to={nextStep}>
                 <Button>Continue</Button>
             </Link>
         </>

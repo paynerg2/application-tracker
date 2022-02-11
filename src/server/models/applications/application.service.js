@@ -31,10 +31,11 @@ async function update(id, applicationParam, token) {
     const { user } = await userService.getUser(token);
 
     const index = user.applications.findIndex((a) => a.id === id);
-    if (!index) throw Error('Application not found');
+    if (index < 0) throw Error('Application not found');
 
-    // Replace the old version of the application with the new version
-    user.applications = user.applications.map((app) => (app.id === id ? applicationParam : app));
+    user.applications.set(index, { id, ...applicationParam });
+
+    user.markModified('applications');
     await user.save();
 
     return user;

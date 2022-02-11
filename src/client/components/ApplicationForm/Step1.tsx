@@ -1,18 +1,26 @@
 import React from 'react';
-import Input from '../../components/Input/input';
-import { Error } from '../../components/Form/form';
-import Button from '../../components/Button/button';
-import Link from '../../components/Link/link';
-import Select from '../../components/Select/Select';
+import Input from '../Input/input';
+import { Error } from '../Form/form';
+import Button from '../Button/button';
+import Link from '../Link/link';
+import Select from '../Select/Select';
 import { contractTypes } from '../../interfaces/application';
 import { capitalizeFirstLetter } from '../../_helpers/capitalize';
+import { useParams } from 'react-router-dom';
 
 interface Props {
     register: any;
     errors: any;
 }
 
+type Params = {
+    id?: string | undefined;
+};
+
 function Step1({ register, errors }: Props) {
+    const { id } = useParams<Params>();
+    const nextStep = id ? `/applications/edit/${id}/2` : '/applications/new/2';
+
     return (
         <>
             <Input id="jobTitle" label="Job Title *" register={register} required type="text" />
@@ -28,8 +36,7 @@ function Step1({ register, errors }: Props) {
             </Select>
             <Error>{errors.contract ? 'Required' : ''}</Error>
 
-            <Link to="/applications/new/2">
-                {' '}
+            <Link to={nextStep}>
                 <Button>Continue</Button>
             </Link>
         </>

@@ -1,6 +1,10 @@
-import React from 'react';
-import { Route, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import {
+    getDateFormattedForDatetimeLocalInput,
+    getDateFormattedForInput,
+} from '../../_helpers/dateFormatter';
 
 import {
     FormHeader,
@@ -12,77 +16,134 @@ import {
     Form,
 } from '../../components/Form/form';
 import Stepper from '../../components/Form/stepper';
-import Step1 from './Step1';
-import Step2 from './Step2';
-import Step3 from './Step3';
+import Step1 from '../../components/ApplicationForm/Step1';
+import Step2 from '../../components/ApplicationForm/Step2';
+import Step3 from '../../components/ApplicationForm/Step3';
 import NewApplicationImage from '../../assets/New_Application_Image.svg';
+import {
+    useAddNewApplicationMutation,
+    useEditApplicationMutation,
+    useGetApplicationsQuery,
+} from '../../services/api';
+import { hasKey } from '../../_helpers/objectHelpers';
+import { getLastArrayElement } from '../../_helpers/arrayHelpers';
 
-import { useAddNewApplicationMutation } from '../../services/api';
-
-// TODO: Add mutation for new application
-
-interface NewApplicationParams {
-    step: string | undefined;
+interface Props {
+    isEdit?: boolean;
 }
 
-function NewApplication() {
+type RouteParams = {
+    id?: string | undefined;
+};
+
+function NewApplication({ isEdit = false }: Props) {
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm();
-
-    const { step } = useParams<NewApplicationParams>();
-    const currentStep = step ? parseInt(step) : 1;
+    const navigate = useNavigate();
 
     const [addNewApplication, { isLoading }] = useAddNewApplicationMutation();
+    const [editApplication] = useEditApplicationMutation();
+
+    const { id } = useParams<RouteParams>();
+    const { application, ...rest } = useGetApplicationsQuery(undefined, {
+        selectFromResult: ({ data, ...rest }) => ({
+            ...rest,
+            application: data?.find((a) => a.id === id),
+        }),
+    });
+
+    const location = useLocation();
+    const step = parseInt(getLastArrayElement(location.pathname.split('/')));
+
+    useEffect(() => {
+        const formFields = [
+            'jobTitle',
+            'company',
+            'contract',
+            'location',
+            'mainSkill',
+            'yearsOfExperience',
+            'degreeLevel',
+            'datePosted',
+            'dateApplicationSent',
+            'requiredSkillsTotal',
+            'requiredSkillsMet',
+            'additionalSkillsTotal',
+            'additionalSkillsMet',
+        ];
+
+        if (!application) return;
+
+        formFields.forEach((field) => {
+            if (hasKey(application, field)) {
+                if (field.includes('date')) {
+                    // Convert to RFC3339 formatted date to set html input field
+                    const formattedDateField = getDateFormattedForDatetimeLocalInput(
+                        new Date(application[field] as string)
+                    );
+                    setValue(field, formattedDateField);
+                } else {
+                    setValue(field, application[field]);
+                }
+            }
+        });
+    }, []);
 
     const onSubmit = async (data: any) => {
-        const newApplication = {
-            ...data,
-            datePosted: new Date(data.datePosted),
-            dateApplicationSent: new Date(data.dateApplicationSent),
-        };
-        console.log(newApplication);
+        console.log(data.datePosted);
+        const newApplication = id
+            ? {
+                  ...data,
+                  id,
+                  datePosted: new Date(data.datePosted),
+                  dateApplicationSent: new Date(data.dateApplicationSent),
+              }
+            : {
+                  ...data,
+                  datePosted: new Date(data.datePosted),
+                  dateApplicationSent: new Date(data.dateApplicationSent),
+              };
+
         try {
-            await addNewApplication(newApplication);
+            if (isEdit && id) {
+                console.log('application after editing before submission');
+                console.log(newApplication);
+                await editApplication(newApplication);
+            } else {
+                await addNewApplication(newApplication);
+            }
         } catch (error) {
             console.log(error);
         }
+        navigate('/applications');
     };
 
-    // todo: updgrade to react-router v6 to implement better route nesting
     // todo: form validation
     return (
         <Layout>
             <Container>
                 <FormSection>
-                    <FormHeader>Add a New Application</FormHeader>
-                    <Stepper steps={3} currentStep={currentStep} />
+                    <FormHeader>{isEdit ? 'Edit ' : 'Add a New '}Application</FormHeader>
+                    <Stepper steps={3} currentStep={step} />
                     <Form id="newApplication" onSubmit={handleSubmit(onSubmit)}>
-                        <>
+                        <Routes>
                             <Route
-                                exact
-                                path="/applications/new/1"
-                                render={(props) => (
-                                    <Step1 register={register} errors={errors} {...props} />
-                                )}
+                                path="1"
+                                element={<Step1 register={register} errors={errors} />}
                             />
                             <Route
-                                exact
-                                path="/applications/new/2"
-                                render={(props) => (
-                                    <Step2 register={register} errors={errors} {...props} />
-                                )}
+                                path="2"
+                                element={<Step2 register={register} errors={errors} />}
                             />
                             <Route
-                                exact
-                                path="/applications/new/3"
-                                render={(props) => (
-                                    <Step3 register={register} errors={errors} {...props} />
-                                )}
+                                path="3"
+                                element={<Step3 register={register} errors={errors} />}
                             />
-                        </>
+                        </Routes>
                     </Form>
                 </FormSection>
                 <ImageSection>

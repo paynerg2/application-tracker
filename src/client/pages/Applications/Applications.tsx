@@ -145,7 +145,7 @@ function Applications() {
             <NewApplication>
                 <h2>Add Application</h2>
                 <p>Log a new submitted application</p>
-                <Link to="new">
+                <Link to="new/1">
                     <Button inverted>New Application</Button>
                 </Link>
             </NewApplication>
