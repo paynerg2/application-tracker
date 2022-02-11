@@ -5,7 +5,6 @@ export const Card = styled.div`
     width: 20vw;
     border-radius: ${(props) => props.theme.borders.radius};
     background-color: ${(props) => props.theme.color.white};
-    margin: 20px;
     padding: 2vmin;
     box-sizing: border-box;
 
@@ -16,10 +15,10 @@ export const Card = styled.div`
 
 export const Item = styled.li`
     height: 10vh;
-    width: 40vw;
+    width: 95%;
     border-radius: ${(props) => props.theme.borders.radius};
     background-color: ${(props) => props.theme.color.white};
-    margin: 20px;
+    margin: 0 2.5%;
     padding: 2vmin;
     box-sizing: border-box;
 

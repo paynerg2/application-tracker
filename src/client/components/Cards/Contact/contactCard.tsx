@@ -18,7 +18,7 @@ interface Props {
 }
 
 function ContactCard({ contact, type }: Props) {
-    const { name, email, position, companyName } = contact;
+    const { name, email, position, company } = contact;
 
     return (
         <>
@@ -29,7 +29,7 @@ function ContactCard({ contact, type }: Props) {
                         <Email>{email}</Email>
                     </Identity>
                     <VerticalLine />
-                    <Company>{companyName}</Company>
+                    <Company>{company}</Company>
                 </Item>
             ) : (
                 <Card>

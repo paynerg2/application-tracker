@@ -3,6 +3,7 @@ export interface Interview {
     startTime: Date;
     location: string;
     contact: string;
+    company: string;
     followUpSent: boolean;
     response: string;
     offer: number;

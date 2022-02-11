@@ -5,6 +5,7 @@ const schema = new Schema({
     startTime: { type: Date, required: true },
     location: { type: String },
     contact: { type: String },
+    company: { type: String, required: true },
     followUpSent: { type: Boolean, required: true, default: false },
     response: { type: String },
     offer: { type: Number, default: 0 },
