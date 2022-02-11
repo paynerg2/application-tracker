@@ -21,9 +21,11 @@ export const api = createApi({
             return headers;
         },
     }),
+    tagTypes: ['Applications', 'User', 'Interviews', 'Contacts'],
     endpoints: (build) => ({
         getApplications: build.query<Application[], void>({
             query: () => 'applications',
+            providesTags: ['Applications'],
         }),
         addNewApplication: build.mutation<Application, Partial<Application>>({
             query: (initialApplication) => ({
@@ -31,16 +33,26 @@ export const api = createApi({
                 method: 'POST',
                 body: initialApplication,
             }),
+            invalidatesTags: ['Applications'],
         }),
-        // todo: Probably need to add tags and invalidate the applications tag on delete so that it refreshes the cache
+        editApplication: build.mutation<Application, Partial<Application>>({
+            query: (application) => ({
+                url: `/applications/${application.id}`,
+                method: 'PUT',
+                body: application,
+            }),
+            invalidatesTags: ['Applications'],
+        }),
         deleteApplication: build.mutation<void, string>({
             query: (id) => ({
                 url: `/applications/${id}`,
                 method: 'DELETE',
             }),
+            invalidatesTags: ['Applications'],
         }),
         getInterviews: build.query<Interview[], void>({
             query: () => 'interviews',
+            providesTags: ['Interviews'],
         }),
     }),
 });
@@ -48,6 +60,7 @@ export const api = createApi({
 export const {
     useGetApplicationsQuery,
     useAddNewApplicationMutation,
+    useEditApplicationMutation,
     useDeleteApplicationMutation,
     useGetInterviewsQuery,
 } = api;
