@@ -110,8 +110,6 @@ function NewApplication({ isEdit = false }: Props) {
 
         try {
             if (isEdit && id) {
-                console.log('application after editing before submission');
-                console.log(newApplication);
                 await editApplication(newApplication);
             } else {
                 await addNewApplication(newApplication);
