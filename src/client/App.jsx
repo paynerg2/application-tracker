@@ -15,6 +15,8 @@ import NotFound from './pages/404/404';
 import LandingPage from './pages/Landing/Landing';
 import NewApplication from './pages/NewApplication/NewApplication';
 import Test from './pages/Test/Test';
+import ContactForm from './pages/Forms/Contact/ContactForm';
+import InterviewForm from './pages/Forms/Interview/InterviewForm';
 
 const Container = styled.div`
     min-height: 100vh;
@@ -45,7 +47,13 @@ function App() {
                         <Route path=":id" element={<Application />} />
                         <Route path="edit/:id/*" element={<NewApplication isEdit />} />
                     </Route>
-                    <Route path="interviews" element={<Interviews />} />
+                    <Route path="interviews">
+                        <Route index element={<Interviews />} />
+                        <Route path="new/*" element={<InterviewForm />} />
+                        <Route path="edit/:id/*" element={<InterviewForm isEdit />} />
+                    </Route>
+                    <Route path="contacts/new/*" element={<ContactForm />} />
+                    <Route path="contacts/edit/:id/*" element={<ContactForm isEdit />} />
                     <Route path="404" element={<NotFound />} />
                     <Route path="testing" element={<Test />} />
                     <Route path="*" element={<NotFound />} />
