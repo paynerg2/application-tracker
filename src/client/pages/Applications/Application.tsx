@@ -1,6 +1,11 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDeleteApplicationMutation, useGetApplicationsQuery } from '../../services/api';
+import {
+    useDeleteApplicationMutation,
+    useGetApplicationsQuery,
+    useGetContactsQuery,
+    useGetInterviewsQuery,
+} from '../../services/api';
 import { iconSelector } from '../../_helpers/iconSelector';
 import {
     ApplicationDetails,
@@ -14,13 +19,17 @@ import {
     ListItem,
     DateSection,
     ButtonGroup,
+    RelatedInfoSection,
 } from './Application.styles';
 import { theme } from '../../app/theme/theme';
 import DateContainer from '../../components/DateContainer/dateContainer';
 import Button from '../../components/Button/button';
-
 import EditIcon from '../../assets/clarity_edit-solid.png';
 import DeleteIcon from '../../assets/ant-design_delete-filled.png';
+import InterviewList from '../../components/InterviewList/InterviewList';
+import { List } from '../../components/List/list';
+import ContactCard from '../../components/Cards/Contact/contactCard';
+import Link from '../../components/Link/link';
 
 // Note: Declared as type instead of interface to avoid a strange bug
 // insisting that id satisfy Record<string, string | undefined>
@@ -39,6 +48,17 @@ function Application() {
             application: data?.find((a) => a.id === id),
         }),
     });
+    const { interviews } = useGetInterviewsQuery(undefined, {
+        selectFromResult: ({ data }) => ({
+            interviews: data?.filter((i) => i.company === application?.company),
+        }),
+    });
+    const { contacts } = useGetContactsQuery(undefined, {
+        selectFromResult: ({ data }) => ({
+            contacts: data?.filter((c) => c.company === application?.company),
+        }),
+    });
+
     const [deleteApplication, { isLoading }] = useDeleteApplicationMutation();
 
     if (rest.isLoading) {
@@ -178,6 +198,27 @@ function Application() {
                                 <DateContainer date={application.dateApplicationSent} />
                             </div>
                         </DateSection>
+                        <RelatedInfoSection>
+                            <div style={{ width: '60%' }}>
+                                <SectionHeading>Interviews</SectionHeading>
+                                {interviews && <InterviewList interviews={interviews} />}
+                            </div>
+                            <div style={{ width: '35%' }}>
+                                <SectionHeading>Contacts</SectionHeading>
+                                {contacts && contacts.length > 0 && (
+                                    <List
+                                        style={{ background: `${theme.color.lightBlue}`, gap: 0 }}
+                                    >
+                                        {contacts.map((contact) => (
+                                            <ContactCard type="card" contact={contact} />
+                                        ))}
+                                    </List>
+                                )}
+                                <Link to="/contacts/new/1">
+                                    <Button>Add a New Contact</Button>
+                                </Link>
+                            </div>
+                        </RelatedInfoSection>
                     </ApplicationDetails>
                 </Container>
             </Layout>

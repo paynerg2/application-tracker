@@ -96,6 +96,14 @@ export const DateSection = styled.div`
     gap: 2vw;
 `;
 
+export const RelatedInfoSection = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    height: fit-content;
+`;
+
 export const ButtonGroup = styled.div`
     display: flex;
     gap: 1vmin;
