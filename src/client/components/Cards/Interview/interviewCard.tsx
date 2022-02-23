@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Interview } from '../../../interfaces/interviews';
+import { useNavigate } from 'react-router-dom';
 
+import { Interview } from '../../../interfaces/interviews';
+import TextButton from '../../TextButton/textButton';
 import { CompanyName, VerticalLine, Info, Item, Time, Actions } from './interviewCard.styles';
 import { useDeleteInterviewMutation } from '../../../services/api';
-import TextButton from '../../TextButton/textButton';
-import { useNavigate } from 'react-router-dom';
+import { capitalizeFirstLetter } from '../../../_helpers/capitalize';
+import ActionAccordion from '../../ActionAccordion/ActionAccordion';
 
 interface Props {
     interview: Interview;
@@ -30,8 +32,10 @@ function InterviewCard({ interview }: Props) {
         await deleteInterview(id!);
     };
 
+    const handleEdit = () => navigate(`/interviews/edit/${id}/1`);
+
     return (
-        <>
+        <ActionAccordion isOpen={isOpen} edit={handleEdit} onDelete={handleDelete}>
             {/* @ts-ignore */}
             <Item isOpen={isOpen} onClick={() => setIsOpen((prev) => !prev)}>
                 <Time>
@@ -43,23 +47,11 @@ function InterviewCard({ interview }: Props) {
                 </Time>
                 <VerticalLine />
                 <Info>
-                    <span style={{ fontWeight: 700 }}>{interviewType}</span> interview with{' '}
-                    <CompanyName>{company}</CompanyName>
+                    <span style={{ fontWeight: 700 }}>{capitalizeFirstLetter(interviewType)}</span>{' '}
+                    interview with <CompanyName>{company}</CompanyName>
                 </Info>
             </Item>
-            {/* @ts-ignore */}
-            <Actions isOpen={isOpen}>
-                <TextButton
-                    color="primary"
-                    onClick={() => navigate(`/interviews/edit/${interview.id}/1`)}
-                >
-                    Edit
-                </TextButton>
-                <TextButton color="destructive" onClick={handleDelete}>
-                    Delete
-                </TextButton>
-            </Actions>
-        </>
+        </ActionAccordion>
     );
 }
 

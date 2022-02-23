@@ -8,7 +8,6 @@ type Props = CustomProps & ThemeType;
 
 export const Item = styled.li<Props>`
     height: 14vh;
-    width: 95%;
     min-width: 450px;
     background-color: ${(props) => props.theme.color.white};
     padding: 2vmin;

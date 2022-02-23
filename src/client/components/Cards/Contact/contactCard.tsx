@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Contact } from '../../../interfaces/contact';
 import { useDeleteContactMutation } from '../../../services/api';
-import TextButton from '../../TextButton/textButton';
 import {
     Card,
     Email,
@@ -13,8 +12,8 @@ import {
     Company,
     Item,
     VerticalLine,
-    Actions,
 } from './contactCard.styles';
+import ActionAccordion from '../../../components/ActionAccordion/ActionAccordion';
 
 interface Props {
     contact: Contact;
@@ -32,24 +31,12 @@ function ContactCard({ contact, type }: Props) {
         await deleteContact(id!);
     };
 
-    const getActionButtons = () => {
-        return (
-            // @ts-ignore
-            <Actions isOpen={isOpen}>
-                <TextButton color="primary" onClick={() => navigate(`/contacts/edit/${id}/1`)}>
-                    Edit
-                </TextButton>
-                <TextButton color="destructive" onClick={handleDelete}>
-                    Delete
-                </TextButton>
-            </Actions>
-        );
-    };
+    const handleEdit = () => navigate(`/contacts/edit/${id}/1`);
 
     return (
         <>
             {type === 'item' ? (
-                <>
+                <ActionAccordion isOpen={isOpen} edit={handleEdit} onDelete={handleDelete}>
                     {/* @ts-ignore */}
                     <Item key={email} isOpen={isOpen} onClick={() => setIsOpen((prev) => !prev)}>
                         <Identity>
@@ -60,10 +47,10 @@ function ContactCard({ contact, type }: Props) {
                         <VerticalLine />
                         <Company>{company}</Company>
                     </Item>
-                    {getActionButtons()}
-                </>
+                    {/* {getActionButtons()} */}
+                </ActionAccordion>
             ) : (
-                <>
+                <ActionAccordion isOpen={isOpen} edit={handleEdit} onDelete={handleDelete}>
                     {/* @ts-ignore */}
                     <Card onClick={() => setIsOpen((prev) => !prev)} isOpen={isOpen}>
                         <Identity>
@@ -73,8 +60,7 @@ function ContactCard({ contact, type }: Props) {
                         <Line />
                         <Position>{position}</Position>
                     </Card>
-                    {getActionButtons()}
-                </>
+                </ActionAccordion>
             )}
         </>
     );
