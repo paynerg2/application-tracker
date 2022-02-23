@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
     useDeleteApplicationMutation,
@@ -30,6 +30,8 @@ import InterviewList from '../../components/InterviewList/InterviewList';
 import { List } from '../../components/List/list';
 import ContactCard from '../../components/Cards/Contact/contactCard';
 import Link from '../../components/Link/link';
+import Modal from '../../components/Modal/modal';
+import ConfirmationDialog from '../../components/ConfirmationDialog/confirmationDialog';
 
 // Note: Declared as type instead of interface to avoid a strange bug
 // insisting that id satisfy Record<string, string | undefined>
@@ -40,6 +42,7 @@ type ApplicationParams = {
 };
 
 function Application() {
+    const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
     const { id } = useParams<ApplicationParams>();
     const { application, ...rest } = useGetApplicationsQuery(undefined, {
@@ -121,7 +124,7 @@ function Application() {
                     <ButtonGroup>
                         <Button
                             style={{ backgroundColor: `${theme.color.error}` }}
-                            onClick={handleDelete}
+                            onClick={() => setShowModal(true)}
                         >
                             <img aria-hidden={true} src={DeleteIcon} alt="Delete Icon" />
                             <span>Delete</span>
@@ -222,6 +225,9 @@ function Application() {
                     </ApplicationDetails>
                 </Container>
             </Layout>
+            <Modal show={showModal}>
+                <ConfirmationDialog confirm={handleDelete} cancel={() => setShowModal(false)} />
+            </Modal>
         </>
     );
 }

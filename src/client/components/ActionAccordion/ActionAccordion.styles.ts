@@ -23,7 +23,6 @@ export const Actions = styled.div<Props>`
 
     transition: height 0.3s ease-in-out;
     overflow: hidden;
-    opacity: 0.6;
 
     border-bottom-left-radius: ${(props) => props.theme.borders.radius};
     border-bottom-right-radius: ${(props) => props.theme.borders.radius};
