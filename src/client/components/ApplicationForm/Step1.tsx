@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import Input from '../Input/input';
 import { Error } from '../Form/form';
 import Button from '../Button/button';
@@ -6,7 +7,6 @@ import Link from '../Link/link';
 import Select from '../Select/Select';
 import { contractTypes } from '../../interfaces/application';
 import { capitalizeFirstLetter } from '../../_helpers/capitalize';
-import { useParams } from 'react-router-dom';
 
 interface Props {
     register: any;

@@ -27,20 +27,30 @@ function Step2({ register, errors }: Props) {
             <Input id="mainSkill" label="Main Skill *" register={register} required type="text" />
             <Error>{errors.mainSkill ? 'Required' : ''}</Error>
             <Input
-                id="expectedYearsOfExperience"
+                id="yearsOfExperience"
                 label="Expected Years of Experience"
                 register={register}
                 required={false}
                 type="number"
                 defaultValue="0"
             />
-            <Error>{errors.expectedYearsOfExperience ? 'Required' : ''}</Error>
+            <Error>{errors.expectedSalary ? 'Required' : ''}</Error>
+            <Input
+                id="expectedSalary"
+                label="Expected Salary"
+                register={register}
+                required={false}
+                type="number"
+                defaultValue="0"
+            />
+            <Error>{errors.yearsOfExperience ? 'Required' : ''}</Error>
             <Select
                 id="degreeLevel"
                 label="Expected Degree Level"
                 register={register}
                 required={false}
                 type="text"
+                defaultValue="None"
             >
                 {degreeLevels.map((degree) => (
                     <option key={degree} value={degree}>
