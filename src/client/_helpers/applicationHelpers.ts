@@ -37,7 +37,9 @@ const filterApplications = (applications: Application[], filters: string[]) => {
         return applications;
     }
 
-    return applications.filter((a) => filters.includes(a.mainSkill));
+    return applications.filter(
+        (a) => filters.includes(a.mainSkill) || filters.includes(a.location)
+    );
 };
 
 export const applicationHelpers = {

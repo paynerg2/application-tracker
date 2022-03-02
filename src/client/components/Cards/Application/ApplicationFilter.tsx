@@ -29,6 +29,15 @@ function ApplicationFilter({ applications, filters, onChange, setIsCardView }: P
         return r;
     }, Object.create(null));
 
+    const locationFrequencyMap = applications.reduce(function (r, a) {
+        // avoid double-counting 'remote' location
+        if (a.location.toLocaleLowerCase() !== 'remote') {
+            r[a.location] = r[a.location] || 0;
+            r[a.location]++;
+        }
+        return r;
+    }, Object.create(null));
+
     return (
         <Layout>
             <SearchBox placeholder="Search..." />
@@ -47,6 +56,14 @@ function ApplicationFilter({ applications, filters, onChange, setIsCardView }: P
                     <CheckboxGroup key={key}>
                         <Checkbox label={key} onChange={onChange} />
                         <CountDisplay>{mainSkillsFrequencyMap[key]}</CountDisplay>
+                    </CheckboxGroup>
+                ))}
+            {Object.keys(locationFrequencyMap)
+                .sort()
+                .map((key) => (
+                    <CheckboxGroup key={key}>
+                        <Checkbox label={key} onChange={onChange} />
+                        <CountDisplay>{locationFrequencyMap[key]}</CountDisplay>
                     </CheckboxGroup>
                 ))}
         </Layout>
