@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import theme from '../../app/theme/theme';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
-    color: 'primary' | 'neutral' | 'destructive';
+    color?: 'primary' | 'neutral' | 'destructive';
     children?: React.ReactChild | React.ReactChild[];
 }
 

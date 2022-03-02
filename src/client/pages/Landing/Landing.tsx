@@ -12,10 +12,10 @@ import {
     BlueBackground,
     AnalyticsSection,
 } from './Landing.styles';
-import { Link } from 'react-router-dom';
+import TextButton from '../../components/TextButton/textButton';
 
 function LandingPage() {
-    const user = JSON.parse(window.localStorage.getItem('user') || '');
+    const user = window.localStorage.getItem('user');
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -32,9 +32,21 @@ function LandingPage() {
                     A single resource to keep track of everything you need to know about finding
                     your next dream job
                 </p>
-                <Link id="simplify_cta" to="/signup">
-                    <Button>Get Started</Button>
-                </Link>
+                <div id="simplify_cta">
+                    <Button onClick={() => navigate('/signup')}>Get Started</Button>
+                    <div>
+                        <p>
+                            Already have an account?{' '}
+                            <TextButton
+                                color="primary"
+                                style={{ fontSize: '1em' }}
+                                onClick={() => navigate('/login')}
+                            >
+                                Login
+                            </TextButton>
+                        </p>
+                    </div>
+                </div>
                 <img
                     id="simplify_image"
                     aria-hidden={true}
