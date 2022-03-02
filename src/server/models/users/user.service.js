@@ -2,6 +2,7 @@ const config = require('../../config.json');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../../_helpers/db');
+const cloudinary = require('../../_helpers/cloudinary');
 const User = db.User;
 
 module.exports = {
@@ -50,21 +51,31 @@ async function getById(id) {
     return await User.findById(id).select('-hash');
 }
 
-async function create(userParam) {
+async function create(userParam, filePath) {
     // validate
     if (await User.findOne({ username: userParam.email })) {
         throw Error('Email "' + userParam.email + '" is already taken');
     }
 
-    const user = new User(userParam);
+    try {
+        // upload profile image to cloudinary
+        const result = await cloudinary.uploader.upload(filePath);
+        const user = new User({
+            ...userParam,
+            profileImage: result.secure_url,
+            cloudinary_id: result.public_id,
+        });
 
-    // hash password
-    if (userParam.password) {
-        user.hash = bcrypt.hashSync(userParam.password, 10);
+        // hash password
+        if (userParam.password) {
+            user.hash = bcrypt.hashSync(userParam.password, 10);
+        }
+
+        // save user
+        await user.save();
+    } catch (error) {
+        console.log(error);
     }
-
-    // save user
-    await user.save();
 }
 
 async function update(id, userParam) {

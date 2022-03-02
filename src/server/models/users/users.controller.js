@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const upload = require('../../_helpers/multer');
 const userService = require('./user.service');
 
 // routes
 router.post('/authenticate', authenticate);
-router.post('/register', register);
+router.post('/register', upload.single('image'), register);
 router.get('/', getAll);
 router.get('/current', getCurrent);
 router.get('/:id', getById);
@@ -26,7 +27,7 @@ function authenticate(req, res, next) {
 
 function register(req, res, next) {
     userService
-        .create(req.body)
+        .create(req.body, req.file.path)
         .then(() => res.json({}))
         .catch((err) => next(err));
 }

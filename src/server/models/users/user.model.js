@@ -14,6 +14,8 @@ const schema = new Schema({
     applications: [Application],
     interviews: [Interview],
     contacts: [Contact],
+    cloudinary_id: String,
+    profileImage: String,
 });
 
 schema.set('toJSON', { virtuals: true });
