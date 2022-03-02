@@ -1,20 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import Logo from '../../assets/Logo.svg';
-import { HeaderContainer, Layout, NavLink, NavLinkSection, SelectedNavLink } from './header.styles';
+import {
+    DropdownItem,
+    DropdownMenu,
+    Greeting,
+    HeaderContainer,
+    IconSection,
+    Layout,
+    NavLink,
+    NavLinkSection,
+    SelectedNavLink,
+} from './header.styles';
+import ProfileImage from '../ProfileImage/profileImage';
+import { useAuth } from '../../hooks/useAuth';
 
 function Header() {
-    // TODO: Get user state for user icon/logout, etc.
-    const [user, setUser] = useState<string | null>(null);
+    const { user, logout } = useAuth();
     const location = useLocation();
-
-    useEffect(() => {
-        const user = window.localStorage.getItem('user');
-        if (user) {
-            setUser(user);
-        }
-    }, []);
+    const navigate = useNavigate();
 
     const routes = ['applications', 'interviews', 'stats'];
     const getRouteNav = () => {
@@ -32,6 +37,11 @@ function Header() {
         );
     };
 
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
+
     return (
         <Layout>
             <HeaderContainer>
@@ -39,7 +49,23 @@ function Header() {
                     <img src={Logo} alt="Trackr Logo" />
                 </Link>
                 <NavLinkSection>{user && getRouteNav()}</NavLinkSection>
-                {user && <div>Logged in as {JSON.parse(user).email!}</div>}
+                {user && (
+                    <IconSection aria-haspopup="true">
+                        {user.fullName && (
+                            <Greeting>
+                                Hello, <strong>{user.fullName.split(' ')[0]}</strong>
+                            </Greeting>
+                        )}
+                        <ProfileImage name={user.fullName || ''} />
+                        <DropdownMenu aria-label="submenu">
+                            <DropdownItem onClick={() => navigate('/me')}>
+                                Edit Profile
+                            </DropdownItem>
+                            <DropdownItem>Settings</DropdownItem>
+                            <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
+                        </DropdownMenu>
+                    </IconSection>
+                )}
             </HeaderContainer>
         </Layout>
     );

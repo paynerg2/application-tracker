@@ -17,6 +17,8 @@ import NewApplication from './pages/NewApplication/NewApplication';
 import Test from './pages/Test/Test';
 import ContactForm from './pages/Forms/Contact/ContactForm';
 import InterviewForm from './pages/Forms/Interview/InterviewForm';
+import EditProfile from './pages/UserProfile/EditProfile';
+import RequireAuth from './components/RequireAuth/requireAuth';
 
 const Container = styled.div`
     min-height: 100vh;
@@ -41,19 +43,22 @@ function App() {
                     <Route path="/" element={<LandingPage />} />
                     <Route path="login" element={<Login />} />
                     <Route path="signup" element={<Signup />} />
-                    <Route path="applications">
-                        <Route index element={<Applications />} />
-                        <Route path="new/*" element={<NewApplication />} />
-                        <Route path=":id" element={<Application />} />
-                        <Route path="edit/:id/*" element={<NewApplication isEdit />} />
+                    <Route element={<RequireAuth />}>
+                        <Route path="applications">
+                            <Route index element={<Applications />} />
+                            <Route path="new/*" element={<NewApplication />} />
+                            <Route path=":id" element={<Application />} />
+                            <Route path="edit/:id/*" element={<NewApplication isEdit />} />
+                        </Route>
+                        <Route path="interviews">
+                            <Route index element={<Interviews />} />
+                            <Route path="new/*" element={<InterviewForm />} />
+                            <Route path="edit/:id/*" element={<InterviewForm isEdit />} />
+                        </Route>
+                        <Route path="contacts/new/*" element={<ContactForm />} />
+                        <Route path="contacts/edit/:id/*" element={<ContactForm isEdit />} />
+                        <Route path="me" element={<EditProfile />} />
                     </Route>
-                    <Route path="interviews">
-                        <Route index element={<Interviews />} />
-                        <Route path="new/*" element={<InterviewForm />} />
-                        <Route path="edit/:id/*" element={<InterviewForm isEdit />} />
-                    </Route>
-                    <Route path="contacts/new/*" element={<ContactForm />} />
-                    <Route path="contacts/edit/:id/*" element={<ContactForm isEdit />} />
                     <Route path="404" element={<NotFound />} />
                     <Route path="testing" element={<Test />} />
                     <Route path="*" element={<NotFound />} />

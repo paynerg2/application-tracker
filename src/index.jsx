@@ -8,6 +8,7 @@ import { store } from './client/app/store';
 import App from './client/App';
 import { theme } from './client/app/theme/theme';
 import GlobalCSS from './client/app/theme/global.css';
+import { AuthProvider } from './client/hooks/useAuth';
 
 const container = document.querySelector('#root');
 const root = ReactDOM.createRoot(container);
@@ -17,8 +18,10 @@ root.render(
     <Provider store={store}>
         <ThemeProvider theme={theme}>
             <BrowserRouter>
-                <GlobalCSS />
-                <App />
+                <AuthProvider>
+                    <GlobalCSS />
+                    <App />
+                </AuthProvider>
             </BrowserRouter>
         </ThemeProvider>
     </Provider>

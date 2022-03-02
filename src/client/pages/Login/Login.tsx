@@ -1,8 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import { useLoginMutation } from '../../services/authApi';
-import { LoginForm } from '../../../types';
 import Button from '../../components/Button/button';
 import Input from '../../components/Input/input';
 import Link from '../../components/Link/link';
@@ -17,6 +16,13 @@ import {
 } from '../../components/Form/form';
 import { ImageSection } from './Login.styles';
 import LoginImage from '../../assets/login_image.svg';
+import { useAuth } from '../../hooks/useAuth';
+
+interface LocationState {
+    from: {
+        pathname: string;
+    };
+}
 
 function Login() {
     const {
@@ -24,12 +30,17 @@ function Login() {
         handleSubmit,
         formState: { errors },
     } = useForm();
-    const [login] = useLoginMutation();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const state = location.state as LocationState;
+    const { login } = useAuth();
+
+    const { from } = state || { from: { pathname: '/' } };
 
     const onSubmit = async (data: any) => {
         try {
-            const loginResponse = await login(data).unwrap();
-            // TODO: redirect to destination
+            await login(data);
+            navigate(from, { replace: true });
         } catch (error) {
             // TODO: implement central error handling
         }
@@ -63,7 +74,7 @@ function Login() {
                     <section style={{ textAlign: 'center' }}>
                         <Link to="#">Forgot password?</Link>
                         <p>
-                            Not registered yet? <Link to="#">Create an account</Link>
+                            Not registered yet? <Link to="/signup">Create an account</Link>
                         </p>
                     </section>
                 </FormSection>
