@@ -1,7 +1,8 @@
 import React, { InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    id: string;
     label: string;
     register: any;
     required: boolean;
@@ -41,13 +42,21 @@ export const Label = styled.label`
     margin-bottom: 0.5vh;
 `;
 
-const Input = ({ id, label, register, required, ...rest }: InputProps) => {
-    return (
-        <>
-            <Label htmlFor={id}>{label}</Label>
-            <StyledInput name={id} id={id} {...register(id, { required })} {...rest} />
-        </>
-    );
-};
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+    ({ id, label, register, required, ...rest }, ref?) => {
+        return (
+            <>
+                <Label htmlFor={id}>{label}</Label>
+                <StyledInput
+                    ref={ref || null}
+                    name={id}
+                    id={id}
+                    {...register(id, { required })}
+                    {...rest}
+                />
+            </>
+        );
+    }
+);
 
 export default Input;
