@@ -7,22 +7,17 @@ type CustomProps = {
 type Props = CustomProps & ThemeType;
 
 export const Item = styled.li<Props>`
-    height: 14vh;
+    height: 15vh;
     min-width: 450px;
     background-color: ${(props) => props.theme.color.white};
     padding: 2vmin;
     box-sizing: border-box;
     cursor: pointer;
 
-    display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center;
-
-    // Add margin to children to achieve desired spacing
-    > * {
-        margin: 2vmin;
-    }
+    display: grid;
+    grid-template-columns: 0.2fr 0.1fr 1fr;
 
     // Remove border radius on bottom corners when open so that the elements meet
     border-radius: ${(props) => props.theme.borders.radius};
@@ -49,6 +44,11 @@ export const Time = styled.div`
 `;
 
 export const Info = styled.div`
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
     font-size: 1.3rem;
 `;
 

@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import { Interview } from '../../../interfaces/interviews';
-import TextButton from '../../TextButton/textButton';
-import { CompanyName, VerticalLine, Info, Item, Time, Actions } from './interviewCard.styles';
-import { useDeleteInterviewMutation } from '../../../services/api';
 import { capitalizeFirstLetter } from '../../../_helpers/capitalize';
+import { Interview } from '../../../interfaces/interviews';
+import { useNavigate } from 'react-router-dom';
+import { useDeleteInterviewMutation } from '../../../services/api';
+import { CompanyName, VerticalLine, Info, Item, Time } from './interviewCard.styles';
 import ActionAccordion from '../../ActionAccordion/ActionAccordion';
 
 interface Props {
@@ -47,8 +45,12 @@ function InterviewCard({ interview }: Props) {
                 </Time>
                 <VerticalLine />
                 <Info>
-                    <span style={{ fontWeight: 700 }}>{capitalizeFirstLetter(interviewType)}</span>{' '}
-                    interview with <CompanyName>{company}</CompanyName>
+                    <div>
+                        <span style={{ fontWeight: 700 }}>
+                            {capitalizeFirstLetter(interviewType)}
+                        </span>{' '}
+                        interview with <CompanyName>{company}</CompanyName>
+                    </div>
                 </Info>
             </Item>
         </ActionAccordion>

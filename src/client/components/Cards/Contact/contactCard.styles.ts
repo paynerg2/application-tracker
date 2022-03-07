@@ -45,9 +45,8 @@ export const Item = styled.li<Props>`
     cursor: pointer;
     margin: 0;
 
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 0.1fr 1fr;
 
     // Remove border radius on bottom corners when open so that the elements meet
     border-radius: ${(props) => props.theme.borders.radius};
