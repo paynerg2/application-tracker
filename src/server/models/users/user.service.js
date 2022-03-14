@@ -12,11 +12,12 @@ module.exports = {
     getUser,
     create,
     update,
+    updateWithoutImage,
     delete: _delete,
 };
 
 function removeCollections(user) {
-    const { applications, contacts, interviews, ...rest } = user;
+    const { applications, contacts, interviews, settings, ...rest } = user;
     return rest;
 }
 
@@ -67,7 +68,9 @@ async function create(userParam) {
         // upload profile image to cloudinary
         let user;
         if (userParam.profileImage) {
-            const result = await cloudinary.uploader.upload(userParam.profileImage);
+            const result = await cloudinary.uploader.upload(userParam.profileImage, {
+                public_id: `${userParam.email}_avatar`,
+            });
             user = new User({
                 ...userParam,
                 profileImage: result.secure_url,
@@ -90,7 +93,31 @@ async function create(userParam) {
 }
 
 async function update(id, userParam) {
-    return await User.findByIdAndUpdate(id, userParam, { new: true });
+    let _user;
+    try {
+        // upload profile image to cloudinary, replacing the old profile image
+        if (userParam.profileImage) {
+            const result = await cloudinary.uploader.upload_large(userParam.profileImage, {
+                public_id: `${userParam.email}_avatar`,
+                overwrite: true,
+                invalidate: true,
+            });
+            _user = {
+                ...userParam,
+                profileImage: result.secure_url,
+                cloudinary_id: result.public_id,
+            };
+        } else {
+            _user = userParam;
+        }
+    } catch (error) {
+        throw Error(error);
+    }
+    return await User.findByIdAndUpdate(id, _user, { new: true });
+}
+
+async function updateWithoutImage(id, userParams) {
+    return await User.findByIdAndUpdate(id, userParams, { new: true });
 }
 
 async function _delete(id) {

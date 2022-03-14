@@ -4,16 +4,17 @@ import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { setUser } from '../../state/authSlice';
 import { hasKey } from '../../_helpers/objectHelpers';
-import { Layout, Form, FormHeader, FormSection, Error } from '../../components/Form/form';
-import { Container, Actions } from './editProfile.styles';
+import { Form, FormHeader, FormSection, Error } from '../../components/Form/form';
+import { Layout, Container, Actions } from './editProfile.styles';
 import Button from '../../components/Button/button';
 import Input from '../../components/Input/input';
 import ImageDropzone from '../../components/ImageDropzone/imageDropzone';
 import ProfileImageWatched from '../../components/ProfileImage/profileImageWatched';
 import ToggleSwitch from '../../components/ToggleSwitch/toggleSwitch';
-import { useUpdateUserMutation } from '../../services/api';
+import { useUpdateUserMutation, useUpdateUserSettingsMutation } from '../../services/api';
 import { toDataURL } from '../../_helpers/toDataURL';
 import { User } from '../../interfaces/user';
+import StyleSelector from '../../components/StyleSelector/styleSelector';
 
 export interface FormInputs {
     fullName: string;
@@ -34,6 +35,7 @@ function EditProfile() {
         control,
     } = useForm<FormInputs>();
     const [updateUser] = useUpdateUserMutation();
+    const [updateUserSettings] = useUpdateUserSettingsMutation();
     const dropzoneRef = useRef(null);
 
     useEffect(() => {
@@ -47,7 +49,7 @@ function EditProfile() {
                 }
             });
         }
-    }, []);
+    }, [user, setValue]);
 
     const onSubmit = async (data: any) => {
         let submissionData = { ...data, id: user!._id };
@@ -58,8 +60,30 @@ function EditProfile() {
         }
         console.log(submissionData);
         try {
-            const payload = await updateUser(submissionData).unwrap();
-            dispatch(setUser(payload));
+            const updatedUser = await updateUser(submissionData).unwrap();
+            dispatch(setUser(updatedUser));
+        } catch (error) {
+            console.log(error);
+        }
+        //navigate(0);
+    };
+
+    const handleApplicationDisplayStyleChange = async () => {
+        const _user: User = {
+            ...user,
+            settings: {
+                ...user.settings,
+                defaultApplicationDisplayStyle:
+                    user.settings.defaultApplicationDisplayStyle.toLowerCase() === 'card'
+                        ? 'list'
+                        : 'card',
+            },
+        };
+        console.log(_user);
+
+        try {
+            const updatedUser = await updateUserSettings(_user).unwrap();
+            dispatch(setUser(updatedUser));
         } catch (error) {
             console.log(error);
         }
@@ -108,7 +132,11 @@ function EditProfile() {
                                 <ProfileImageWatched
                                     name={user.fullName}
                                     control={control}
-                                    style={{ cursor: 'default', height: '15vmin', width: '15vmin' }}
+                                    style={{
+                                        cursor: 'default',
+                                        height: '15vmin',
+                                        width: '15vmin',
+                                    }}
                                 />
                             )}
                         </div>
@@ -120,11 +148,20 @@ function EditProfile() {
                 </FormSection>
                 <FormSection>
                     <FormHeader>Settings</FormHeader>
-                    <Form id="userSettings">
-                        <div>Dark Mode</div>
-                        <div>Default application display style</div>
-                        <ToggleSwitch handleChange={() => console.log('changed')} />
-                    </Form>
+                    <section>
+                        <div style={{ display: 'flex', gap: '2vmin', alignItems: 'center' }}>
+                            <h4>Dark Mode</h4>
+                            <ToggleSwitch handleChange={() => console.log('changed')} />
+                        </div>
+                        <h4>Default application display style</h4>
+                        <StyleSelector
+                            isCardView={
+                                user.settings.defaultApplicationDisplayStyle.toLowerCase() ===
+                                'card'
+                            }
+                            toggleCardView={handleApplicationDisplayStyleChange}
+                        />
+                    </section>
                 </FormSection>
             </Layout>
         </Container>

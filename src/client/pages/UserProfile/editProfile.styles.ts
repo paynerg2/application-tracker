@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Button from '../../components/Button/button';
+import { Layout as FormLayout } from '../../components/Form/form';
 
 export const Container = styled.div`
     width: 80vw;
@@ -14,5 +15,13 @@ export const Actions = styled.div`
 
     ${Button} {
         width: 50%;
+    }
+`;
+
+export const Layout = styled(FormLayout)`
+    align-items: flex-start;
+
+    @media (min-width: ${(props) => props.theme.breakpoint.mobile}) {
+        align-items: flex-start;
     }
 `;

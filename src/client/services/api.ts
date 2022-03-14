@@ -52,11 +52,20 @@ export const api = createApi({
         }),
         updateUser: build.mutation<any, any>({
             query: (data) => {
-                console.log('from api');
-                console.log(data);
                 const { id, ...rest } = data;
                 return {
                     url: `/users/${id}`,
+                    method: 'PATCH',
+                    body: rest,
+                };
+            },
+            invalidatesTags: ['User'],
+        }),
+        updateUserSettings: build.mutation<any, any>({
+            query: (data) => {
+                const { id, ...rest } = data;
+                return {
+                    url: `/users/${id}/settings`,
                     method: 'PATCH',
                     body: rest,
                 };
@@ -151,6 +160,7 @@ export const {
     useLoginMutation,
     useRegisterMutation,
     useUpdateUserMutation,
+    useUpdateUserSettingsMutation,
     useVerifyUserMutation,
     useGetApplicationsQuery,
     useAddNewApplicationMutation,

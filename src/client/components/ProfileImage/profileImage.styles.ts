@@ -18,6 +18,7 @@ export const UserProfileImage = styled.img`
     height: 5vmin;
     width: 5vmin;
     border-radius: 100%;
+    object-fit: cover;
 
     border: 1px solid ${(props) => props.theme.color.primaryBlue};
     cursor: pointer;

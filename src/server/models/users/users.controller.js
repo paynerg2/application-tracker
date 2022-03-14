@@ -10,6 +10,7 @@ router.get('/', getAll);
 router.get('/current', getCurrent);
 router.get('/:id', getById);
 router.patch('/:id', update);
+router.patch('/:id/settings', updateWithoutImage);
 router.delete('/:id', _delete);
 
 module.exports = router;
@@ -56,6 +57,13 @@ function getById(req, res, next) {
 function update(req, res, next) {
     userService
         .update(req.params.id, req.body)
+        .then((updatedUser) => (updatedUser ? res.json(updatedUser) : res.sendStatus(404)))
+        .catch((err) => next(err));
+}
+
+function updateWithoutImage(req, res, next) {
+    userService
+        .updateWithoutImage(req.params.id, req.body)
         .then((updatedUser) => (updatedUser ? res.json(updatedUser) : res.sendStatus(404)))
         .catch((err) => next(err));
 }
