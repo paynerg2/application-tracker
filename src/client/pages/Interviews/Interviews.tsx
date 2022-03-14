@@ -1,16 +1,12 @@
 import React from 'react';
+import { useGetContactsQuery, useGetInterviewsQuery } from '../../services/api';
 import { Layout } from './Interviews.styles';
 import { List } from '../../components/List/list';
+import { CircularButton } from '../../components/InterviewList/InterviewList.styles';
 import ContactCard from '../../components/Cards/Contact/contactCard';
-import AddContactIcon from '../../assets/Add_Contact.png';
 import InterviewList from '../../components/InterviewList/InterviewList';
 import theme from '../../app/theme/theme';
 import Link from '../../components/Link/link';
-
-//! Test data
-//import { interviews, contacts } from '../Test/testData';
-import { useGetContactsQuery, useGetInterviewsQuery } from '../../services/api';
-import { CircularButton } from '../../components/InterviewList/InterviewList.styles';
 
 function Interviews() {
     const { data: interviews, isLoading: interviewsLoading } = useGetInterviewsQuery();
@@ -28,7 +24,7 @@ function Interviews() {
                 <h2 style={{ fontSize: '2em', display: 'flex', flexDirection: 'row' }}>
                     <strong>Contacts</strong>
                 </h2>
-                <List style={{ background: `${theme.color.lightBlue}`, gap: 0 }}>
+                <List style={{ background: `${theme.color.lightBlue}`, gap: '2vmin' }}>
                     {contacts?.map((contact) => (
                         <ContactCard key={contact.id} contact={contact} type="item" />
                     ))}

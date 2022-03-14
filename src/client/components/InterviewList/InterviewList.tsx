@@ -11,7 +11,7 @@ interface Props {
 
 function InterviewList({ interviews }: Props) {
     return (
-        <List style={{ height: 'auto', gap: 0 }}>
+        <List style={{ height: 'auto', gap: '2vmin' }}>
             {interviews && interviews.length > 0 ? (
                 interviews.map((interview) => (
                     <InterviewCard key={interview.id} interview={interview} />

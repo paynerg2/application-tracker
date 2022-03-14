@@ -13,11 +13,10 @@ import {
     Form,
     ButtonSection,
 } from '../../components/Form/form';
-import { SignUpForm } from '../../../types';
 import Button from '../../components/Button/button';
 import SignupImage from '../../assets/signup_image.svg';
 import GoogleIcon from '../../assets/google_icon.svg';
-import { useRegisterMutation } from '../../services/authApi';
+import { useRegisterMutation } from '../../services/api';
 
 function SignUp() {
     const {
