@@ -1,15 +1,16 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import authReducer from '../state/authSlice';
+import { setupListeners } from '@reduxjs/toolkit/query';
 import { createLogger } from 'redux-logger';
 import { api } from '../services/api';
-import { authApi } from '../services/authApi';
 
 const loggerMiddleware = createLogger();
 
-export const middlewares = [loggerMiddleware, authApi.middleware, api.middleware];
+export const middlewares = [loggerMiddleware, api.middleware];
 export const store = configureStore({
     reducer: {
+        auth: authReducer,
         [api.reducerPath]: api.reducer,
-        [authApi.reducerPath]: authApi.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(middlewares),
 });
@@ -22,3 +23,5 @@ export type AppThunk<ReturnType = void> = ThunkAction<
     unknown,
     Action<string>
 >;
+
+setupListeners(store.dispatch);

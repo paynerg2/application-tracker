@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../app/hooks';
 import Button from '../../components/Button/button';
 import LandingImage1 from '../../assets/Landing_Image1.svg';
 import LandingImage2 from '../../assets/Landing_Image2.svg';
@@ -15,7 +16,7 @@ import {
 import TextButton from '../../components/TextButton/textButton';
 
 function LandingPage() {
-    const user = window.localStorage.getItem('user');
+    const user = useAppSelector((state) => state.auth.user);
     let navigate = useNavigate();
 
     useEffect(() => {

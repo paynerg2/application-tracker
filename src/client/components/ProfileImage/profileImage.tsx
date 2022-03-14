@@ -1,25 +1,36 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
+import { useAppSelector } from '../../app/hooks';
 import { UserProfileImage, DefaultProfileImage } from './profileImage.styles';
 
 interface Props {
     name: string;
+    img?: string;
+    style?: React.CSSProperties;
 }
 
-function ProfileImage({ name }: Props) {
+function ProfileImage({ name, img, style }: Props) {
     const navigate = useNavigate();
-    const { user } = useAuth();
+    const user = useAppSelector((state) => state.auth.user);
 
     const handleImageClick = () => navigate('/me');
+
+    if (img && img.length > 0) {
+        return <UserProfileImage src={img} alt="Profile Picture Preview" style={style} />;
+    }
 
     return (
         <>
             {user?.profileImage ? (
-                <UserProfileImage src={user.profileImage} alt="User Profile Picture" />
+                <UserProfileImage
+                    onClick={handleImageClick}
+                    src={user.profileImage}
+                    alt="User Profile Picture"
+                    style={style}
+                />
             ) : (
-                <DefaultProfileImage onClick={handleImageClick}>
-                    {user?.fullName.charAt(0).toLocaleUpperCase() || '?'}
+                <DefaultProfileImage onClick={handleImageClick} style={style}>
+                    {user?.fullName?.charAt(0).toLocaleUpperCase() || '?'}
                 </DefaultProfileImage>
             )}
         </>

@@ -16,7 +16,9 @@ import {
 } from '../../components/Form/form';
 import { ImageSection } from './Login.styles';
 import LoginImage from '../../assets/login_image.svg';
-import { useAuth } from '../../hooks/useAuth';
+import { useLoginMutation } from '../../services/api';
+import { useAppDispatch } from '../../app/hooks';
+import { setUser } from '../../state/authSlice';
 
 interface LocationState {
     from: {
@@ -32,14 +34,19 @@ function Login() {
     } = useForm();
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useAppDispatch();
+    const [loginMutation] = useLoginMutation();
     const state = location.state as LocationState;
-    const { login } = useAuth();
 
     const { from } = state || { from: { pathname: '/' } };
 
     const onSubmit = async (data: any) => {
         try {
-            await login(data);
+            const loginResponse = await loginMutation(data).unwrap();
+            if (window !== undefined) {
+                window.localStorage.setItem('token', loginResponse.token);
+            }
+            dispatch(setUser(loginResponse.user));
             navigate(from, { replace: true });
         } catch (error) {
             // TODO: implement central error handling

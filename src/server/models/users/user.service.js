@@ -15,14 +15,20 @@ module.exports = {
     delete: _delete,
 };
 
-async function authenticate({ email, password }) {
-    const user = await User.findOne({ email });
+function removeCollections(user) {
+    const { applications, contacts, interviews, ...rest } = user;
+    return rest;
+}
 
-    if (user && bcrypt.compareSync(password, user.hash)) {
-        const { hash, ...userWithoutHash } = user.toObject();
-        const token = jwt.sign({ sub: user.id }, config.secret);
+async function authenticate({ email, password }) {
+    const _user = await User.findOne({ email });
+
+    if (_user && bcrypt.compareSync(password, _user.hash)) {
+        const user = removeCollections(_user.toObject());
+        const { hash, ...userWithoutHash } = user;
+        const token = jwt.sign({ sub: user._id }, config.secret);
         return {
-            ...userWithoutHash,
+            user: userWithoutHash,
             token,
         };
     }
@@ -51,7 +57,7 @@ async function getById(id) {
     return await User.findById(id).select('-hash');
 }
 
-async function create(userParam, filePath) {
+async function create(userParam) {
     // validate
     if (await User.findOne({ username: userParam.email })) {
         throw Error('Email "' + userParam.email + '" is already taken');
@@ -59,12 +65,17 @@ async function create(userParam, filePath) {
 
     try {
         // upload profile image to cloudinary
-        const result = await cloudinary.uploader.upload(filePath);
-        const user = new User({
-            ...userParam,
-            profileImage: result.secure_url,
-            cloudinary_id: result.public_id,
-        });
+        let user;
+        if (userParam.profileImage) {
+            const result = await cloudinary.uploader.upload(userParam.profileImage);
+            user = new User({
+                ...userParam,
+                profileImage: result.secure_url,
+                cloudinary_id: result.public_id,
+            });
+        } else {
+            user = new User(userParam);
+        }
 
         // hash password
         if (userParam.password) {
@@ -74,28 +85,12 @@ async function create(userParam, filePath) {
         // save user
         await user.save();
     } catch (error) {
-        console.log(error);
+        throw Error(error);
     }
 }
 
 async function update(id, userParam) {
-    const user = await User.findById(id);
-
-    // validate
-    if (!user) throw Error('User not found');
-    if (user.username !== userParam.email && (await User.findOne({ email: userParam.email }))) {
-        throw Error('Username "' + userParam.username + '" is already taken.');
-    }
-
-    // hash password if it was entered
-    if (userParam.password) {
-        userParam.hash = bcrypt.hashSync(userParam.password, 10);
-    }
-
-    // copy userParam properties to user
-    Object.assign(user, userParam);
-
-    await user.save();
+    return await User.findByIdAndUpdate(id, userParam, { new: true });
 }
 
 async function _delete(id) {

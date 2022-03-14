@@ -1,12 +1,15 @@
 import React from 'react';
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
+import { useAppSelector } from '../../app/hooks';
 
 function RequireAuth() {
     let location = useLocation();
-    const { user } = useAuth();
+    const token = window.localStorage.getItem('token');
+    const user = useAppSelector((state) => state.auth.user);
 
-    return !!user ? <Outlet /> : <Navigate to="/login" state={{ from: location }} replace />;
+    const verifiedUser = !!user && !!token;
+
+    return verifiedUser ? <Outlet /> : <Navigate to="/login" state={{ from: location }} replace />;
 }
 
 export default RequireAuth;

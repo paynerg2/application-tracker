@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import Logo from '../../assets/Logo.svg';
+import { useAppDispatch } from '../../app/hooks';
+import { api, tags } from '../../services/api';
+import { defaultState } from '../../state/authSlice';
+import { useAppSelector } from '../../app/hooks';
 import {
     DropdownItem,
     DropdownMenu,
@@ -14,12 +17,13 @@ import {
     SelectedNavLink,
 } from './header.styles';
 import ProfileImage from '../ProfileImage/profileImage';
-import { useAuth } from '../../hooks/useAuth';
+import Logo from '../../assets/Logo.svg';
 
 function Header() {
-    const { user, logout } = useAuth();
+    const dispatch = useAppDispatch();
     const location = useLocation();
     const navigate = useNavigate();
+    const user = useAppSelector((state) => state.auth.user);
 
     const routes = ['applications', 'interviews', 'stats'];
     const getRouteNav = () => {
@@ -37,8 +41,9 @@ function Header() {
         );
     };
 
-    const handleLogout = () => {
-        logout();
+    const handleLogout = async () => {
+        dispatch(defaultState());
+        dispatch(api.util.invalidateTags(tags));
         navigate('/');
     };
 

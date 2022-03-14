@@ -3,27 +3,66 @@ import { Application } from '../interfaces/application';
 import config from '../config.json';
 import { Interview } from '../interfaces/interviews';
 import { Contact } from '../interfaces/contact';
+import { User } from '../interfaces/user';
+import { LoginForm, SignUpForm } from '../../types';
 
+export interface LoginResponse {
+    user: User;
+    token: string;
+}
+
+export const tags = ['Applications', 'User', 'Interviews', 'Contacts'];
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
         baseUrl: config.apiUrl,
         prepareHeaders: (headers) => {
-            const storedUser = localStorage.getItem('user');
-            let user = null;
-            if (typeof storedUser === 'string') {
-                user = JSON.parse(storedUser);
-            }
-
-            if (user && user.token) {
-                headers.set('authorization', `Bearer ${user.token}`);
+            const token = localStorage.getItem('token');
+            if (token) {
+                headers.set('authorization', `Bearer ${token}`);
             }
 
             return headers;
         },
     }),
-    tagTypes: ['Applications', 'User', 'Interviews', 'Contacts'],
+    tagTypes: tags,
     endpoints: (build) => ({
+        login: build.mutation<LoginResponse, LoginForm>({
+            query: (credentials) => ({
+                url: 'users/authenticate',
+                method: 'POST',
+                body: credentials,
+            }),
+        }),
+        register: build.mutation<any, SignUpForm>({
+            query: (data) => ({
+                url: '/users/register',
+                method: 'POST',
+                body: data,
+            }),
+        }),
+        verifyUser: build.mutation({
+            query: (body: { token: string }) => {
+                return {
+                    url: '/users/verify-user-mail',
+                    method: 'POST',
+                    body,
+                };
+            },
+        }),
+        updateUser: build.mutation<any, any>({
+            query: (data) => {
+                console.log('from api');
+                console.log(data);
+                const { id, ...rest } = data;
+                return {
+                    url: `/users/${id}`,
+                    method: 'PATCH',
+                    body: rest,
+                };
+            },
+            invalidatesTags: ['User'],
+        }),
         getApplications: build.query<Application[], void>({
             query: () => 'applications',
             providesTags: ['Applications'],
@@ -109,6 +148,10 @@ export const api = createApi({
 });
 
 export const {
+    useLoginMutation,
+    useRegisterMutation,
+    useUpdateUserMutation,
+    useVerifyUserMutation,
     useGetApplicationsQuery,
     useAddNewApplicationMutation,
     useEditApplicationMutation,
