@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useAppSelector } from '../../app/hooks';
 import Button from '../Button/button';
 
 const Container = styled.div`
@@ -14,15 +15,19 @@ const Container = styled.div`
 `;
 
 interface Props {
-    setIsCardView: React.Dispatch<React.SetStateAction<boolean>>;
+    isCardView?: boolean;
+    toggleCardView: () => void;
 }
 
-function StyleSelector({ setIsCardView }: Props) {
-    const [cardViewSelected, setCardViewSelected] = useState(true);
+function StyleSelector({ isCardView = true, toggleCardView }: Props) {
+    const defaultApplicationDisplayStyle = useAppSelector(
+        (state) => state.auth.user.settings.defaultApplicationDisplayStyle.toLowerCase() === 'card'
+    );
+    const [cardViewSelected, setCardViewSelected] = useState(defaultApplicationDisplayStyle);
 
     const handleToggle = () => {
         setCardViewSelected((prev) => !prev);
-        setIsCardView((prev) => !prev);
+        toggleCardView();
     };
 
     return (

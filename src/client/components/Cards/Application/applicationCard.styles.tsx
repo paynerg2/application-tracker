@@ -7,7 +7,6 @@ export const Card = styled.div`
     min-width: 20vw;
     border-radius: ${(props) => props.theme.borders.radius};
     background: ${(props) => props.theme.color.white};
-    box-shadow: 4px 4px 4px rgba(255, 255, 255, 0.3);
 
     padding: 1rem;
     box-sizing: border-box;
@@ -15,6 +14,10 @@ export const Card = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
+
+    &:hover {
+        box-shadow: ${(props) => props.theme.borders.shadow};
+    }
 `;
 
 export const Title = styled.h2`

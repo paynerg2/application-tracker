@@ -20,6 +20,8 @@ import {
     DateSection,
     ButtonGroup,
     RelatedInfoSection,
+    Response,
+    ResponseGroup,
 } from './Application.styles';
 import { theme } from '../../app/theme/theme';
 import DateContainer from '../../components/DateContainer/dateContainer';
@@ -138,91 +140,109 @@ function Application() {
             </TitleBanner>
             <Layout>
                 <Container>
-                    <ApplicationDetails>
-                        <Location>{application.location}</Location>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <JobTitle>{application.jobTitle}</JobTitle>
-                            {iconSelector(application.mainSkill, { width: 40, height: 40 })}
-                        </div>
-                        <SectionHeading>Description</SectionHeading>
-                        <ul style={{ columns: 2 }}>
-                            <ListItem>{getYearsOfExperience()}</ListItem>
-                            <ListItem>
-                                <span>
-                                    <strong>{getRequestedDegreeLevel()}</strong>
-                                    {` required`}
-                                </span>
-                            </ListItem>
-                            <ListItem>
-                                <span>
-                                    <strong>${application.expectedSalary.toLocaleString()}</strong>
-                                    {` expected salary`}
-                                </span>
-                            </ListItem>
-                        </ul>
-                        <SectionHeading>Skills</SectionHeading>
-                        <ul>
-                            <ListItem>
-                                <strong
-                                    style={{
-                                        color: getSkillsMetTextColor(
-                                            application.requiredSkillsMet,
-                                            application.requiredSkillsTotal
-                                        ),
-                                    }}
-                                >
-                                    {application.requiredSkillsMet}
-                                </strong>{' '}
-                                of <strong>{application.requiredSkillsTotal}</strong> required
-                                skills met
-                            </ListItem>
-                            <ListItem>
-                                <strong
-                                    style={{
-                                        color: getSkillsMetTextColor(
-                                            application.additionalSkillsMet,
-                                            application.additionalSkillsTotal
-                                        ),
-                                    }}
-                                >
-                                    {application.additionalSkillsMet}
-                                </strong>{' '}
-                                of <strong>{application.additionalSkillsTotal}</strong> additional
-                                skills met
-                            </ListItem>
-                        </ul>
-                        <DateSection>
-                            <div>
-                                <SectionHeading>Posted</SectionHeading>
-                                <DateContainer date={application.datePosted} />
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '3vw',
+                        }}
+                    >
+                        <ResponseGroup>
+                            <Response>No Response</Response>
+                            <Response>Interview</Response>
+                            <Response>Rejected</Response>
+                        </ResponseGroup>
+                        <ApplicationDetails>
+                            <Location>{application.location}</Location>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <JobTitle>{application.jobTitle}</JobTitle>
+                                {iconSelector(application.mainSkill, { width: 40, height: 40 })}
                             </div>
-                            <div>
-                                <SectionHeading>Submitted</SectionHeading>
-                                <DateContainer date={application.dateApplicationSent} />
-                            </div>
-                        </DateSection>
-                        <RelatedInfoSection>
-                            <div style={{ width: '60%' }}>
-                                <SectionHeading>Interviews</SectionHeading>
-                                {interviews && <InterviewList interviews={interviews} />}
-                            </div>
-                            <div style={{ width: '35%' }}>
-                                <SectionHeading>Contacts</SectionHeading>
-                                {contacts && contacts.length > 0 && (
-                                    <List
-                                        style={{ background: `${theme.color.lightBlue}`, gap: 0 }}
+                            <SectionHeading>Description</SectionHeading>
+                            <ul style={{ columns: 2 }}>
+                                <ListItem>{getYearsOfExperience()}</ListItem>
+                                <ListItem>
+                                    <span>
+                                        <strong>{getRequestedDegreeLevel()}</strong>
+                                        {` required`}
+                                    </span>
+                                </ListItem>
+                                <ListItem>
+                                    <span>
+                                        <strong>
+                                            ${application.expectedSalary.toLocaleString()}
+                                        </strong>
+                                        {` expected salary`}
+                                    </span>
+                                </ListItem>
+                            </ul>
+                            <SectionHeading>Skills</SectionHeading>
+                            <ul>
+                                <ListItem>
+                                    <strong
+                                        style={{
+                                            color: getSkillsMetTextColor(
+                                                application.requiredSkillsMet,
+                                                application.requiredSkillsTotal
+                                            ),
+                                        }}
                                     >
-                                        {contacts.map((contact) => (
-                                            <ContactCard type="card" contact={contact} />
-                                        ))}
-                                    </List>
-                                )}
-                                <Link to="/contacts/new/1">
-                                    <Button>Add a New Contact</Button>
-                                </Link>
-                            </div>
-                        </RelatedInfoSection>
-                    </ApplicationDetails>
+                                        {application.requiredSkillsMet}
+                                    </strong>{' '}
+                                    of <strong>{application.requiredSkillsTotal}</strong> required
+                                    skills met
+                                </ListItem>
+                                <ListItem>
+                                    <strong
+                                        style={{
+                                            color: getSkillsMetTextColor(
+                                                application.additionalSkillsMet,
+                                                application.additionalSkillsTotal
+                                            ),
+                                        }}
+                                    >
+                                        {application.additionalSkillsMet}
+                                    </strong>{' '}
+                                    of <strong>{application.additionalSkillsTotal}</strong>{' '}
+                                    additional skills met
+                                </ListItem>
+                            </ul>
+                            <DateSection>
+                                <div>
+                                    <SectionHeading>Posted</SectionHeading>
+                                    <DateContainer date={application.datePosted} />
+                                </div>
+                                <div>
+                                    <SectionHeading>Submitted</SectionHeading>
+                                    <DateContainer date={application.dateApplicationSent} />
+                                </div>
+                            </DateSection>
+                            <RelatedInfoSection>
+                                <div style={{ width: '60%' }}>
+                                    <SectionHeading>Interviews</SectionHeading>
+                                    {interviews && <InterviewList interviews={interviews} />}
+                                </div>
+                                <div style={{ width: '35%' }}>
+                                    <SectionHeading>Contacts</SectionHeading>
+                                    {contacts && contacts.length > 0 && (
+                                        <List
+                                            style={{
+                                                background: `${theme.color.lightBlue}`,
+                                                gap: 0,
+                                            }}
+                                        >
+                                            {contacts.map((contact) => (
+                                                <ContactCard type="card" contact={contact} />
+                                            ))}
+                                        </List>
+                                    )}
+                                    <Link to="/contacts/new/1">
+                                        <Button>Add a New Contact</Button>
+                                    </Link>
+                                </div>
+                            </RelatedInfoSection>
+                        </ApplicationDetails>
+                    </div>
                 </Container>
             </Layout>
             <Modal show={showModal}>

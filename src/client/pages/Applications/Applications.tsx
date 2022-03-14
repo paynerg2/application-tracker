@@ -18,10 +18,17 @@ import ApplicationFilter from '../../components/Cards/Application/ApplicationFil
 import { applicationHelpers } from '../../_helpers/applicationHelpers';
 import { useGetApplicationsQuery } from '../../services/api';
 import { iconSelector } from '../../_helpers/iconSelector';
+import { useAppSelector } from '../../app/hooks';
 
 function Applications() {
-    const [isCardView, setIsCardView] = useState(true);
-    const [filters, setFilters] = useState<string[]>([]);
+    const defaultApplicationDisplayStyle = useAppSelector(
+        (state) => state.auth.user.settings.defaultApplicationDisplayStyle
+    );
+    const [isCardView, setIsCardView] = useState(
+        defaultApplicationDisplayStyle.toLowerCase() === 'card'
+    );
+    const defaultFilters = ['Open'];
+    const [filters, setFilters] = useState<string[]>(defaultFilters);
     const { data, error, isLoading } = useGetApplicationsQuery();
     const [filteredApplications, setFilteredApplications] = useState<Application[]>([]);
     const navigate = useNavigate();

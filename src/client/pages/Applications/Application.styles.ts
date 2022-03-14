@@ -114,3 +114,31 @@ export const ButtonGroup = styled.div`
         gap: 0.5vmin;
     }
 `;
+
+export const Response = styled.div`
+    min-width: 10em;
+    width: 20vmin;
+    min-height: 3em;
+    height: 3em;
+    line-height: 3em;
+    text-align: center;
+    border-radius: 3em;
+    border: 1px solid ${(props) => props.theme.color.primaryBlue};
+    background-color: ${(props) => props.theme.color.primaryBlue};
+    color: ${(props) => props.theme.color.white};
+    font-size: 1.1em;
+    cursor: pointer;
+`;
+
+export const ResponseGroup = styled.div`
+    height: 40vh;
+    width: 20vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    background-color: ${(props) => props.theme.color.white};
+    border-bottom-left-radius: ${(props) => props.theme.borders.radius};
+    border-bottom-right-radius: ${(props) => props.theme.borders.radius};
+`;

@@ -127,6 +127,5 @@ export const ApplicationListItem = styled.li`
         padding: 2vmin;
         box-sizing: border-box;
         text-align: center;
-        font-size: 1.5em;
     }
 `;

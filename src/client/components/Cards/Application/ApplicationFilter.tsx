@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAppSelector } from '../../../app/hooks';
 import { Application } from '../../../interfaces/application';
 import Checkbox from '../../Checkbox/checkbox';
 import StyleSelector from '../../StyleSelector/styleSelector';
@@ -18,7 +19,7 @@ function ApplicationFilter({ applications, filters, onChange, setIsCardView }: P
     }, 0);
 
     const openSubmissionsCount = applications.reduce(function (r, a) {
-        const isOpen = a.response.toLocaleLowerCase() !== 'interview';
+        const isOpen = a.response.toLocaleLowerCase() !== 'rejected';
         return isOpen ? r + 1 : r;
     }, 0);
 
@@ -41,13 +42,13 @@ function ApplicationFilter({ applications, filters, onChange, setIsCardView }: P
     return (
         <Layout>
             <SearchBox placeholder="Search..." />
-            <StyleSelector setIsCardView={setIsCardView} />
+            <StyleSelector toggleCardView={() => setIsCardView((prev) => !prev)} />
             <CheckboxGroup>
                 <Checkbox label="Remote" onChange={onChange} />
                 <CountDisplay>{remoteJobsCount}</CountDisplay>
             </CheckboxGroup>
             <CheckboxGroup>
-                <Checkbox label="Open" onChange={onChange} />
+                <Checkbox label="Open" onChange={onChange} checked={filters.includes('Open')} />
                 <CountDisplay>{openSubmissionsCount}</CountDisplay>
             </CheckboxGroup>
             {Object.keys(mainSkillsFrequencyMap)
