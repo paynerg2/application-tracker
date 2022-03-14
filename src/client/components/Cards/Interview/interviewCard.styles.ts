@@ -24,6 +24,11 @@ export const Item = styled.li<Props>`
     border-bottom-left-radius: ${(props) => (props.isOpen ? 0 : props.theme.borders.radius)};
     border-bottom-right-radius: ${(props) => (props.isOpen ? 0 : props.theme.borders.radius)};
 
+    transition: ${(props) =>
+        !props.isOpen
+            ? 'border-bottom-left-radius 1.2s, border-bottom-right-radius 1.2s'
+            : 'border-bottom-left-radius 0s, border-bottom-right-radius 0s'};
+
     &:hover {
         box-shadow: ${(props) => props.theme.borders.shadow};
     }
@@ -58,21 +63,26 @@ export const CompanyName = styled.span`
 `;
 
 export const Actions = styled.div<Props>`
-    opacity: ${(props) => (props.isOpen ? 1 : 0)};
+    //opacity: ${(props) => (props.isOpen ? 1 : 0)};
 
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
+    position: relative;
 
     gap: 1vw;
 
     margin: 0;
-    height: 2em;
+    //height: 2em;
+    height: ${(props) => (props.isOpen ? '2em' : 0)};
     width: 95%;
     background: ${(props) => props.theme.color.white};
     padding-right: 5%;
     box-sizing: border-box;
+
+    transition: height 0.3s ease-in-out;
+    overflow: hidden;
 
     border-bottom-left-radius: ${(props) => props.theme.borders.radius};
     border-bottom-right-radius: ${(props) => props.theme.borders.radius};

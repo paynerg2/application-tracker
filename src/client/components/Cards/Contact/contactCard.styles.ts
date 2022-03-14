@@ -22,6 +22,11 @@ export const Card = styled.div<Props>`
     border-radius: ${(props) => props.theme.borders.radius};
     border-bottom-left-radius: ${(props) => (props.isOpen ? 0 : props.theme.borders.radius)};
     border-bottom-right-radius: ${(props) => (props.isOpen ? 0 : props.theme.borders.radius)};
+
+    transition: ${(props) =>
+        !props.isOpen
+            ? 'border-bottom-left-radius 1.2s, border-bottom-right-radius 1.2s'
+            : 'border-bottom-left-radius 0s, border-bottom-right-radius 0s'};
 `;
 
 export const Container = styled.div`
