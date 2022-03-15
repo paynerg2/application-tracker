@@ -87,7 +87,7 @@ export const api = createApi({
         editApplication: build.mutation<Application, Partial<Application>>({
             query: (application) => ({
                 url: `/applications/${application.id}`,
-                method: 'PUT',
+                method: 'PATCH',
                 body: application,
             }),
             invalidatesTags: ['Applications'],

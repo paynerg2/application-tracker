@@ -6,7 +6,7 @@ const applicationService = require('./application.service');
 router.get('/', getAll);
 router.get('/:id', getById);
 router.post('/', create);
-router.put('/:id', update);
+router.patch('/:id', update);
 router.delete('/:id', _delete);
 
 module.exports = router;

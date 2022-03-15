@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserPreferences } from 'typescript';
 import { User } from '../interfaces/user';
 
 const _user: User = JSON.parse(window.localStorage.getItem('user') || '{}');

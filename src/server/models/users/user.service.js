@@ -17,7 +17,7 @@ module.exports = {
 };
 
 function removeCollections(user) {
-    const { applications, contacts, interviews, settings, ...rest } = user;
+    const { applications, contacts, interviews, ...rest } = user;
     return rest;
 }
 
