@@ -1,9 +1,8 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Input from '../../../components/Input/input';
 import { Error } from '../../../components/Form/form';
 import Button from '../../../components/Button/button';
-import Link from '../../../components/Link/link';
 
 interface Props {
     register: any;
@@ -15,16 +14,17 @@ type Params = {
 };
 
 function Step1({ register, errors }: Props) {
+    const navigate = useNavigate();
     const { id } = useParams<Params>();
     const nextStep = id ? `/contacts/edit/${id}/2` : '/contacts/new/2';
 
     return (
         <>
             <Input id="name" label="Name *" register={register} required type="text" />
-            <Error>{errors.name ? 'Required' : ''}</Error>
+            <Error>{errors.name && errors.name.message}</Error>
 
             <Input id="email" label="Email" register={register} required={false} type="text" />
-            <Error>{errors.email ? errors.email : ''}</Error>
+            <Error>{errors.email && errors.email.message}</Error>
 
             <Input
                 id="phone"
@@ -33,11 +33,9 @@ function Step1({ register, errors }: Props) {
                 required={false}
                 type="text"
             />
-            <Error>{errors.phone ? errors.phone : ''}</Error>
+            <Error>{errors.phone && errors.phone.message}</Error>
 
-            <Link to={nextStep}>
-                <Button>Continue</Button>
-            </Link>
+            <Button onClick={() => navigate(nextStep)}>Continue</Button>
         </>
     );
 }

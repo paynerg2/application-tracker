@@ -11,7 +11,6 @@ import {
     Image,
     Form,
 } from '../../../components/Form/form';
-import Stepper from '../../../components/Form/stepper';
 import InterviewFormImage from '../../../assets/Interview_Form_Image.svg';
 import {
     useAddNewInterviewMutation,
@@ -19,12 +18,12 @@ import {
     useGetInterviewsQuery,
 } from '../../../services/api';
 import { getLastArrayElement } from '../../../_helpers/arrayHelpers';
-import Input from '../../../components/Input/input';
-import { Error } from '../../../components/Form/form';
-import Select from '../../../components/Select/Select';
 import Step1 from './Step1';
 import { hasKey } from '../../../_helpers/objectHelpers';
 import { getDateFormattedForDatetimeLocalInput } from '../../../_helpers/dateFormatter';
+import { useYupValidationResolver } from '../../../_helpers/useYupValidationResolver';
+import { interviewValidationSchema } from '../../../_helpers/validators/interviewValidationSchema';
+import { Interview } from '../../../interfaces/interviews';
 
 interface Props {
     isEdit?: boolean;
@@ -35,15 +34,14 @@ type RouteParams = {
 };
 
 function InterviewForm({ isEdit = false }: Props) {
-    console.log(`isEdit: ${isEdit}`);
+    const resolver = useYupValidationResolver(interviewValidationSchema);
 
     const {
         register,
         handleSubmit,
         setValue,
-        getValues,
-        formState: { errors },
-    } = useForm();
+        formState: { errors, isValid },
+    } = useForm<Partial<Interview>>({ resolver, mode: 'onTouched' });
     const navigate = useNavigate();
 
     const [addNewInterview] = useAddNewInterviewMutation();
@@ -72,6 +70,7 @@ function InterviewForm({ isEdit = false }: Props) {
                     const formattedDateField = getDateFormattedForDatetimeLocalInput(
                         new Date(interview[field])
                     );
+                    //@ts-ignore
                     setValue(field, formattedDateField);
                 } else {
                     setValue(field, interview[field]);
@@ -104,12 +103,13 @@ function InterviewForm({ isEdit = false }: Props) {
             <Container>
                 <FormSection>
                     <FormHeader>{isEdit ? 'Edit ' : 'Add a New '}Interview</FormHeader>
-                    <Stepper steps={2} currentStep={step} />
                     <Form id="interviewForm" onSubmit={handleSubmit(onSubmit)}>
                         <Routes>
                             <Route
                                 path="1"
-                                element={<Step1 register={register} errors={errors} />}
+                                element={
+                                    <Step1 register={register} errors={errors} isValid={isValid} />
+                                }
                             />
                         </Routes>
                     </Form>

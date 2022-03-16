@@ -23,9 +23,9 @@ function Step2({ register, errors }: Props) {
     return (
         <>
             <Input id="location" label="Location *" register={register} required type="text" />
-            <Error>{errors.location ? 'Required' : ''}</Error>
+            <Error>{errors.location && errors.location.message}</Error>
             <Input id="mainSkill" label="Main Skill *" register={register} required type="text" />
-            <Error>{errors.mainSkill ? 'Required' : ''}</Error>
+            <Error>{errors.mainSkill && errors.mainSkill.message}</Error>
             <Input
                 id="yearsOfExperience"
                 label="Expected Years of Experience"
@@ -34,7 +34,7 @@ function Step2({ register, errors }: Props) {
                 type="number"
                 defaultValue="0"
             />
-            <Error>{errors.expectedSalary ? 'Required' : ''}</Error>
+            <Error>{errors.expectedSalary && errors.expectedSalary.message}</Error>
             <Input
                 id="expectedSalary"
                 label="Expected Salary"
@@ -43,7 +43,7 @@ function Step2({ register, errors }: Props) {
                 type="number"
                 defaultValue="0"
             />
-            <Error>{errors.yearsOfExperience ? 'Required' : ''}</Error>
+            <Error>{errors.yearsOfExperience && errors.yearsOfExperience.message}</Error>
             <Select
                 id="degreeLevel"
                 label="Expected Degree Level"
@@ -58,7 +58,7 @@ function Step2({ register, errors }: Props) {
                     </option>
                 ))}
             </Select>
-            <Error>{errors.expectedYearsOfExperience ? 'Required' : ''}</Error>
+            <Error>{errors.degreeLevel && errors.degreeLevel.message}</Error>
             <Link to={nextStep}>
                 <Button>Continue</Button>
             </Link>

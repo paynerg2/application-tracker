@@ -20,6 +20,7 @@ export const Error = styled.div`
     text-align: right;
     color: ${(props) => props.theme.color.error};
     margin: 0.1vh 0;
+    white-space: nowrap;
 `;
 
 export const Image = styled.img`
@@ -50,7 +51,7 @@ export const Container = styled.div`
     border-radius: ${(props) => props.theme.borders.radius};
     box-shadow: ${(props) => props.theme.borders.shadow};
 
-    min-height: fit-content;
+    min-height: 50em;
     width: 62vw;
     min-width: 700px;
     max-width: 1200px;
@@ -85,7 +86,7 @@ const Section = styled.section`
 export const FormSection = styled(Section)`
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     gap: 5vmin;
     padding: 5vmax 5vmax;
     box-sizing: border-box;

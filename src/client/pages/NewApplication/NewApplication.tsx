@@ -27,6 +27,9 @@ import {
 } from '../../services/api';
 import { hasKey } from '../../_helpers/objectHelpers';
 import { getLastArrayElement } from '../../_helpers/arrayHelpers';
+import { useYupValidationResolver } from '../../_helpers/useYupValidationResolver';
+import { applicationValidationSchema } from '../../_helpers/validators/applicationValidationSchema';
+import { Application } from '../../interfaces/application';
 
 interface Props {
     isEdit?: boolean;
@@ -37,12 +40,13 @@ type RouteParams = {
 };
 
 function NewApplication({ isEdit = false }: Props) {
+    const resolver = useYupValidationResolver(applicationValidationSchema);
     const {
         register,
         handleSubmit,
         setValue,
-        formState: { errors },
-    } = useForm();
+        formState: { errors, isValid },
+    } = useForm<Partial<Application>>({ resolver, mode: 'onTouched' });
     const navigate = useNavigate();
 
     const [addNewApplication, { isLoading }] = useAddNewApplicationMutation();
@@ -126,7 +130,7 @@ function NewApplication({ isEdit = false }: Props) {
             <Container>
                 <FormSection>
                     <FormHeader>{isEdit ? 'Edit ' : 'Add a New '}Application</FormHeader>
-                    <Stepper steps={3} currentStep={step} />
+                    <Stepper steps={3} currentStep={step} baseRoute="/applications/new" />
                     <Form id="newApplication" onSubmit={handleSubmit(onSubmit)}>
                         <Routes>
                             <Route
@@ -139,7 +143,9 @@ function NewApplication({ isEdit = false }: Props) {
                             />
                             <Route
                                 path="3"
-                                element={<Step3 register={register} errors={errors} />}
+                                element={
+                                    <Step3 register={register} errors={errors} isValid={isValid} />
+                                }
                             />
                         </Routes>
                     </Form>

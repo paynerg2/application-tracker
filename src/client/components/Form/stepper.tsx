@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { StepIndicator, StepContainer } from './stepper.styles';
 
 /**
@@ -10,13 +11,20 @@ import { StepIndicator, StepContainer } from './stepper.styles';
 interface Props {
     steps: number;
     currentStep: number;
+    baseRoute?: string;
 }
 
-function Stepper({ steps, currentStep }: Props) {
+function Stepper({ steps, currentStep, baseRoute }: Props) {
+    const navigate = useNavigate();
+
     return (
         <StepContainer>
             {Array.from(Array(steps).keys()).map((x) => (
-                <StepIndicator key={x} active={x + 1 === currentStep}>
+                <StepIndicator
+                    onClick={() => navigate(`${baseRoute}/${x + 1}`)}
+                    key={x}
+                    active={x + 1 === currentStep}
+                >
                     {(x + 1).toString()}
                 </StepIndicator>
             ))}

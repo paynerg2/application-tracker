@@ -3,19 +3,20 @@ import { useParams } from 'react-router-dom';
 import Input from '../../../components/Input/input';
 import { Error } from '../../../components/Form/form';
 import Button from '../../../components/Button/button';
-import Link from '../../../components/Link/link';
 import Select from '../../../components/Select/Select';
+import { interviewTypes } from '../../../interfaces/interviews';
 
 interface Props {
     register: any;
     errors: any;
+    isValid: boolean;
 }
 
 type Params = {
     id?: string | undefined;
 };
 
-function Step1({ register, errors }: Props) {
+function Step1({ register, errors, isValid }: Props) {
     const { id } = useParams<Params>();
 
     return (
@@ -29,7 +30,7 @@ function Step1({ register, errors }: Props) {
                 list="companyNames"
             />
             <datalist id="companyNames"></datalist>
-            <Error>{errors.company ? 'Required' : ''}</Error>
+            <Error>{errors.company && errors.company.message}</Error>
 
             <Input
                 id="startTime"
@@ -38,7 +39,7 @@ function Step1({ register, errors }: Props) {
                 required
                 type="datetime-local"
             />
-            <Error>{errors.startTime ? 'Required' : ''}</Error>
+            <Error>{errors.startTime && errors.startTime.message}</Error>
 
             <Select
                 id="interviewType"
@@ -46,19 +47,17 @@ function Step1({ register, errors }: Props) {
                 register={register}
                 required
             >
-                <option key="onsite" value="On Site">
-                    On Site
-                </option>
-                <option key="video" value="Video">
-                    Video
-                </option>
-                <option key="phone" value="phone">
-                    Phone
-                </option>
+                {interviewTypes.map((type) => (
+                    <option key={type} value={type}>
+                        {type}
+                    </option>
+                ))}
             </Select>
-            <Error>{errors.interviewType ? 'Required' : ''}</Error>
+            <Error>{errors.interviewType && errors.interviewType.message}</Error>
 
-            <Button type="submit">Finish {id ? 'Editing ' : 'Adding '}Interview</Button>
+            <Button disabled={!isValid} type="submit">
+                Finish {id ? 'Editing ' : 'Adding '}Interview
+            </Button>
         </>
     );
 }

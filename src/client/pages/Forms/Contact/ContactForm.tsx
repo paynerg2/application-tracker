@@ -22,6 +22,9 @@ import {
     useGetContactsQuery,
 } from '../../../services/api';
 import { hasKey } from '../../../_helpers/objectHelpers';
+import { Contact } from '../../../interfaces/contact';
+import { useYupValidationResolver } from '../../../_helpers/useYupValidationResolver';
+import { contactValidationSchema } from '../../../_helpers/validators/contactValidationSchema';
 
 interface Props {
     isEdit?: boolean;
@@ -32,12 +35,13 @@ type RouteParams = {
 };
 
 function ContactForm({ isEdit = false }: Props) {
+    const resolver = useYupValidationResolver(contactValidationSchema);
     const {
         register,
         handleSubmit,
         setValue,
-        formState: { errors },
-    } = useForm();
+        formState: { errors, isValid },
+    } = useForm<Partial<Contact>>({ resolver, mode: 'onTouched' });
     const navigate = useNavigate();
 
     const [addNewContact] = useAddNewContactMutation();
@@ -90,7 +94,7 @@ function ContactForm({ isEdit = false }: Props) {
             <Container>
                 <FormSection>
                     <FormHeader>{isEdit ? 'Edit ' : 'Add a New '}Contact</FormHeader>
-                    <Stepper steps={2} currentStep={step} />
+                    <Stepper steps={2} currentStep={step} baseRoute="/contacts/new" />
                     <Form id="contactForm" onSubmit={handleSubmit(onSubmit)}>
                         <Routes>
                             <Route
@@ -99,7 +103,9 @@ function ContactForm({ isEdit = false }: Props) {
                             />
                             <Route
                                 path="2"
-                                element={<Step2 register={register} errors={errors} />}
+                                element={
+                                    <Step2 register={register} errors={errors} isValid={isValid} />
+                                }
                             />
                         </Routes>
                     </Form>

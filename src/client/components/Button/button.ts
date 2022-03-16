@@ -21,6 +21,13 @@ const Button = styled.button<{ inverted?: boolean }>`
     justify-content: center;
     gap: 3vmin;
 
+    &:disabled {
+        background-color: ${(props) => props.theme.color.lightGray};
+        border-color: ${(props) => props.theme.color.lightGray};
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
     @media (${(props) => props.theme.breakpoint.mobile}) {
         max-width: 50vw;
     }

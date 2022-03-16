@@ -6,14 +6,17 @@ import Button from '../../components/Button/button';
 import { StyledInput, Label } from '../../components/Input/input';
 import { theme } from '../../app/theme/theme';
 import { useParams } from 'react-router-dom';
+import { getDateFormattedForDatetimeLocalInput } from '../../_helpers/dateFormatter';
 
 interface Props {
     register: any;
     errors: any;
+    isValid: boolean;
 }
 
 const SmallInput = styled(StyledInput)`
     width: 4em;
+    text-align: center;
 `;
 
 const TwoColumnFormInput = styled.div`
@@ -33,8 +36,18 @@ type Params = {
     id?: string | undefined;
 };
 
-function Step3({ register, errors }: Props) {
+function Step3({ register, errors, isValid }: Props) {
     const { id } = useParams<Params>();
+
+    const getSkillsError = (type: 'additional' | 'required') => {
+        if (errors[`${type}SkillsRequired`]) {
+            return errors[`${type}SkillsRequired`].message;
+        }
+        if (errors[`${type}SkillsMet`]) {
+            return errors[`${type}SkillsMet`].message;
+        }
+        return '';
+    };
 
     return (
         <>
@@ -45,7 +58,7 @@ function Step3({ register, errors }: Props) {
                 required
                 type="datetime-local"
             />
-            <Error>{errors.datePosted ? 'Required' : ''}</Error>
+            <Error>{errors.datePosted && errors.datePosted.message}</Error>
             <Input
                 id="dateApplicationSent"
                 label="When did you apply?"
@@ -53,7 +66,7 @@ function Step3({ register, errors }: Props) {
                 required
                 type="datetime-local"
             />
-            <Error>{errors.dateApplicationSent ? 'Required' : ''}</Error>
+            <Error>{errors.dateApplicationSent && errors.dateApplicationSent.message}</Error>
             <TwoColumnFormInput>
                 <Label>How many required skills are listed?</Label>
                 <SmallInput
@@ -61,6 +74,7 @@ function Step3({ register, errors }: Props) {
                     id="requiredSkillsTotal"
                     {...register('requiredSkillsTotal')}
                     type="number"
+                    defaultValue={0}
                 ></SmallInput>
             </TwoColumnFormInput>
             <TwoColumnFormInput>
@@ -70,8 +84,10 @@ function Step3({ register, errors }: Props) {
                     id="requiredSkillsMet"
                     {...register('requiredSkillsMet')}
                     type="number"
+                    defaultValue={0}
                 ></SmallInput>
             </TwoColumnFormInput>
+            <Error>{getSkillsError('required')}</Error>
             <TwoColumnFormInput>
                 <Label>How many additional skills are listed?</Label>
                 <SmallInput
@@ -79,6 +95,7 @@ function Step3({ register, errors }: Props) {
                     id="additionalSkillsTotal"
                     {...register('additionalSkillsTotal')}
                     type="number"
+                    defaultValue={0}
                 ></SmallInput>
             </TwoColumnFormInput>
             <TwoColumnFormInput>
@@ -88,11 +105,14 @@ function Step3({ register, errors }: Props) {
                     id="additionalSkillsMet"
                     {...register('additionalSkillsMet')}
                     type="number"
+                    defaultValue={0}
                 ></SmallInput>
             </TwoColumnFormInput>
-            <div></div>
+            <Error>{getSkillsError('additional')}</Error>
 
-            <Button type="submit">{`Finish ${id ? 'Editing' : 'Adding'} Application`}</Button>
+            <Button disabled={!isValid} type="submit">{`Finish ${
+                id ? 'Editing' : 'Adding'
+            } Application`}</Button>
         </>
     );
 }

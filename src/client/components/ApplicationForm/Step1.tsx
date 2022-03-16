@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Input from '../Input/input';
 import { Error } from '../Form/form';
 import Button from '../Button/button';
@@ -19,14 +19,15 @@ type Params = {
 
 function Step1({ register, errors }: Props) {
     const { id } = useParams<Params>();
+    const navigate = useNavigate();
     const nextStep = id ? `/applications/edit/${id}/2` : '/applications/new/2';
 
     return (
         <>
             <Input id="jobTitle" label="Job Title *" register={register} required type="text" />
-            <Error>{errors.jobTitle ? 'Required' : ''}</Error>
+            <Error>{errors.jobTitle && errors.jobTitle.message}</Error>
             <Input id="company" label="Company Name *" register={register} required type="text" />
-            <Error>{errors.company ? 'Required' : ''}</Error>
+            <Error>{errors.company && errors.company.message}</Error>
             <Select id="contract" label="Contract Type" register={register} required={false}>
                 {contractTypes.map((contract) => (
                     <option key={contract} value={contract}>
@@ -34,11 +35,9 @@ function Step1({ register, errors }: Props) {
                     </option>
                 ))}
             </Select>
-            <Error>{errors.contract ? 'Required' : ''}</Error>
+            <Error>{errors.contract && errors.contract.message}</Error>
 
-            <Link to={nextStep}>
-                <Button>Continue</Button>
-            </Link>
+            <Button onClick={() => navigate(nextStep)}>Continue</Button>
         </>
     );
 }

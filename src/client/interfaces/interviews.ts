@@ -1,3 +1,5 @@
+export const interviewTypes = ['On Site', 'Video', 'Phone'] as const;
+
 export interface Interview {
     id: string;
     startTime: Date;
@@ -7,7 +9,7 @@ export interface Interview {
     followUpSent: boolean;
     response: string;
     offer: number;
-    interviewType: string;
+    interviewType: typeof interviewTypes[number];
     round: number;
     notes: string;
 }

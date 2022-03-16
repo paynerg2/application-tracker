@@ -7,9 +7,10 @@ import { useGetApplicationsQuery } from '../../../services/api';
 interface Props {
     register: any;
     errors: any;
+    isValid: boolean;
 }
 
-function Step2({ register, errors }: Props) {
+function Step2({ register, errors, isValid }: Props) {
     const { companyNames, ...rest } = useGetApplicationsQuery(undefined, {
         selectFromResult: ({ data, ...rest }) => ({
             ...rest,
@@ -32,7 +33,7 @@ function Step2({ register, errors }: Props) {
                     <option key={c}>{c}</option>
                 ))}
             </datalist>
-            <Error>{errors.company ? 'Required' : ''}</Error>
+            <Error>{errors.company && errors.company.message}</Error>
 
             <Input
                 id="position"
@@ -41,9 +42,11 @@ function Step2({ register, errors }: Props) {
                 required={false}
                 type="text"
             />
-            <Error>{errors.position ? errors.position : ''}</Error>
+            <Error>{errors.position && errors.position.message}</Error>
 
-            <Button type="submit">Continue</Button>
+            <Button disabled={!isValid} type="submit">
+                Continue
+            </Button>
         </>
     );
 }

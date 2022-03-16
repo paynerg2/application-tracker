@@ -20,6 +20,7 @@ export const StepIndicator = styled.li<Props>`
     list-style-type: none;
     margin: 0 1em;
     display: inline-block;
+    cursor: pointer;
 
     &::before {
         content: '';
