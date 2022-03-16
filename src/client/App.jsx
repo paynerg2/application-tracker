@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Routes, Route } from 'react-router-dom';
 import mobileBackground from './assets/Background_mobile.png';
-import desktopBackground from './assets/BG.png';
 import ScrollToTop from './common/ScrollToTop/scrollToTop';
 import Login from './pages/Login/Login';
 import Applications from './pages/Applications/Applications';
@@ -23,13 +22,13 @@ import RequireAuth from './components/RequireAuth/requireAuth';
 const Container = styled.div`
     min-height: 100vh;
     min-width: 100%;
-    background-image: url(${mobileBackground});
+    background-image: ${(props) => props.theme.background};
     background-size: contain;
     background-repeat: no-repeat;
     box-sizing: border-box;
 
-    @media (min-width: ${(props) => props.theme.breakpoint.mobile}) {
-        background-image: url(${desktopBackground});
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        background-image: ${(props) => props.theme.mobileBackground};
     }
 `;
 
