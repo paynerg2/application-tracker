@@ -8,8 +8,8 @@ type Props = CustomProps & ThemeType;
 
 export const Item = styled.li<Props>`
     height: 15vh;
-    min-width: 450px;
-    background-color: ${(props) => props.theme.color.white};
+    min-width: 20em;
+    background-color: ${(props) => props.theme.color.secondarySurface};
     padding: 2vmin;
     box-sizing: border-box;
     cursor: pointer;
@@ -37,7 +37,7 @@ export const Item = styled.li<Props>`
 export const VerticalLine = styled.div`
     height: 100%;
     width: 4px;
-    background-color: ${(props) => props.theme.color.veryLightGray};
+    background-color: ${(props) => props.theme.color.separator};
 `;
 
 export const Time = styled.div`
@@ -59,7 +59,7 @@ export const Info = styled.div`
 
 export const CompanyName = styled.span`
     font-weight: 700;
-    color: ${(props) => props.theme.color.primaryBlue};
+    color: ${(props) => props.theme.color.primary};
 `;
 
 export const Actions = styled.div<Props>`
@@ -77,7 +77,7 @@ export const Actions = styled.div<Props>`
     //height: 2em;
     height: ${(props) => (props.isOpen ? '2em' : 0)};
     width: 95%;
-    background: ${(props) => props.theme.color.white};
+    background: ${(props) => props.theme.color.background};
     padding-right: 5%;
     box-sizing: border-box;
 

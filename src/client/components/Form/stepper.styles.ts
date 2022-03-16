@@ -12,10 +12,11 @@ export const StepIndicator = styled.li<Props>`
     text-align: center;
     line-height: 2rem;
     font-weight: 700;
-    border: solid 2px ${(props) => props.theme.color.primaryBlue};
+    border: solid 2px ${(props) => props.theme.color.primary};
     background-color: ${(props) =>
-        props.active ? props.theme.color.primaryBlue : props.theme.color.white};
-    color: ${(props) => (props.active ? props.theme.color.white : props.theme.color.primaryBlue)};
+        props.active ? props.theme.color.primary : props.theme.color.background};
+    color: ${(props) =>
+        props.active ? props.theme.color.buttonInverted : props.theme.color.button};
     list-style-type: none;
     margin: 0 1em;
     display: inline-block;
@@ -28,7 +29,7 @@ export const StepIndicator = styled.li<Props>`
         top: 0.9em;
         bottom: 0px;
         left: 2em;
-        background-color: ${(props) => props.theme.color.primaryBlue};
+        background-color: ${(props) => props.theme.color.primary};
     }
 
     &:last-child {

@@ -9,8 +9,8 @@ const Container = styled.div`
     width: 20vw;
     min-width: 300px;
     height: fit-content;
-    background: ${(props) => props.theme.color.primaryBlue};
-    border: 2px solid ${(props) => props.theme.color.primaryBlue};
+    background: ${(props) => props.theme.color.primary};
+    border: 2px solid ${(props) => props.theme.color.primary};
     border-radius: ${(props) => props.theme.borders.radius};
 `;
 
@@ -21,9 +21,11 @@ interface Props {
 
 function StyleSelector({ isCardView = true, toggleCardView }: Props) {
     const defaultApplicationDisplayStyle = useAppSelector(
-        (state) => state.auth.user.settings.defaultApplicationDisplayStyle.toLowerCase() === 'card'
+        (state) => state.auth.user.settings.defaultApplicationDisplayStyle
     );
-    const [cardViewSelected, setCardViewSelected] = useState(defaultApplicationDisplayStyle);
+    const [cardViewSelected, setCardViewSelected] = useState(
+        defaultApplicationDisplayStyle === 'Card'
+    );
 
     const handleToggle = () => {
         setCardViewSelected((prev) => !prev);

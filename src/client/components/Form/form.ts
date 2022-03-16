@@ -9,7 +9,7 @@ export const FormHeader = styled.h2`
     font-size: 2rem;
     font-weight: 700;
     text-transform: uppercase;
-    color: ${(props) => props.theme.color.desaturatedGray};
+    color: ${(props) => props.theme.color.mainText};
     margin: 0;
 `;
 
@@ -46,23 +46,23 @@ export const Layout = styled.div`
 `;
 
 export const Container = styled.div`
-    width: 100vw;
-    height: 80vh;
-    min-width: 400px;
-    box-sizing: border-box;
-
-    background-color: ${(props) => props.theme.color.white};
+    background-color: ${(props) => props.theme.color.secondarySurface};
     border-radius: ${(props) => props.theme.borders.radius};
     box-shadow: ${(props) => props.theme.borders.shadow};
 
-    @media (min-width: ${(props) => props.theme.breakpoint.mobile}) {
-        min-height: fit-content;
-        width: 62vw;
-        min-width: 700px;
-        max-width: 1200px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
+    min-height: fit-content;
+    width: 62vw;
+    min-width: 700px;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        width: 100vw;
+        height: 100vh;
+        min-width: 400px;
+        box-sizing: border-box;
     }
 `;
 
@@ -70,6 +70,10 @@ export const Form = styled.form`
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        justify-self: center;
+    }
 `;
 
 const Section = styled.section`
@@ -89,7 +93,7 @@ export const FormSection = styled(Section)`
 
 export const ImageSection = styled(Section)`
     display: none;
-    background-color: ${(props) => props.theme.color.lightBlue};
+    background-color: ${(props) => props.theme.color.secondary};
     padding: 0;
     box-sizing: border-box;
 

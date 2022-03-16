@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../Button/button';
-import ConfirmationDialog from '../ConfirmationDialog/confirmationDialog';
+import Prompt from '../Prompt/prompt';
 import Modal from '../Modal/modal';
 import TextButton from '../TextButton/textButton';
 
@@ -27,7 +27,9 @@ function ActionAccordion({ isOpen, edit, onDelete, children }: Props) {
                     Delete
                 </TextButton>
                 <Modal show={showModal}>
-                    <ConfirmationDialog confirm={onDelete} cancel={() => setShowModal(false)} />
+                    <Prompt confirm={onDelete} cancel={() => setShowModal(false)}>
+                        Are you sure you want to delete item?
+                    </Prompt>
                 </Modal>
             </Actions>
         );

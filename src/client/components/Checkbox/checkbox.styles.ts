@@ -19,8 +19,8 @@ export const StyledCheckbox = styled.input`
     width: 0;
 
     &:checked ~ span {
-        background-color: ${(props) => props.theme.color.primaryBlue};
-        border: solid 2px ${(props) => props.theme.color.primaryBlue};
+        background-color: ${(props) => props.theme.color.primary};
+        border: solid 2px ${(props) => props.theme.color.primary};
     }
 
     &:checked ~ span::after {
@@ -34,7 +34,7 @@ export const Checkmark = styled.span`
     left: 0;
     height: 25px;
     width: 25px;
-    background-color: ${(props) => props.theme.color.white};
+    background-color: ${(props) => props.theme.color.background};
     border: solid 2px ${(props) => props.theme.color.lightGray};
     border-radius: 5px;
 

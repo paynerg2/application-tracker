@@ -10,7 +10,7 @@ const Background = styled.div`
     background: linear-gradient(
         to bottom,
         transparent 40%,
-        ${(props) => props.theme.color.primaryBlue} 40%
+        ${(props) => props.theme.color.primary} 40%
     );
 
     display: flex;
@@ -22,7 +22,7 @@ const Background = styled.div`
 
 const Text = styled.p`
     font-size: 2rem;
-    color: ${(props) => props.theme.color.white};
+    color: ${(props) => props.theme.color.buttonInverted};
     text-align: center;
 `;
 

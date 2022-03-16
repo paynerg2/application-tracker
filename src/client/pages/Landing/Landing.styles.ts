@@ -86,11 +86,11 @@ export const SimplifySection = styled(GridSection)`
 `;
 
 export const BlueBackground = styled.section`
-    background-color: ${(props) => props.theme.color.primaryBlue};
+    background-color: ${(props) => props.theme.color.primary};
 `;
 
 export const EssentialsSection = styled(GridSection)`
-    color: ${(props) => props.theme.color.white};
+    color: ${(props) => props.theme.color.buttonInverted};
 
     li {
         font-size: 1.5rem;
@@ -146,7 +146,7 @@ export const AnalyticsSection = styled(GridSection)`
 `;
 
 export const MainHeading = styled.h1`
-    color: ${(props) => props.theme.color.primaryBlue};
+    color: ${(props) => props.theme.color.primary};
     font-size: 4rem;
     font-weight: 700;
 `;

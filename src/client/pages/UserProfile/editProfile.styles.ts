@@ -6,6 +6,11 @@ export const Container = styled.div`
     width: 80vw;
     height: 100%;
     margin: 0 auto;
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        padding-bottom: 5em;
+        box-sizing: border-box;
+    }
 `;
 
 export const Actions = styled.div`

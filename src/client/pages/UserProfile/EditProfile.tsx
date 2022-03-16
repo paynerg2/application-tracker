@@ -2,19 +2,20 @@ import React, { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { useUpdateUserMutation, useUpdateUserSettingsMutation } from '../../services/api';
 import { setUser } from '../../state/authSlice';
 import { hasKey } from '../../_helpers/objectHelpers';
+import { toDataURL } from '../../_helpers/toDataURL';
 import { Form, FormHeader, FormSection, Error } from '../../components/Form/form';
 import { Layout, Container, Actions } from './editProfile.styles';
 import Button from '../../components/Button/button';
 import Input from '../../components/Input/input';
 import ImageDropzone from '../../components/ImageDropzone/imageDropzone';
+import StyleSelector from '../../components/StyleSelector/styleSelector';
 import ProfileImageWatched from '../../components/ProfileImage/profileImageWatched';
 import ToggleSwitch from '../../components/ToggleSwitch/toggleSwitch';
-import { useUpdateUserMutation, useUpdateUserSettingsMutation } from '../../services/api';
-import { toDataURL } from '../../_helpers/toDataURL';
 import { User } from '../../interfaces/user';
-import StyleSelector from '../../components/StyleSelector/styleSelector';
+import { join } from 'path';
 
 export interface FormInputs {
     fullName: string;
@@ -34,11 +35,12 @@ function EditProfile() {
         formState: { errors },
         control,
     } = useForm<FormInputs>();
-    const [updateUser] = useUpdateUserMutation();
+    const [updateUserDetails] = useUpdateUserMutation();
     const [updateUserSettings] = useUpdateUserSettingsMutation();
     const dropzoneRef = useRef(null);
 
     useEffect(() => {
+        // Pre-fill form fields where applicable
         const formFields = ['fullName', 'location', 'email', 'profileImage'];
 
         if (user) {
@@ -52,20 +54,22 @@ function EditProfile() {
     }, [user, setValue]);
 
     const onSubmit = async (data: any) => {
-        let submissionData = { ...data, id: user!._id };
+        // Convert existing image to Base64 string to match image dropzone return format
+        let submissionData: User = { ...data };
         if (data.profileImage.includes('cloudinary')) {
             await toDataURL(data.profileImage, (result: string) => {
                 submissionData = { ...submissionData, profileImage: result };
             });
         }
-        console.log(submissionData);
+
         try {
-            const updatedUser = await updateUser(submissionData).unwrap();
+            const updatedUser = await updateUserDetails(submissionData).unwrap();
             dispatch(setUser(updatedUser));
         } catch (error) {
             console.log(error);
         }
-        //navigate(0);
+
+        navigate(0);
     };
 
     const handleApplicationDisplayStyleChange = async () => {
@@ -75,11 +79,10 @@ function EditProfile() {
                 ...user.settings,
                 defaultApplicationDisplayStyle:
                     user.settings.defaultApplicationDisplayStyle.toLowerCase() === 'card'
-                        ? 'list'
-                        : 'card',
+                        ? 'List'
+                        : 'Card',
             },
         };
-        console.log(_user);
 
         try {
             const updatedUser = await updateUserSettings(_user).unwrap();
@@ -89,10 +92,33 @@ function EditProfile() {
         }
     };
 
+    const handleDarkThemeToggle = async () => {
+        const _user: User = {
+            ...user,
+            settings: {
+                ...user.settings,
+                isDarkMode: !user.settings.isDarkMode,
+            },
+        };
+
+        console.log(_user);
+
+        await updateUser(_user);
+    };
+
+    const updateUser = async (user: User) => {
+        try {
+            const updatedUser = await updateUserSettings(user).unwrap();
+            dispatch(setUser(updatedUser));
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <Container>
             <Layout>
-                <FormSection>
+                <FormSection id="accountDetails">
                     <FormHeader>Edit Account Details</FormHeader>
                     <Form id="userForm" onSubmit={handleSubmit(onSubmit)}>
                         <Input
@@ -146,12 +172,15 @@ function EditProfile() {
                         </Actions>
                     </Form>
                 </FormSection>
-                <FormSection>
+                <FormSection id="userSettings">
                     <FormHeader>Settings</FormHeader>
                     <section>
                         <div style={{ display: 'flex', gap: '2vmin', alignItems: 'center' }}>
                             <h4>Dark Mode</h4>
-                            <ToggleSwitch handleChange={() => console.log('changed')} />
+                            <ToggleSwitch
+                                isChecked={user.settings.isDarkMode}
+                                handleChange={handleDarkThemeToggle}
+                            />
                         </div>
                         <h4>Default application display style</h4>
                         <StyleSelector

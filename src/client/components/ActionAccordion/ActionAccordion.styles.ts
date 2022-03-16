@@ -17,7 +17,7 @@ export const Actions = styled.div<Props>`
 
     margin: 0;
     height: ${(props) => (props.isOpen ? '3em' : 0)};
-    background: ${(props) => props.theme.color.white};
+    background: ${(props) => props.theme.color.secondarySurface};
     padding-right: 5%;
     box-sizing: border-box;
 

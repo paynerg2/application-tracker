@@ -9,7 +9,7 @@ type Props = CustomProps & ThemeType;
 export const Card = styled.div<Props>`
     height: 16vh;
     //width: 20vw;
-    background-color: ${(props) => props.theme.color.white};
+    background-color: ${(props) => props.theme.color.background};
     padding: 2vmin;
     box-sizing: border-box;
     cursor: pointer;
@@ -44,7 +44,7 @@ export const Container = styled.div`
 
 export const Item = styled.li<Props>`
     height: 14vh;
-    background-color: ${(props) => props.theme.color.white};
+    background-color: ${(props) => props.theme.color.secondarySurface};
     padding: 2vmin;
     box-sizing: border-box;
     cursor: pointer;
@@ -89,7 +89,7 @@ export const Line = styled.div`
 export const VerticalLine = styled.div`
     height: 100%;
     width: 4px;
-    background-color: ${(props) => props.theme.color.veryLightGray};
+    background-color: ${(props) => props.theme.color.separator};
 `;
 
 export const Company = styled.div`
@@ -99,7 +99,7 @@ export const Company = styled.div`
     align-items: center;
     //width: 100%;
 
-    color: ${(props) => props.theme.color.primaryBlue};
+    color: ${(props) => props.theme.color.primary};
     font-size: 1.6rem;
     font-weight: 700;
     text-transform: capitalize;
@@ -116,7 +116,7 @@ export const Actions = styled.div<Props>`
 
     margin: 0;
     height: ${(props) => (props.isOpen ? '3em' : 0)};
-    background: ${(props) => props.theme.color.white};
+    background: ${(props) => props.theme.color.background};
     padding-right: 5%;
     box-sizing: border-box;
 

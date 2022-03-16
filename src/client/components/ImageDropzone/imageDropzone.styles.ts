@@ -21,8 +21,12 @@ export const Container = styled.div<Props>`
     border-radius: ${(props) => props.theme.borders.radius};
     border-color: ${(props) => props.theme.color.lightGray};
     border-style: solid;
-    background-color: #fafafa;
-    color: ${(props) => props.theme.color.lightGray};
+    background-color: ${(props) => props.theme.color.dropzone};
+    color: ${(props) => props.theme.color.dropzoneText};
     outline: none;
     transition: border 0.24s ease-in-out;
+
+    > p {
+        color: ${(props) => props.theme.color.dropzoneText};
+    }
 `;

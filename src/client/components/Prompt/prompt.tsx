@@ -1,20 +1,21 @@
 import React from 'react';
 import Button from '../Button/button';
-import { ButtonGroup, Container } from './confirmationDialog.styles';
+import { ButtonGroup, Container } from './prompt.styles';
 import { theme } from '../../app/theme/theme';
 
 interface Props {
     confirm: any;
     cancel: any;
+    children: React.ReactChild | React.ReactChild[];
 }
 
-function ConfirmationDialog({ confirm, cancel }: Props) {
+function Prompt({ confirm, cancel, children }: Props) {
     return (
         <Container>
-            <p>Are you sure you want to do this?</p>
+            <p style={{ textAlign: 'center' }}>{children}</p>
             <ButtonGroup>
                 <Button style={{ width: '10vw' }} onClick={confirm}>
-                    Confirm
+                    Yes
                 </Button>
                 <Button
                     style={{
@@ -24,11 +25,11 @@ function ConfirmationDialog({ confirm, cancel }: Props) {
                     }}
                     onClick={cancel}
                 >
-                    Cancel
+                    No
                 </Button>
             </ButtonGroup>
         </Container>
     );
 }
 
-export default ConfirmationDialog;
+export default Prompt;

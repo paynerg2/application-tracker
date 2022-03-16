@@ -8,9 +8,9 @@ export const DefaultProfileImage = styled.div`
     text-align: center;
     line-height: 5vmin;
     font-weight: 700;
-    color: ${(props) => props.theme.color.primaryBlue};
+    color: ${(props) => props.theme.color.primary};
     font-size: 1.3em;
-    border: 1px solid ${(props) => props.theme.color.primaryBlue};
+    border: 1px solid ${(props) => props.theme.color.primary};
     cursor: pointer;
 `;
 
@@ -20,6 +20,6 @@ export const UserProfileImage = styled.img`
     border-radius: 100%;
     object-fit: cover;
 
-    border: 1px solid ${(props) => props.theme.color.primaryBlue};
+    border: 1px solid ${(props) => props.theme.color.primary};
     cursor: pointer;
 `;

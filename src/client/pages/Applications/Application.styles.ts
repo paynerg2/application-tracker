@@ -20,10 +20,10 @@ export const Layout = styled.div`
 export const TitleBanner = styled.div`
     width: 100%;
     height: 10vh;
-    background: ${(props) => props.theme.color.primaryBlue};
+    background: ${(props) => props.theme.color.primary};
     margin-top: 5vh;
 
-    color: ${(props) => props.theme.color.white};
+    color: ${(props) => props.theme.color.background};
 
     > div {
         display: flex;
@@ -67,7 +67,7 @@ export const JobTitle = styled.h1`
         bottom: 0;
         height: 4px;
         width: 1em;
-        border-bottom: 3px solid ${(props) => props.theme.color.primaryBlue};
+        border-bottom: 3px solid ${(props) => props.theme.color.primary};
     }
 `;
 
@@ -115,19 +115,42 @@ export const ButtonGroup = styled.div`
     }
 `;
 
-export const Response = styled.div`
-    min-width: 10em;
-    width: 20vmin;
-    min-height: 3em;
-    height: 3em;
-    line-height: 3em;
-    text-align: center;
-    border-radius: 3em;
-    border: 1px solid ${(props) => props.theme.color.primaryBlue};
-    background-color: ${(props) => props.theme.color.primaryBlue};
-    color: ${(props) => props.theme.color.white};
-    font-size: 1.1em;
-    cursor: pointer;
+export const Response = styled.input.attrs({ type: 'radio' })`
+    display: none;
+
+    &:not(:disabled) ~ label {
+        cursor: pointer;
+    }
+
+    &:disabled ~ label {
+        color: ${(props) => props.theme.color.veryLightGray};
+        box-shadow: none;
+        cursor: not-allowed;
+    }
+
+    &:checked + label {
+        font-weight: 700;
+        color: ${(props) => props.theme.color.background};
+        box-shadow: ${(props) => props.theme.borders.shadow};
+        background: ${(props) =>
+            (props.id === 'noResponse' && props.theme.color.lightGray) ||
+            (props.id === 'interview' && props.theme.color.primary) ||
+            (props.id === 'rejected' && props.theme.color.error)};
+    }
+`;
+
+export const Label = styled.label`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 6vmin;
+    line-height: 6vmin;
+    width: 100%;
+    background: ${(props) => props.theme.color.background};
+    border-radius: ${(props) => props.theme.borders.radius};
+    position: relative;
 `;
 
 export const ResponseGroup = styled.div`
@@ -138,7 +161,6 @@ export const ResponseGroup = styled.div`
     align-items: center;
     justify-content: center;
     gap: 1em;
-    background-color: ${(props) => props.theme.color.white};
     border-bottom-left-radius: ${(props) => props.theme.borders.radius};
     border-bottom-right-radius: ${(props) => props.theme.borders.radius};
 `;

@@ -7,11 +7,15 @@ export const Layout = styled.footer`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: ${(props) => props.theme.color.darkGray};
+    background-color: ${(props) => props.theme.color.footer};
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        display: none;
+    }
 `;
 
 export const FooterContainer = styled.div`
-    color: rgba(255, 255, 255, 0.69);
+    color: ${(props) => props.theme.color.contrastText};
 
     section {
         width: auto;
@@ -23,6 +27,11 @@ export const FooterContainer = styled.div`
     h2 {
         font-size: 2.7rem;
         font-weight: 400;
+        color: ${(props) => props.theme.color.contrastText};
+    }
+
+    p {
+        color: ${(props) => props.theme.color.contrastText};
     }
 
     a {

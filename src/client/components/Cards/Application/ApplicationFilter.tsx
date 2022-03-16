@@ -1,5 +1,4 @@
 import React from 'react';
-import { useAppSelector } from '../../../app/hooks';
 import { Application } from '../../../interfaces/application';
 import Checkbox from '../../Checkbox/checkbox';
 import StyleSelector from '../../StyleSelector/styleSelector';

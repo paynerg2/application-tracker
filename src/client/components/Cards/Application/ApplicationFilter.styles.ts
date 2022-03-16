@@ -18,8 +18,12 @@ export const Layout = styled.div`
     padding: 2vmin;
     box-sizing: border-box;
 
-    background: ${(props) => props.theme.color.lightBlue};
+    background: ${(props) => props.theme.color.surface};
     border-radius: ${(props) => props.theme.borders.radius};
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        display: none;
+    }
 `;
 
 export const CheckboxGroup = styled.div`
@@ -34,7 +38,7 @@ export const CountDisplay = styled.div`
     height: fit-content;
     width: 2vw;
     border-radius: ${(props) => props.theme.borders.radius};
-    background: ${(props) => props.theme.color.white};
+    background: ${(props) => props.theme.color.background};
     color: ${(props) => props.theme.color.lightGray};
     padding: 0.2vmin;
 
@@ -48,17 +52,17 @@ export const SearchBox = styled.input`
     flex-direction: row;
     height: 6vh;
     width: 20vw;
-    background: ${(props) => props.theme.color.white};
+    background: ${(props) => props.theme.color.background};
     border: 2px solid ${(props) => props.theme.color.lightGray};
     border-radius: ${(props) => props.theme.borders.radius};
     font-family: ${(props) => props.theme.font.primary};
     font-size: 1.25em;
-    color: ${(props) => props.theme.color.darkGray};
+    color: ${(props) => props.theme.color.mainText};
 
     padding: 1vmin;
     box-sizing: border-box;
 
     ::placeholder {
-        color: ${(props) => props.theme.color.lightGray};
+        color: ${(props) => props.theme.color.mainText};
     }
 `;

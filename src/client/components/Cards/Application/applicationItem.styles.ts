@@ -5,7 +5,7 @@ export const Item = styled.li`
     width: 60vw;
     min-width: 580px;
     border-radius: ${(props) => props.theme.borders.radius};
-    background-color: ${(props) => props.theme.color.white};
+    background-color: ${(props) => props.theme.color.background};
     padding: 2vmin;
     margin: 0;
     box-sizing: border-box;

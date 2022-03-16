@@ -1,42 +1,58 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useGetContactsQuery, useGetInterviewsQuery } from '../../services/api';
-import { Layout } from './Interviews.styles';
+import {
+    ContactSection,
+    InterviewSection,
+    Layout,
+    MobileButton,
+    MobileButtonSection,
+    SectionHeader,
+} from './Interviews.styles';
 import { List } from '../../components/List/list';
 import { CircularButton } from '../../components/InterviewList/InterviewList.styles';
 import ContactCard from '../../components/Cards/Contact/contactCard';
 import InterviewList from '../../components/InterviewList/InterviewList';
-import theme from '../../app/theme/theme';
-import Link from '../../components/Link/link';
 
 function Interviews() {
     const { data: interviews, isLoading: interviewsLoading } = useGetInterviewsQuery();
     const { data: contacts, isLoading: contactsLoading } = useGetContactsQuery();
+    const navigate = useNavigate();
+
+    const loading = interviewsLoading || contactsLoading;
+
+    if (loading) return <div>Loading...</div>;
 
     return (
-        <Layout>
-            <div style={{ height: '100%' }}>
-                <h2 style={{ fontSize: '2em' }}>
-                    <strong>Upcoming</strong>
-                </h2>
-                {interviews && <InterviewList interviews={interviews} />}
-            </div>
-            <div>
-                <h2 style={{ fontSize: '2em', display: 'flex', flexDirection: 'row' }}>
-                    <strong>Contacts</strong>
-                </h2>
-                <List style={{ background: `${theme.color.lightBlue}`, gap: '2vmin' }}>
-                    {contacts?.map((contact) => (
-                        <ContactCard key={contact.id} contact={contact} type="item" />
-                    ))}
-                    <Link
-                        style={{ alignSelf: 'end', marginRight: '2.5%', marginTop: '2.5%' }}
-                        to="/contacts/new/1"
-                    >
-                        <CircularButton>+</CircularButton>
-                    </Link>
-                </List>
-            </div>
-        </Layout>
+        <>
+            <Layout>
+                <InterviewSection>
+                    <SectionHeader>
+                        <strong>Upcoming</strong>
+                    </SectionHeader>
+                    {interviews && <InterviewList interviews={interviews} />}
+                </InterviewSection>
+                <ContactSection>
+                    <SectionHeader>
+                        <strong>Contacts</strong>
+                    </SectionHeader>
+                    <List>
+                        {contacts?.map((contact) => (
+                            <ContactCard key={contact.id} contact={contact} type="item" />
+                        ))}
+                        <CircularButton onClick={() => navigate('/contacts/new/1')}>
+                            +
+                        </CircularButton>
+                    </List>
+                </ContactSection>
+            </Layout>
+            <MobileButtonSection>
+                <MobileButton onClick={() => navigate('/interviews/new/1')} inverted>
+                    Add Interview
+                </MobileButton>
+                <MobileButton inverted>Add Contact</MobileButton>
+            </MobileButtonSection>
+        </>
     );
 }
 

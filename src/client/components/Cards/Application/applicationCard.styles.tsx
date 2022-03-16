@@ -1,22 +1,30 @@
 import styled from 'styled-components';
 export const Card = styled.div`
-    color: ${(props) => props.theme.color.desaturatedGray};
+    color: ${(props) => props.theme.color.mainText};
     height: 22vh;
     min-height: 22vh;
     width: 20vw;
     min-width: 20vw;
     border-radius: ${(props) => props.theme.borders.radius};
-    background: ${(props) => props.theme.color.white};
+    background: ${(props) => props.theme.color.secondarySurface};
 
     padding: 1rem;
     box-sizing: border-box;
 
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: fit-content 1fr 1fr 1fr;
 
     &:hover {
         box-shadow: ${(props) => props.theme.borders.shadow};
+    }
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        width: 48vw;
+        min-width: 28em;
+
+        margin: 0;
+        border-radius: 0;
     }
 `;
 
@@ -31,11 +39,16 @@ export const Title = styled.h2`
 export const Company = styled.h3`
     grid-row: 2/3;
     grid-column: 1/5;
-    align-self: start;
+    align-self: center;
+    justify-self: start;
     font-size: 0.8rem;
     font-weight: 500;
     color: ${(props) => props.theme.color.lightGray};
     margin: 0;
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        justify-self: center;
+    }
 `;
 
 export const Location = styled.div`
@@ -43,7 +56,7 @@ export const Location = styled.div`
     grid-column: 1/3;
     align-self: end;
     font-size: 0.8rem;
-    color: ${(props) => props.theme.color.desaturatedGray};
+    color: ${(props) => props.theme.color.mainText};
 `;
 
 export const Icon = styled.div`

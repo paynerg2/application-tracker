@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
+import { isEmpty } from '../../_helpers/objectHelpers';
 import Button from '../../components/Button/button';
 import LandingImage1 from '../../assets/Landing_Image1.svg';
 import LandingImage2 from '../../assets/Landing_Image2.svg';
@@ -20,7 +21,7 @@ function LandingPage() {
     let navigate = useNavigate();
 
     useEffect(() => {
-        if (user) {
+        if (!isEmpty(user)) {
             navigate('applications');
         }
     });

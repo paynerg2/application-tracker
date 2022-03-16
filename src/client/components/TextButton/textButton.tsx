@@ -12,12 +12,12 @@ type Color = Props['color'];
 const handleColor = (color: Color) => {
     switch (color) {
         case 'primary':
-            return theme.color.primaryBlue;
+            return theme.color.primary;
         case 'destructive':
             return theme.color.error;
         case 'neutral':
         default:
-            return theme.color.desaturatedGray;
+            return theme.color.mainText;
     }
 };
 
@@ -28,7 +28,7 @@ const Button = styled.button<Props>`
     border: none;
     font-size: 1.2em;
     font-weight: 700;
-    color: ${(props) => props.theme.color.desaturatedGray};
+    color: ${(props) => props.theme.color.mainText};
 
     cursor: pointer;
 

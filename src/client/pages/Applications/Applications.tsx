@@ -22,11 +22,9 @@ import { useAppSelector } from '../../app/hooks';
 
 function Applications() {
     const defaultApplicationDisplayStyle = useAppSelector(
-        (state) => state.auth.user.settings.defaultApplicationDisplayStyle
+        (state) => state.auth.user?.settings?.defaultApplicationDisplayStyle
     );
-    const [isCardView, setIsCardView] = useState(
-        defaultApplicationDisplayStyle.toLowerCase() === 'card'
-    );
+    const [isCardView, setIsCardView] = useState(defaultApplicationDisplayStyle === 'Card');
     const defaultFilters = ['Open'];
     const [filters, setFilters] = useState<string[]>(defaultFilters);
     const { data, error, isLoading } = useGetApplicationsQuery();
@@ -34,6 +32,7 @@ function Applications() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        //setIsCardView(defaultApplicationDisplayStyle === 'Card');
         if (data) {
             // Need to act on copies of data, because sorting directly affects the object.
             const applications = [...data];
@@ -72,7 +71,7 @@ function Applications() {
             <>
                 {!isLoading ? (
                     <SubmissionsList>
-                        <h2 style={{ fontSize: '2em' }}>
+                        <h2>
                             <strong>Submitted Applications</strong>
                         </h2>
                         {/* Map submissions to an application card separated by
@@ -135,7 +134,7 @@ function Applications() {
                                             <strong>{application.company}</strong>
                                         </div>
                                         <div>{application.location}</div>
-                                        <div>{iconSelector(application.mainSkill)}</div>
+                                        <div id="icon">{iconSelector(application.mainSkill)}</div>
                                     </ApplicationListItem>
                                 ))}
                         </ApplicationListContainer>
@@ -152,9 +151,9 @@ function Applications() {
             <NewApplication>
                 <h2>Add Application</h2>
                 <p>Log a new submitted application</p>
-                <Link to="new/1">
-                    <Button inverted>New Application</Button>
-                </Link>
+                <Button onClick={() => navigate('/applications/new/1')} inverted>
+                    New Application
+                </Button>
             </NewApplication>
             {isCardView ? getCardView() : getListView()}
             <ApplicationFilter

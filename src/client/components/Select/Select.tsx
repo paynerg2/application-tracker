@@ -14,7 +14,8 @@ export const StyledSelect = styled.select`
     font-size: 1rem;
     border-radius: ${(props) => props.theme.borders.radius};
     border: solid 1px rgba(0, 0, 0, 0.15);
-    color: ${(props) => props.theme.color.desaturatedGray};
+    background-color: ${(props) => props.theme.color.input};
+    color: ${(props) => props.theme.color.mainText};
     padding: 0.75rem;
     box-sizing: border-box;
     cursor: pointer;
@@ -28,11 +29,11 @@ export const StyledSelect = styled.select`
     &:focus,
     :active {
         outline: none !important;
-        box-shadow: 0 0 2px ${(props) => props.theme.color.primaryBlue};
+        box-shadow: 0 0 2px ${(props) => props.theme.color.primary};
     }
 
     > option {
-        color: ${(props) => props.theme.color.desaturatedGray};
+        color: ${(props) => props.theme.color.mainText};
     }
 `;
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
     useDeleteApplicationMutation,
+    useEditApplicationMutation,
     useGetApplicationsQuery,
     useGetContactsQuery,
     useGetInterviewsQuery,
@@ -22,6 +23,7 @@ import {
     RelatedInfoSection,
     Response,
     ResponseGroup,
+    Label,
 } from './Application.styles';
 import { theme } from '../../app/theme/theme';
 import DateContainer from '../../components/DateContainer/dateContainer';
@@ -33,7 +35,8 @@ import { List } from '../../components/List/list';
 import ContactCard from '../../components/Cards/Contact/contactCard';
 import Link from '../../components/Link/link';
 import Modal from '../../components/Modal/modal';
-import ConfirmationDialog from '../../components/ConfirmationDialog/confirmationDialog';
+import Prompt from '../../components/Prompt/prompt';
+import { Application as IApplication } from '../../interfaces/application';
 
 // Note: Declared as type instead of interface to avoid a strange bug
 // insisting that id satisfy Record<string, string | undefined>
@@ -45,6 +48,7 @@ type ApplicationParams = {
 
 function Application() {
     const [showModal, setShowModal] = useState(false);
+    const [showAddInterviewPrompt, setShowAddInterviewPrompt] = useState(false);
     const navigate = useNavigate();
     const { id } = useParams<ApplicationParams>();
     const { application, ...rest } = useGetApplicationsQuery(undefined, {
@@ -63,8 +67,8 @@ function Application() {
             contacts: data?.filter((c) => c.company === application?.company),
         }),
     });
-
     const [deleteApplication, { isLoading }] = useDeleteApplicationMutation();
+    const [editApplication] = useEditApplicationMutation();
 
     if (rest.isLoading) {
         return <div>Loading...</div>;
@@ -74,7 +78,7 @@ function Application() {
         return <div>Something went wrong.</div>;
     }
 
-    const getYearsOfExperience = () => {
+    const getYearsOfExperience = (): JSX.Element => {
         const { yearsOfExperience } = application;
         const timeFrame = yearsOfExperience === 1 ? 'year' : 'years';
         return (
@@ -85,7 +89,7 @@ function Application() {
         );
     };
 
-    const getRequestedDegreeLevel = () => {
+    const getRequestedDegreeLevel = (): string => {
         const { degreeLevel } = application;
         let result = 'No degree';
         if (degreeLevel !== 'None') {
@@ -96,7 +100,7 @@ function Application() {
 
     const getSkillsMetTextColor = (met: number, total: number): string => {
         const fraction = met / total;
-        let color = theme.color.desaturatedGray;
+        let color = theme.color.mainText;
         if (fraction <= 0.33) {
             color = theme.color.error;
         } else if (33 < fraction || fraction <= 0.8) {
@@ -107,15 +111,28 @@ function Application() {
         return color;
     };
 
-    const handleDelete = async () => {
+    const handleDelete = async (): Promise<void> => {
         // Since this component should not be routed to if an :id is not present,
         // we insist that it exists.
         await deleteApplication(id!);
         navigate('/applications');
     };
 
-    const handleEdit = () => {
+    const handleEdit = (): void => {
         navigate(`/applications/edit/${application.id}/1`);
+    };
+
+    const handleResponseChanged = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+        console.log(e.target.value);
+        const updatedApplication: IApplication = {
+            ...application,
+            response: e.target.value as typeof application.response,
+        };
+        await editApplication(updatedApplication);
+
+        if (e.target.value === 'Interview') {
+            setShowAddInterviewPrompt(true);
+        }
     };
 
     return (
@@ -148,9 +165,30 @@ function Application() {
                         }}
                     >
                         <ResponseGroup>
-                            <Response>No Response</Response>
-                            <Response>Interview</Response>
-                            <Response>Rejected</Response>
+                            <Response
+                                id="noResponse"
+                                name="response"
+                                value="No Response"
+                                checked={application.response === 'No Response'}
+                                onChange={handleResponseChanged}
+                            />
+                            <Label htmlFor="noResponse">No Response</Label>
+                            <Response
+                                id="interview"
+                                name="response"
+                                value="Interview"
+                                checked={application.response === 'Interview'}
+                                onChange={handleResponseChanged}
+                            />
+                            <Label htmlFor="interview">Interview</Label>
+                            <Response
+                                id="rejected"
+                                name="response"
+                                value="Rejected"
+                                checked={application.response === 'Rejected'}
+                                onChange={handleResponseChanged}
+                            />
+                            <Label htmlFor="rejected">Rejected</Label>
                         </ResponseGroup>
                         <ApplicationDetails>
                             <Location>{application.location}</Location>
@@ -227,7 +265,7 @@ function Application() {
                                     {contacts && contacts.length > 0 && (
                                         <List
                                             style={{
-                                                background: `${theme.color.lightBlue}`,
+                                                background: `${theme.color.secondary}`,
                                                 gap: 0,
                                             }}
                                         >
@@ -246,7 +284,17 @@ function Application() {
                 </Container>
             </Layout>
             <Modal show={showModal}>
-                <ConfirmationDialog confirm={handleDelete} cancel={() => setShowModal(false)} />
+                <Prompt confirm={handleDelete} cancel={() => setShowModal(false)}>
+                    Are you sure you want to do delete this application?
+                </Prompt>
+            </Modal>
+            <Modal show={showAddInterviewPrompt}>
+                <Prompt
+                    confirm={() => navigate('/interviews/new/1')}
+                    cancel={() => setShowAddInterviewPrompt(false)}
+                >
+                    Would you like to add this interview now?
+                </Prompt>
             </Modal>
         </>
     );

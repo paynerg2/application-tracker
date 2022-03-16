@@ -8,7 +8,7 @@ export const Container = styled.div`
 
     height: 30vh;
     width: 30vw;
-    background: ${(props) => props.theme.color.white};
+    background: ${(props) => props.theme.color.secondarySurface};
     border-radius: ${(props) => props.theme.borders.radius};
     box-shadow: ${(props) => props.theme.borders.shadow};
 `;

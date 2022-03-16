@@ -11,9 +11,9 @@ export const List = styled.ul`
     width: 100%;
     background: linear-gradient(
         to right,
-        ${(props) => props.theme.color.primaryBlue} 10%,
-        ${(props) => props.theme.color.lightBlue} 10%,
-        ${(props) => props.theme.color.lightBlue} 100%
+        ${(props) => props.theme.color.primary} 10%,
+        ${(props) => props.theme.color.surface} 10%,
+        ${(props) => props.theme.color.surface} 100%
     );
     list-style: none;
 

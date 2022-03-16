@@ -7,10 +7,11 @@ const Button = styled.button<{ inverted?: boolean }>`
     font-weight: 700;
     font-size: 1rem;
     border-radius: ${(props) => props.theme.borders.radius};
-    border: 1px solid ${(props) => props.theme.color.primaryBlue};
+    border: 1px solid ${(props) => props.theme.color.primary};
     background-color: ${(props) =>
-        props.inverted ? props.theme.color.white : props.theme.color.primaryBlue};
-    color: ${(props) => (props.inverted ? props.theme.color.primaryBlue : props.theme.color.white)};
+        props.inverted ? props.theme.color.buttonInverted : props.theme.color.button};
+    color: ${(props) =>
+        props.inverted ? props.theme.color.button : props.theme.color.buttonInverted};
     cursor: pointer;
     box-sizing: border-box;
 

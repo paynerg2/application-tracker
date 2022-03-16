@@ -25,14 +25,14 @@ export const Slider = styled.span`
         left: 4px;
         bottom: 4px;
         border-radius: 50%;
-        background-color: ${(props) => props.theme.color.white};
+        background-color: ${(props) => props.theme.color.secondarySurface};
         transition: ${transitionTime};
     }
 `;
 
 export const Checkbox = styled.input.attrs({ type: 'checkbox' })`
     &:checked + ${Slider} {
-        background-color: ${(props) => props.theme.color.primaryBlue};
+        background-color: ${(props) => props.theme.color.primary};
     }
 
     &:checked + ${Slider}::before {
