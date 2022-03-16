@@ -61,9 +61,9 @@ export const api = createApi({
             },
             invalidatesTags: ['User'],
         }),
-        updateUserSettings: build.mutation<any, any>({
+        updateUserSettings: build.mutation<any, Partial<User>>({
             query: (data) => {
-                const { id, ...rest } = data;
+                const { _id: id, ...rest } = data;
                 return {
                     url: `/users/${id}/settings`,
                     method: 'PATCH',
