@@ -10,7 +10,8 @@ export const Layout = styled.div`
     row-gap: 2vh;
 
     width: 80vw;
-    min-height: 90vh;
+    //min-height: 90vh;
+    height: auto;
     margin: 0 auto;
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
@@ -170,6 +171,7 @@ export const ApplicationListContainer = styled.ul`
     }
 `;
 
+export const applicationListItemHeight = '15vmin';
 export const ApplicationListItem = styled.li`
     display: grid;
     // This syntax gives 5 equal-sized columns
@@ -177,7 +179,7 @@ export const ApplicationListItem = styled.li`
     grid-auto-flow: column;
     align-items: center;
 
-    height: 15vmin;
+    height: ${applicationListItemHeight};
     width: 95%;
 
     border-radius: ${(props) => props.theme.borders.radius};

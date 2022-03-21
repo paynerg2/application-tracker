@@ -16,7 +16,7 @@
         "noFallthroughCasesInSwitch": true,
         "skipLibCheck": true,
         "useUnknownInCatchVariables": false,
-        "types": ["react/next", "react-dom/next"]
+        "types": ["react/next", "react-dom/next", "jest"]
     },
     "include": ["src"]
 }

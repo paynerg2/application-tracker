@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/button';
 import {
     ApplicationCardContainer,
@@ -9,24 +9,41 @@ import {
     NewApplication,
     SubmissionsContainer,
     SubmissionsList,
+    applicationListItemHeight,
 } from './Applications.styles';
 import DateContainer from '../../components/DateContainer/dateContainer';
 
 import { Application } from '../../interfaces/application';
 import ApplicationCard from '../../components/Cards/Application/applicationCard';
+import { applicationCardHeight } from '../../components/Cards/Application/applicationCard.styles';
 import ApplicationFilter from '../../components/Cards/Application/ApplicationFilter';
 import { applicationHelpers } from '../../_helpers/applicationHelpers';
 import { useGetApplicationsQuery } from '../../services/api';
 import { iconSelector } from '../../_helpers/iconSelector';
 import { useAppSelector } from '../../app/hooks';
+import SkeletonList from '../../components/List/skeletonList';
+
+export interface ApplicationFilters {
+    response: string;
+    remoteOnly: boolean;
+    locations: string[];
+    skills: string[];
+}
 
 function Applications() {
     const defaultApplicationDisplayStyle = useAppSelector(
         (state) => state.auth.user?.settings?.defaultApplicationDisplayStyle
     );
     const [isCardView, setIsCardView] = useState(defaultApplicationDisplayStyle === 'Card');
-    const defaultFilters = ['Open'];
-    const [filters, setFilters] = useState<string[]>(defaultFilters);
+
+    const defaultFilters: ApplicationFilters = {
+        response: 'Open',
+        remoteOnly: false,
+        locations: [],
+        skills: [],
+    };
+    const [filters, setFilters] = useState<ApplicationFilters>(defaultFilters);
+
     const { data, error, isLoading } = useGetApplicationsQuery();
     const [filteredApplications, setFilteredApplications] = useState<Application[]>([]);
     const navigate = useNavigate();
@@ -40,11 +57,6 @@ function Applications() {
         }
     }, [filters, data]);
 
-    // Todo: Add a Skeleton (suspense?)
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
     // Todo: Add a better error dialogue
     if (error || !data) {
         return <div>Something went wrong...</div>;
@@ -52,13 +64,37 @@ function Applications() {
 
     const groupedApplications = applicationHelpers.groupApplicationsByDate(filteredApplications);
 
-    const onFilterChange = (newFilter: string) => {
-        if (filters.includes(newFilter)) {
-            // remove
-            setFilters((prev) => prev.filter((f) => f !== newFilter));
-        } else {
-            // add
-            setFilters((prev) => prev.concat(newFilter));
+    const onFilterChange = (newFilter: string, type: string) => {
+        if (type === 'response') {
+            setFilters((prev) => ({ ...prev, response: newFilter }));
+        }
+
+        if (type === 'remoteOnly') {
+            // Toggle remote filter
+            setFilters((prev) => ({ ...prev, remoteOnly: !prev.remoteOnly }));
+        }
+
+        if (type === 'location') {
+            if (filters.locations.includes(newFilter)) {
+                // Remove filter, since this means it was unchecked
+                setFilters((prev) => ({
+                    ...prev,
+                    locations: prev.locations.filter((l) => l !== newFilter),
+                }));
+            } else {
+                setFilters((prev) => ({ ...prev, locations: [...prev.locations, newFilter] }));
+            }
+        }
+
+        if (type === 'skill') {
+            if (filters.skills.includes(newFilter)) {
+                setFilters((prev) => ({
+                    ...prev,
+                    skills: prev.skills.filter((l) => l !== newFilter),
+                }));
+            } else {
+                setFilters((prev) => ({ ...prev, skills: [...prev.skills, newFilter] }));
+            }
         }
     };
 
@@ -99,7 +135,11 @@ function Applications() {
                         )}
                     </SubmissionsList>
                 ) : (
-                    <div>Loading...</div>
+                    <SubmissionsList>
+                        {[1, 2, 3].map((loading) => (
+                            <SkeletonList width={'100%'} height={applicationCardHeight} />
+                        ))}
+                    </SubmissionsList>
                 )}
             </>
         );
@@ -140,7 +180,11 @@ function Applications() {
                         </ApplicationListContainer>
                     </SubmissionsList>
                 ) : (
-                    <div>Loading...</div>
+                    <SubmissionsList>
+                        {[1, 2, 3, 4].map((loading) => (
+                            <SkeletonList width={'100%'} height={applicationListItemHeight} />
+                        ))}
+                    </SubmissionsList>
                 )}
             </>
         );
@@ -156,12 +200,20 @@ function Applications() {
                 </Button>
             </NewApplication>
             {isCardView ? getCardView() : getListView()}
-            <ApplicationFilter
-                applications={data || []}
-                filters={filters}
-                onChange={onFilterChange}
-                setIsCardView={setIsCardView}
-            />
+            {!isLoading ? (
+                <ApplicationFilter
+                    applications={data || []}
+                    filters={filters}
+                    onChange={onFilterChange}
+                    setIsCardView={setIsCardView}
+                />
+            ) : (
+                <SkeletonList
+                    height={'40vh'}
+                    width={'90%'}
+                    style={{ gridColumn: '1 / 3', gridRow: 2 }}
+                />
+            )}
         </Layout>
     );
 }

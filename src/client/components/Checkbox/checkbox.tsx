@@ -5,16 +5,17 @@ import { Checkmark, Container, StyledCheckbox } from './checkbox.styles';
 interface Props {
     label: string;
     style?: React.CSSProperties;
-    onChange: (s: string) => void;
+    onChange: (s: string, type: string) => void;
     checked?: boolean;
+    type?: string;
 }
 
-function Checkbox({ label, style, onChange, checked = false }: Props) {
+function Checkbox({ label, style, onChange, checked = false, type = '' }: Props) {
     const [isChecked, setIsChecked] = useState(checked);
 
     const handleOnChange = () => {
         setIsChecked((prev) => !prev);
-        onChange(label);
+        onChange(label, type);
     };
 
     return (

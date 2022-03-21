@@ -1,13 +1,14 @@
 import React from 'react';
 import { Application } from '../../../interfaces/application';
+import { ApplicationFilters } from '../../../pages/Applications/Applications';
 import Checkbox from '../../Checkbox/checkbox';
 import StyleSelector from '../../StyleSelector/styleSelector';
 import { CheckboxGroup, CountDisplay, Layout, SearchBox } from './ApplicationFilter.styles';
 
 interface Props {
     applications: Application[];
-    filters: string[];
-    onChange: (s: string) => void;
+    filters: ApplicationFilters;
+    onChange: (s: string, type: string) => void;
     setIsCardView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -43,18 +44,23 @@ function ApplicationFilter({ applications, filters, onChange, setIsCardView }: P
             <SearchBox placeholder="Search..." />
             <StyleSelector toggleCardView={() => setIsCardView((prev) => !prev)} />
             <CheckboxGroup>
-                <Checkbox label="Remote" onChange={onChange} />
+                <Checkbox label="Remote" onChange={onChange} type="remoteOnly" />
                 <CountDisplay>{remoteJobsCount}</CountDisplay>
             </CheckboxGroup>
             <CheckboxGroup>
-                <Checkbox label="Open" onChange={onChange} checked={filters.includes('Open')} />
+                <Checkbox
+                    label="Open"
+                    onChange={onChange}
+                    checked={filters.response === 'Open'}
+                    type="response"
+                />
                 <CountDisplay>{openSubmissionsCount}</CountDisplay>
             </CheckboxGroup>
             {Object.keys(mainSkillsFrequencyMap)
                 .sort()
                 .map((key) => (
                     <CheckboxGroup key={key}>
-                        <Checkbox label={key} onChange={onChange} />
+                        <Checkbox label={key} onChange={onChange} type="skill" />
                         <CountDisplay>{mainSkillsFrequencyMap[key]}</CountDisplay>
                     </CheckboxGroup>
                 ))}
@@ -62,7 +68,7 @@ function ApplicationFilter({ applications, filters, onChange, setIsCardView }: P
                 .sort()
                 .map((key) => (
                     <CheckboxGroup key={key}>
-                        <Checkbox label={key} onChange={onChange} />
+                        <Checkbox label={key} onChange={onChange} type="location" />
                         <CountDisplay>{locationFrequencyMap[key]}</CountDisplay>
                     </CheckboxGroup>
                 ))}

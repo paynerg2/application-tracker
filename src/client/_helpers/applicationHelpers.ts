@@ -1,11 +1,19 @@
 import { Application } from '../interfaces/application';
-
-// TODO: UNIT TEST
+import { ApplicationFilters } from '../pages/Applications/Applications';
 
 export interface GroupedApplications {
     [date: string]: Application[];
 }
 
+/**
+ * Helper function for transforming application data into the format expected for
+ * displaying the Card View on the applications page.
+ *
+ * @param applications Array of applications to be indexed
+ * @param sortDescending Dictates the sort direction for date indices
+ * @returns Applications indexed by dateApplicationSent property
+ * as a date string of the format 'Mon DD, YYYY'
+ * */
 const groupApplicationsByDate = (
     applications: Application[],
     sortDescending = true
@@ -22,24 +30,35 @@ const groupApplicationsByDate = (
     }, Object.create(null));
 };
 
-const filterApplications = (applications: Application[], filters: string[]) => {
-    if (filters.includes('Remote')) {
-        applications = applications.filter((a) => a.location.toLowerCase() === 'remote');
-        filters = filters.filter((f) => f !== 'Remote');
-    }
-
-    if (filters.includes('Open')) {
+/**
+ * Helper function for filtering applications based on the response, mainSkill and location
+ * properties. Not intended as a general filtering function
+ * responses filter exclusively
+ * mainSkills filter inclusively
+ * locations filter exclusively
+ * All filters are done with exact matches
+ * @param applications A list of applications to be filtered
+ * @param filters A list of filters, restricted to values corresponding to mainSkills and locations
+ * @returns A list of applications which meet the filtering requirements
+ */
+const filterApplications = (applications: Application[], filters: ApplicationFilters) => {
+    if (filters.response === 'Open') {
         applications = applications.filter((a) => a.response !== 'Rejected');
-        filters = filters.filter((f) => f !== 'Open');
     }
 
-    if (filters.length === 0) {
-        return applications;
+    if (filters.remoteOnly) {
+        applications = applications.filter((a) => a.location.toLowerCase() === 'remote');
     }
 
-    return applications.filter(
-        (a) => filters.includes(a.mainSkill) || filters.includes(a.location)
-    );
+    if (filters.skills.length > 0) {
+        applications = applications.filter((a) => filters.skills.includes(a.mainSkill));
+    }
+
+    if (!filters.remoteOnly && filters.locations.length > 0) {
+        applications = applications.filter((a) => filters.locations.includes(a.location));
+    }
+
+    return applications;
 };
 
 export const applicationHelpers = {
