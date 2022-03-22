@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Routes, Route } from 'react-router-dom';
-import mobileBackground from './assets/Background_mobile.png';
 import ScrollToTop from './common/ScrollToTop/scrollToTop';
 import Login from './pages/Login/Login';
 import Applications from './pages/Applications/Applications';
@@ -18,18 +17,21 @@ import ContactForm from './pages/Forms/Contact/ContactForm';
 import InterviewForm from './pages/Forms/Interview/InterviewForm';
 import EditProfile from './pages/UserProfile/EditProfile';
 import RequireAuth from './components/RequireAuth/requireAuth';
+import Stats from './pages/Stats/Stats';
 
 const Container = styled.div`
     min-height: 100vh;
     min-width: 100%;
-    background-image: ${(props) => props.theme.background};
-    background-size: contain;
-    background-repeat: no-repeat;
+    background: linear-gradient(
+        45deg,
+        ${(props) => props.theme.color.background} 0%,
+        ${(props) => props.theme.color.background} 40%,
+        ${(props) => props.theme.color.backgroundStripe} 40%,
+        ${(props) => props.theme.color.backgroundStripe} 70%,
+        ${(props) => props.theme.color.background} 70%,
+        ${(props) => props.theme.color.background} 100%
+    );
     box-sizing: border-box;
-
-    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
-        background-image: ${(props) => props.theme.mobileBackground};
-    }
 `;
 
 function App() {
@@ -57,6 +59,7 @@ function App() {
                         <Route path="contacts/new/*" element={<ContactForm />} />
                         <Route path="contacts/edit/:id/*" element={<ContactForm isEdit />} />
                         <Route path="me" element={<EditProfile />} />
+                        <Route path="/stats" element={<Stats />} />
                     </Route>
                     <Route path="404" element={<NotFound />} />
                     <Route path="testing" element={<Test />} />
