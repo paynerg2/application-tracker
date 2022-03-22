@@ -7,10 +7,11 @@ export const applicationValidationSchema = yup.object({
     jobTitle: yup.string().required(requiredError),
     company: yup.string().required(requiredError),
     location: yup.string().required(requiredError),
-    requiredSkillsTotal: yup.number().min(0, negativeNumberError),
+    requiredSkillsTotal: yup.number().required(requiredError).min(0, negativeNumberError),
     requiredSkillsMet: yup
-        .number()
-        .min(0, negativeNumberError)
+        .mixed()
+        .required(requiredError)
+        .test('nonnegative', negativeNumberError, (value) => value >= 0)
         .test({
             name: 'max',
             exclusive: false,
@@ -20,10 +21,11 @@ export const applicationValidationSchema = yup.object({
                 return value! <= parseInt(this.parent.requiredSkillsTotal);
             },
         }),
-    additionalSkillsTotal: yup.number().min(0, negativeNumberError),
+    additionalSkillsTotal: yup.number().required(requiredError).min(0, negativeNumberError),
     additionalSkillsMet: yup
-        .number()
-        .min(0, negativeNumberError)
+        .mixed()
+        .required(requiredError)
+        .test('nonnegative', negativeNumberError, (value) => value >= 0)
         .test({
             name: 'max',
             exclusive: false,
