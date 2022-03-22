@@ -1,7 +1,3 @@
-import desktopBackground from '../../assets/Background_desktop.png';
-import desktopBackgroundDark from '../../assets/Background_desktop_dark.png';
-import mobileBackground from '../../assets/Background_mobile.png';
-import mobileBackgroundDark from '../../assets/Background_mobile_dark.png';
 import logo from '../../assets/Logo.svg';
 import darkLogo from '../../assets/Dark_Logo.svg';
 
@@ -10,6 +6,7 @@ export const theme = {
         primary: '#006F83',
         secondary: '#F5FBFF',
         background: '#FFF',
+        backgroundStripe: '#E1EFF3',
         mainText: '#4F4F4F',
         contrastText: '#FFF',
         footer: '#444',
@@ -40,8 +37,6 @@ export const theme = {
         radius: '1vmin',
         shadow: '2px 2px 10px rgba(0,0,0,0.15)',
     },
-    background: `url(${desktopBackground})`,
-    mobileBackground: `url(${mobileBackground})`,
     logo: `url(${logo})`,
 };
 
@@ -51,6 +46,7 @@ export const darkTheme = {
         primary: '#332940',
         secondary: '#101D21',
         background: '#121212',
+        backgroundStripe: '#211A1E',
         mainText: 'rgba(255,255,255,0.87)',
         contrastText: '#rgba(255,255,255,0.87)',
         footer: '#000',
@@ -69,8 +65,6 @@ export const darkTheme = {
         dropzone: '#A1A1A1',
         dropzoneText: '#rgba(255,255,255,0.87)',
     },
-    background: `url(${desktopBackgroundDark})`,
-    mobileBackground: `url(${mobileBackgroundDark})`,
     logo: `url(${darkLogo})`,
 };
 
