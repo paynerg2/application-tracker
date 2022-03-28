@@ -1,24 +1,12 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useCallback, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-
-import Button from '../../components/Button/button';
-import Input from '../../components/Input/input';
-import Link from '../../components/Link/link';
-import {
-    FormHeader,
-    Error,
-    Layout,
-    Container,
-    Form,
-    FormSection,
-    Image,
-} from '../../components/Form/form';
-import { ImageSection } from './Login.styles';
-import LoginImage from '../../assets/login_image.svg';
 import { useLoginMutation } from '../../services/api';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { setUser } from '../../state/authSlice';
+import Step1 from './Step1';
+import FormPage from '../Forms/FormPage';
+import TextButton from '../../components/TextButton/textButton';
+import LoginImage from '../../assets/login_image.svg';
 
 interface LocationState {
     from: {
@@ -27,18 +15,19 @@ interface LocationState {
 }
 
 function Login() {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const dispatch = useAppDispatch();
+    const user = useAppSelector((state) => state.auth.user);
+    const [loginMutation] = useLoginMutation();
     const navigate = useNavigate();
     const location = useLocation();
-    const dispatch = useAppDispatch();
-    const [loginMutation] = useLoginMutation();
     const state = location.state as LocationState;
-
     const { from } = state || { from: { pathname: '/' } };
+
+    useEffect(() => {
+        if (user) {
+            navigate(from, { replace: true });
+        }
+    }, [user, dispatch]);
 
     const onSubmit = async (data: any) => {
         try {
@@ -47,49 +36,34 @@ function Login() {
                 window.localStorage.setItem('token', loginResponse.token);
             }
             dispatch(setUser(loginResponse.user));
-            navigate(from, { replace: true });
         } catch (error) {
             // TODO: implement central error handling
         }
     };
+    const handleSubmit = useCallback(onSubmit, []);
 
     return (
-        <Layout>
-            <Container>
-                <FormSection>
-                    <FormHeader>Login</FormHeader>
-                    <Form id="loginForm" onSubmit={handleSubmit(onSubmit)}>
-                        <Input id="email" label="Email" register={register} required type="text" />
-                        <Error>{errors.email ? 'Required' : ' '}</Error>
-                        <Input
-                            id="password"
-                            label="Password"
-                            register={register}
-                            required
-                            type="password"
-                        />
-                        <Error>{errors.password ? 'Required' : ' '}</Error>
-                    </Form>
-
-                    <Button
-                        disabled={errors.email || errors.password}
-                        type="submit"
-                        form="loginForm"
-                    >
-                        Login
-                    </Button>
-                    <section style={{ textAlign: 'center' }}>
-                        <Link to="#">Forgot password?</Link>
-                        <p>
-                            Not registered yet? <Link to="/signup">Create an account</Link>
-                        </p>
-                    </section>
-                </FormSection>
-                <ImageSection>
-                    <Image aria-hidden={true} src={LoginImage} alt="Login Image" />
-                </ImageSection>
-            </Container>
-        </Layout>
+        <>
+            <FormPage
+                onSubmit={handleSubmit}
+                steps={[Step1]}
+                image={LoginImage}
+                header="Register"
+                initialValues={{}}
+            >
+                <section style={{ textAlign: 'center' }}>
+                    <TextButton style={{ fontSize: '1em' }} onClick={() => navigate('#')}>
+                        Forgot password?
+                    </TextButton>
+                    <p>
+                        Not registered yet?{' '}
+                        <TextButton style={{ fontSize: '1em' }} onClick={() => navigate('/signup')}>
+                            Create an account
+                        </TextButton>
+                    </p>
+                </section>
+            </FormPage>
+        </>
     );
 }
 

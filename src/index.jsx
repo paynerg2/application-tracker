@@ -8,13 +8,9 @@ import App from './client/App';
 import GlobalCSS from './client/app/theme/global.css';
 import DarkThemeProvider from './client/components/DarkThemeProvider/darkThemeProvider';
 
-const container = document.querySelector('#root');
-const root = ReactDOM.createRoot(container);
-if (!root) throw new Error('Failed to find the root element.');
-
 console.log(store.getState());
 
-root.render(
+ReactDOM.render(
     <Provider store={store}>
         <DarkThemeProvider>
             <BrowserRouter>
@@ -22,5 +18,6 @@ root.render(
                 <App />
             </BrowserRouter>
         </DarkThemeProvider>
-    </Provider>
+    </Provider>,
+    document.querySelector('#root')
 );

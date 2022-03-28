@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { StepActionTypes } from '../../_helpers/useStepper';
 import { StepIndicator, StepContainer } from './stepper.styles';
 
 /**
@@ -11,20 +11,25 @@ import { StepIndicator, StepContainer } from './stepper.styles';
 interface Props {
     steps: number;
     currentStep: number;
+    dispatch: any;
     baseRoute?: string;
 }
 
-function Stepper({ steps, currentStep, baseRoute }: Props) {
-    const navigate = useNavigate();
+function Stepper({ steps, currentStep, dispatch }: Props) {
+    const handleClick = (step: number) => {
+        console.log(step);
+        dispatch({
+            type: StepActionTypes.SETSTEP,
+            payload: {
+                step,
+            },
+        });
+    };
 
     return (
-        <StepContainer>
+        <StepContainer id="stepper">
             {Array.from(Array(steps).keys()).map((x) => (
-                <StepIndicator
-                    onClick={() => navigate(`${baseRoute}/${x + 1}`)}
-                    key={x}
-                    active={x + 1 === currentStep}
-                >
+                <StepIndicator key={x} active={x === currentStep} onClick={() => handleClick(x)}>
                     {(x + 1).toString()}
                 </StepIndicator>
             ))}

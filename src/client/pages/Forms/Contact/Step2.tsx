@@ -1,54 +1,46 @@
 import React from 'react';
 import Input from '../../../components/Input/input';
-import { Error } from '../../../components/Form/form';
-import Button from '../../../components/Button/button';
 import { useGetApplicationsQuery } from '../../../services/api';
+import { useFormContext } from 'react-hook-form';
+import { contactStepTwoValidationSchema as validationSchema } from '../../../_helpers/validators/contactValidationSchema';
+import { Contact } from '../../../interfaces/contact';
 
-interface Props {
-    register: any;
-    errors: any;
-    isValid: boolean;
-}
+const defaultValues: Partial<Contact> = {
+    company: '',
+    position: '',
+};
 
-function Step2({ register, errors, isValid }: Props) {
+function Step2() {
     const { companyNames, ...rest } = useGetApplicationsQuery(undefined, {
         selectFromResult: ({ data, ...rest }) => ({
             ...rest,
             companyNames: [...new Set(data?.map((a) => a.company))],
         }),
     });
+    const { register } = useFormContext();
 
     return (
         <>
-            <Input
-                id="company"
-                label="Company Name"
-                register={register}
-                required
-                type="text"
-                list="companyNames"
-            />
+            <Input label="Company" type="text" list="companyNames" {...register('company')} />
             <datalist id="companyNames">
                 {companyNames.map((c) => (
                     <option key={c}>{c}</option>
                 ))}
             </datalist>
-            <Error>{errors.company && errors.company.message}</Error>
 
             <Input
-                id="position"
                 label="What is their position in the company?"
-                register={register}
-                required={false}
                 type="text"
+                {...register('position')}
             />
-            <Error>{errors.position && errors.position.message}</Error>
-
-            <Button disabled={!isValid} type="submit">
-                Continue
-            </Button>
         </>
     );
 }
 
-export default Step2;
+export default {
+    Component: Step2,
+    defaultValues,
+    validationSchema,
+    label: 'Step Two',
+    key: 'stepTwo',
+};

@@ -12,8 +12,8 @@ export const Container = styled.div<Props>`
     align-items: center;
     justify-content: center;
 
-    height: 15vh;
-    width: calc(100% - 20vmin);
+    height: 8em;
+    width: fit-content;
     padding: 2em;
     box-sizing: border-box;
     text-align: center;

@@ -1,60 +1,73 @@
 import React, { InputHTMLAttributes } from 'react';
-import styled from 'styled-components';
+import { FieldValues, useController, UseFormRegister } from 'react-hook-form';
+import { Error } from '../Form/form';
+import { StyledInput, Label, SmallInput, TwoColumnFormInput, MinorLabel } from './input.styles';
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-    id: string;
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
+    name: string;
     label: string;
-    register: any;
-    required: boolean;
+    small?: boolean;
+    control?: any;
+    register?: UseFormRegister<FieldValues>;
 }
 
-export const StyledInput = styled.input`
-    text-align: left;
-    font-size: 1rem;
-    border-radius: ${(props) => props.theme.borders.radius};
-    border: solid 1px rgba(0, 0, 0, 0.15);
-    background-color: ${(props) => props.theme.color.input};
-    color: ${(props) => props.theme.color.mainText};
-    padding: 0.75rem;
-    box-sizing: border-box;
+interface ControllerOptions {
+    control?: any;
+}
 
-    &:focus,
-    :active {
-        outline: none !important;
-        box-shadow: 0 0 2px ${(props) => props.theme.color.primary};
-    }
+const Input = React.forwardRef<HTMLInputElement, Props>(
+    ({ control, name, label, small, type, ...rest }, ref?) => {
+        const useControllerOptions: ControllerOptions = {};
 
-    /* type="date" specific styles */
-    ::-webkit-datetime-edit-text,
-    ::-webkit-datetime-edit-month-field,
-    ::-webkit-datetime-edit-day-field,
-    ::-webkit-datetime-edit-year-field {
-        color: ${(props) => props.theme.color.lightGray};
-    }
+        if (control) {
+            useControllerOptions.control = control;
+        }
 
-    ::-webkit-datetime-edit-text {
-        margin: 0.1em;
-    }
-`;
+        const {
+            field: { onChange, onBlur, value },
+            fieldState: { invalid, isTouched, isDirty, error },
+            formState: { touchedFields, dirtyFields, isSubmitting },
+        } = useController({
+            name,
+            defaultValue: '',
+            ...useControllerOptions,
+        });
 
-export const Label = styled.label`
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.5vh;
-`;
-
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-    ({ id, label, register, required, ...rest }, ref?) => {
         return (
             <>
-                <Label htmlFor={id}>{label}</Label>
-                <StyledInput
-                    ref={ref || null}
-                    name={id}
-                    id={id}
-                    {...register(id, { required })}
-                    {...rest}
-                />
+                {small ? (
+                    <>
+                        <TwoColumnFormInput>
+                            <MinorLabel htmlFor={name}>{label}</MinorLabel>
+                            <SmallInput
+                                disabled={isSubmitting}
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                value={value}
+                                name={name}
+                                ref={ref || null}
+                                aria-invalid={!!error}
+                                {...rest}
+                            />
+                        </TwoColumnFormInput>
+                    </>
+                ) : (
+                    <>
+                        <Label htmlFor={name}>{label}</Label>
+                        <StyledInput
+                            disabled={isSubmitting}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            value={value}
+                            name={name}
+                            type={type}
+                            ref={ref || null}
+                            aria-invalid={!!error}
+                            {...rest}
+                        />
+                    </>
+                )}
+                <Error role="alert">{error && error.message}</Error>
             </>
         );
     }

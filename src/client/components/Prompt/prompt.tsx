@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from '../Button/button';
 import { ButtonGroup, Container } from './prompt.styles';
-import { theme } from '../../app/theme/theme';
 
 interface Props {
     confirm: any;
@@ -14,17 +13,10 @@ function Prompt({ confirm, cancel, children }: Props) {
         <Container>
             <p style={{ textAlign: 'center' }}>{children}</p>
             <ButtonGroup>
-                <Button style={{ width: '10vw' }} onClick={confirm}>
+                <Button id="confirm" onClick={confirm}>
                     Yes
                 </Button>
-                <Button
-                    style={{
-                        width: '10vw',
-                        backgroundColor: `${theme.color.error}`,
-                        border: 'none',
-                    }}
-                    onClick={cancel}
-                >
+                <Button id="cancel" onClick={cancel}>
                     No
                 </Button>
             </ButtonGroup>

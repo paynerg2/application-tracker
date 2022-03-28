@@ -1,49 +1,53 @@
 import React, { InputHTMLAttributes } from 'react';
-import styled from 'styled-components';
-import { Label } from '../Input/input';
-import DownChevron from '../../assets/Down_Chevron.png';
+import { FieldValues, useController, UseFormRegister } from 'react-hook-form';
+import { Label } from '../Input/input.styles';
+import { Error } from '../Form/form';
+import { StyledSelect } from './select.styles';
 
-interface SelectProps extends InputHTMLAttributes<HTMLInputElement> {
+interface SelectProps extends InputHTMLAttributes<HTMLSelectElement> {
+    name: string;
     label: string;
-    register: any;
-    required: boolean;
+    control?: any;
+    register?: UseFormRegister<FieldValues>;
 }
 
-export const StyledSelect = styled.select`
-    text-align: left;
-    font-size: 1rem;
-    border-radius: ${(props) => props.theme.borders.radius};
-    border: solid 1px rgba(0, 0, 0, 0.15);
-    background-color: ${(props) => props.theme.color.input};
-    color: ${(props) => props.theme.color.mainText};
-    padding: 0.75rem;
-    box-sizing: border-box;
-    cursor: pointer;
+interface ControllerOptions {
+    control?: any;
+}
 
-    // Dropdown Arrow
-    appearance: none;
-    background-image: url(${`${DownChevron}`});
-    background-repeat: no-repeat;
-    background-position: calc(100% - 10px) center;
+const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
+    ({ control, name, label, ...rest }, ref?) => {
+        const useControllerOptions: ControllerOptions = {};
 
-    &:focus,
-    :active {
-        outline: none !important;
-        box-shadow: 0 0 2px ${(props) => props.theme.color.primary};
+        if (control) {
+            useControllerOptions.control = control;
+        }
+
+        const {
+            field: { onChange, onBlur, value },
+            fieldState: { invalid, isTouched, isDirty, error },
+            formState: { touchedFields, dirtyFields, isSubmitting },
+        } = useController({
+            name,
+            defaultValue: '',
+            ...useControllerOptions,
+        });
+        return (
+            <>
+                <Label htmlFor={name}>{label}</Label>
+                <StyledSelect
+                    disabled={isSubmitting}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    name={name}
+                    ref={ref || null}
+                    {...rest}
+                />
+                <Error role="alert">{error && error.message}</Error>
+            </>
+        );
     }
-
-    > option {
-        color: ${(props) => props.theme.color.mainText};
-    }
-`;
-
-const Select = ({ id, label, register, required, ...rest }: SelectProps) => {
-    return (
-        <>
-            <Label htmlFor={id}>{label}</Label>
-            <StyledSelect name={id} id={id} {...register(id, { required })} {...rest} />
-        </>
-    );
-};
+);
 
 export default Select;

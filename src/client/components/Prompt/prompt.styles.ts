@@ -11,6 +11,10 @@ export const Container = styled.div`
     background: ${(props) => props.theme.color.secondarySurface};
     border-radius: ${(props) => props.theme.borders.radius};
     box-shadow: ${(props) => props.theme.borders.shadow};
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        width: 80vw;
+    }
 `;
 
 export const ButtonGroup = styled.div`
@@ -21,4 +25,24 @@ export const ButtonGroup = styled.div`
     height: auto;
 
     margin-top: 5vh;
+
+    > #confirm,
+    #cancel {
+        width: 10vw;
+    }
+
+    > #cancel {
+        background-color: ${(props) => props.theme.color.error};
+        border: none;
+    }
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        width: 80vw;
+        justify-content: space-around;
+
+        > #confirm,
+        #cancel {
+            width: 35vw;
+        }
+    }
 `;

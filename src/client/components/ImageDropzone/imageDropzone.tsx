@@ -1,21 +1,26 @@
-import React, { useCallback, useState } from 'react';
+import React, { InputHTMLAttributes, useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { UseFormSetValue } from 'react-hook-form';
-import { localFileToDataURL } from '../../_helpers/toDataURL';
-import { FormInputs } from '../../pages/UserProfile/EditProfile';
+import { localFileToDataURL } from '../../_helpers/fileHelpers';
 import { Error } from '../Form/form';
-import Input, { InputProps } from '../Input/input';
+import { StyledInput } from '../Input/input.styles';
+import Input from '../Input/input';
 import { Container } from './imageDropzone.styles';
+import styled from 'styled-components';
 
-interface Props extends InputProps {
-    setValue: UseFormSetValue<FormInputs>;
+interface Props extends InputHTMLAttributes<HTMLSelectElement> {
+    setImage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 // Note: "Function components cannot contain a ref" error caused by <Input> if
 // this isn't constructed with a forwardRef.
 
+const Dropzone = styled(StyledInput)`
+    height: 8em;
+    width: 24em;
+`;
+
 const ImageDropzone = React.forwardRef<React.Ref<HTMLInputElement>, Props>(
-    ({ setValue, ...rest }, ref) => {
+    ({ setImage, ...rest }, ref) => {
         const [error, setError] = useState<string>('');
         const onDrop = useCallback(
             async (acceptedFiles, rejectedFiles) => {
@@ -27,10 +32,10 @@ const ImageDropzone = React.forwardRef<React.Ref<HTMLInputElement>, Props>(
                 // Convert file to Base64 before setting the form value
                 await localFileToDataURL(acceptedFiles[0], (result: string) => {
                     //@ts-ignore
-                    setValue(rest.id, result);
+                    setImage(result);
                 });
             },
-            [rest.id, setValue]
+            [setImage]
         );
 
         const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -42,7 +47,7 @@ const ImageDropzone = React.forwardRef<React.Ref<HTMLInputElement>, Props>(
         return (
             <>
                 <Container {...getRootProps()} ref={ref}>
-                    <Input {...getInputProps()} {...rest} />
+                    <Dropzone {...getInputProps()} {...rest} />
                     {isDragActive ? (
                         <p>Drop profile image here</p>
                     ) : (

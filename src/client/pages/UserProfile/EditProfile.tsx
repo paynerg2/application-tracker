@@ -1,21 +1,20 @@
-import React, { useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useRef } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { useUpdateUserMutation, useUpdateUserSettingsMutation } from '../../services/api';
 import { setUser } from '../../state/authSlice';
-import { hasKey } from '../../_helpers/objectHelpers';
-import { toDataURL } from '../../_helpers/toDataURL';
-import { Form, FormHeader, FormSection, Error } from '../../components/Form/form';
-import { Layout, Container, Actions } from './editProfile.styles';
+import { FormHeader } from '../../components/Form/form';
+import { Layout, Container, OptionsSection, UserInfo } from './editProfile.styles';
 import Button from '../../components/Button/button';
 import Input from '../../components/Input/input';
-import ImageDropzone from '../../components/ImageDropzone/imageDropzone';
 import StyleSelector from '../../components/StyleSelector/styleSelector';
-import ProfileImageWatched from '../../components/ProfileImage/profileImageWatched';
 import ToggleSwitch from '../../components/ToggleSwitch/toggleSwitch';
 import { User } from '../../interfaces/user';
-import { join } from 'path';
+import ProfileImageUploader from '../../components/ProfileImageUploader/profileImageUploader';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { toDataURL } from '../../_helpers/fileHelpers';
+import { userProfileInfoValidationSchema } from '../../_helpers/validators/userValidationSchema';
 
 export interface FormInputs {
     fullName: string;
@@ -28,39 +27,21 @@ function EditProfile() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.auth.user);
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        formState: { errors },
-        control,
-    } = useForm<FormInputs>();
     const [updateUserDetails] = useUpdateUserMutation();
     const [updateUserSettings] = useUpdateUserSettingsMutation();
-    const dropzoneRef = useRef(null);
-
-    useEffect(() => {
-        // Pre-fill form fields where applicable
-        const formFields = ['fullName', 'location', 'email', 'profileImage'];
-
-        if (user) {
-            formFields.forEach((field) => {
-                if (hasKey(user, field)) {
-                    //@ts-ignore
-                    setValue(field, user[field]);
-                }
-            });
-        }
-    }, [user, setValue]);
+    const methods = useForm({
+        defaultValues: {
+            location: user.location || '',
+            email: user.email || '',
+            fullName: user.fullName || '',
+        },
+        resolver: yupResolver(userProfileInfoValidationSchema),
+        mode: 'onTouched',
+    });
 
     const onSubmit = async (data: any) => {
         // Convert existing image to Base64 string to match image dropzone return format
-        let submissionData: User = { ...data };
-        if (data.profileImage.includes('cloudinary')) {
-            await toDataURL(data.profileImage, (result: string) => {
-                submissionData = { ...submissionData, profileImage: result };
-            });
-        }
+        let submissionData: User = { _id: user._id, ...data };
 
         try {
             const updatedUser = await updateUserDetails(submissionData).unwrap();
@@ -101,8 +82,6 @@ function EditProfile() {
             },
         };
 
-        console.log(_user);
-
         await updateUser(_user);
     };
 
@@ -118,63 +97,23 @@ function EditProfile() {
     return (
         <Container>
             <Layout>
-                <FormSection id="accountDetails">
-                    <FormHeader>Edit Account Details</FormHeader>
-                    <Form id="userForm" onSubmit={handleSubmit(onSubmit)}>
-                        <Input
-                            id="fullName"
-                            label="Full Name"
-                            register={register}
-                            required
-                            type="text"
-                        />
-                        <Error>{errors.fullName ? 'Required' : ''}</Error>
-                        <Input
-                            id="location"
-                            label="Location"
-                            register={register}
-                            required={false}
-                            type="text"
-                        />
-                        <Error />
-                        <Input id="email" label="Email" register={register} required type="text" />
-                        <Error />
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <ImageDropzone
-                                id="profileImage"
-                                label="Profile Image"
-                                register={register}
-                                required={false}
-                                setValue={setValue}
-                                ref={dropzoneRef}
-                            />
-                            {user && (
-                                <ProfileImageWatched
-                                    name={user.fullName}
-                                    control={control}
-                                    style={{
-                                        cursor: 'default',
-                                        height: '15vmin',
-                                        width: '15vmin',
-                                    }}
-                                />
-                            )}
+                <OptionsSection>
+                    <UserInfo>
+                        <div>
+                            <FormHeader style={{ marginBottom: '1em' }}>Edit User Info</FormHeader>
+                            <FormProvider {...methods}>
+                                <Input label="Full Name" {...methods.register('fullName')} />
+                                <Input label="Email" {...methods.register('email')} />
+                                <Input label="Location" {...methods.register('location')} />
+                                <Button onClick={methods.handleSubmit(onSubmit)}>
+                                    Update User Info
+                                </Button>
+                            </FormProvider>
                         </div>
-                        <Error />
-                        <Actions>
-                            <Button type="submit">Save Changes</Button>
-                        </Actions>
-                    </Form>
-                </FormSection>
-                <FormSection id="userSettings">
-                    <FormHeader>Settings</FormHeader>
-                    <section>
+                        <ProfileImageUploader user={user} />
+                    </UserInfo>
+                    <div>
+                        <FormHeader>Settings</FormHeader>
                         <div style={{ display: 'flex', gap: '2vmin', alignItems: 'center' }}>
                             <h4>Dark Mode</h4>
                             <ToggleSwitch
@@ -190,8 +129,8 @@ function EditProfile() {
                             }
                             toggleCardView={handleApplicationDisplayStyleChange}
                         />
-                    </section>
-                </FormSection>
+                    </div>
+                </OptionsSection>
             </Layout>
         </Container>
     );

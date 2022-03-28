@@ -1,65 +1,48 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import Input from '../../../components/Input/input';
-import { Error } from '../../../components/Form/form';
-import Button from '../../../components/Button/button';
-import Select from '../../../components/Select/Select';
-import { interviewTypes } from '../../../interfaces/interviews';
+import Select from '../../../components/Select/select';
+import { Interview, interviewTypes } from '../../../interfaces/interviews';
+import { useFormContext } from 'react-hook-form';
+import DatePicker from '../../../components/DatePicker/datePicker';
+import { interviewValidationSchema as validationSchema } from '../../../_helpers/validators/interviewValidationSchema';
 
-interface Props {
-    register: any;
-    errors: any;
-    isValid: boolean;
-}
-
-type Params = {
-    id?: string | undefined;
+const defaultValues: Partial<Interview> = {
+    company: '',
+    startTime: undefined,
+    interviewType: interviewTypes[0],
 };
 
-function Step1({ register, errors, isValid }: Props) {
-    const { id } = useParams<Params>();
+const Step1 = () => {
+    const { register } = useFormContext();
 
     return (
         <>
-            <Input
-                id="company"
-                label="Company *"
-                register={register}
-                required
-                type="text"
-                list="companyNames"
-            />
+            <Input label="Company *" type="text" list="companyNames" {...register('company')} />
             <datalist id="companyNames"></datalist>
-            <Error>{errors.company && errors.company.message}</Error>
 
-            <Input
-                id="startTime"
+            <DatePicker
                 label="What time does the interview begin?"
-                register={register}
-                required
                 type="datetime-local"
+                dateFormat="MMMM dd, hh:mm a"
+                showTimeSelect
+                {...register('startTime')}
             />
-            <Error>{errors.startTime && errors.startTime.message}</Error>
 
-            <Select
-                id="interviewType"
-                label="What type of interview will it be?"
-                register={register}
-                required
-            >
+            <Select label="What type of interview will it be?" {...register('interviewType')}>
                 {interviewTypes.map((type) => (
                     <option key={type} value={type}>
                         {type}
                     </option>
                 ))}
             </Select>
-            <Error>{errors.interviewType && errors.interviewType.message}</Error>
-
-            <Button disabled={!isValid} type="submit">
-                Finish {id ? 'Editing ' : 'Adding '}Interview
-            </Button>
         </>
     );
-}
+};
 
-export default Step1;
+export default {
+    Component: Step1,
+    defaultValues,
+    validationSchema,
+    label: 'Step One',
+    key: 'stepOne',
+};

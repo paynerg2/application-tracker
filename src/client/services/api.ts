@@ -50,9 +50,9 @@ export const api = createApi({
                 };
             },
         }),
-        updateUser: build.mutation<any, any>({
+        updateUser: build.mutation<User, any>({
             query: (data) => {
-                const { id, ...rest } = data;
+                const { _id: id, ...rest } = data;
                 return {
                     url: `/users/${id}`,
                     method: 'PATCH',
@@ -85,8 +85,8 @@ export const api = createApi({
             invalidatesTags: ['Applications'],
         }),
         editApplication: build.mutation<Application, Partial<Application>>({
-            query: (application) => ({
-                url: `/applications/${application.id}`,
+            query: ({ id, ...application }) => ({
+                url: `/applications/${id}`,
                 method: 'PATCH',
                 body: application,
             }),
@@ -112,8 +112,8 @@ export const api = createApi({
             invalidatesTags: ['Contacts'],
         }),
         editContact: build.mutation<Contact, Partial<Contact>>({
-            query: (contact) => ({
-                url: `/contacts/${contact.id}`,
+            query: ({ id, ...contact }) => ({
+                url: `/contacts/${id}`,
                 method: 'PUT',
                 body: contact,
             }),
@@ -139,9 +139,9 @@ export const api = createApi({
             invalidatesTags: ['Interviews'],
         }),
         editInterview: build.mutation<Interview, Partial<Interview>>({
-            query: (interview) => ({
-                url: `/interviews/${interview.id}`,
-                method: 'PUT',
+            query: ({ id, ...interview }) => ({
+                url: `/interviews/${id}`,
+                method: 'PATCH',
                 body: interview,
             }),
             invalidatesTags: ['Interviews'],

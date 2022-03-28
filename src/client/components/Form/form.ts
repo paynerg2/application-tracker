@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-
+import { motion } from 'framer-motion';
 /**
  * Form Components
  */
@@ -31,7 +31,7 @@ export const Image = styled.img`
 /**
  * Structural Elements
  */
-export const Layout = styled.div`
+export const Layout = styled(motion.div)`
     display: flex;
     min-height: 90vh;
     flex-direction: column;
