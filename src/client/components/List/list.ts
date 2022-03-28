@@ -22,4 +22,8 @@ export const List = styled.ul`
     gap: 2vmin;
     padding: 2vmin 0;
     box-sizing: border-box;
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        border-radius: 0;
+    }
 `;
