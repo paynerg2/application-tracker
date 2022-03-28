@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+
+export const applicationCardHeight = '22vh';
+
 export const Card = styled.div`
     color: ${(props) => props.theme.color.mainText};
     height: 22vh;
@@ -17,6 +20,9 @@ export const Card = styled.div`
 
     &:hover {
         box-shadow: ${(props) => props.theme.borders.shadow};
+        cursor: pointer;
+        transform: scale(1.04);
+        transition: 0.3s ease;
     }
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
@@ -25,6 +31,10 @@ export const Card = styled.div`
 
         margin: 0;
         border-radius: 0;
+
+        &:hover {
+            transform: none;
+        }
     }
 `;
 

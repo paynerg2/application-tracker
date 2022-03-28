@@ -27,6 +27,7 @@ export const Actions = styled.div<Props>`
     border-bottom-left-radius: ${(props) => props.theme.borders.radius};
     border-bottom-right-radius: ${(props) => props.theme.borders.radius};
 `;
+Actions.displayName = 'actions';
 
 export const Container = styled.div`
     border-radius: ${(props) => props.theme.borders.radius};
@@ -34,7 +35,7 @@ export const Container = styled.div`
     height: min-content;
     width: 95%;
 
-    transition: box-shadow 0.2s ease-in-out;
+    transition: box-shadow 0.4s ease-in-out;
 
     &:hover {
         box-shadow: ${(props) => props.theme.borders.shadow};

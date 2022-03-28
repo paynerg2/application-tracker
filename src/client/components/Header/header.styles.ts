@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 export const Layout = styled.header`
     display: flex;
@@ -35,7 +34,7 @@ export const HeaderContainer = styled.div`
     }
 `;
 
-export const NavLink = styled(Link)`
+export const NavLink = styled.button`
     height: 100%;
     display: flex;
     justify-content: center;
@@ -43,6 +42,8 @@ export const NavLink = styled(Link)`
     font-family: ${(props) => props.theme.font.secondary};
     font-weight: 700;
     color: ${(props) => props.theme.color.lightGray};
+    background-color: ${(props) => props.theme.color.background};
+    cursor: pointer;
 `;
 
 export const SelectedNavLink = styled(NavLink)`
@@ -129,12 +130,14 @@ export const Greeting = styled.div`
 
 export const MobileMenuButton = styled.div`
     display: none;
+    height: 0;
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100%;
+        max-height: 30em;
         width: 30%;
         background: ${(props) => props.theme.color.button};
         color: ${(props) => props.theme.color.buttonInverted};

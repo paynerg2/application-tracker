@@ -23,8 +23,9 @@ import Logo from '../../assets/Logo.svg';
 import DarkLogo from '../../assets/Dark_Logo.svg';
 import useWindowDimensions from '../../_helpers/useWindowDimensions';
 import { theme } from '../../app/theme/theme';
-import { pixelStringToNumber } from '../../_helpers/pixelStringToNumber';
+import { pixelStringToNumber } from '../../_helpers/stringHelpers';
 import MobileMenu from '../MobileMenu/mobileMenu';
+import { resetNavState, updateNavState } from '../../state/animationSlice';
 
 function Header() {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -35,16 +36,29 @@ function Header() {
     const user = useAppSelector((state) => state.auth.user);
     const { width } = useWindowDimensions();
 
+    const pathName = location.pathname.split('/')[1];
     const routes = ['applications', 'interviews', 'stats'];
+
+    const handleNavigate = (next: string) => {
+        dispatch(
+            updateNavState({
+                current: pathName,
+                next: next,
+            })
+        );
+
+        navigate(`/${next}`);
+        //dispatch(resetNavState());
+    };
+
     const getRouteNav = () => {
-        const pathName = location.pathname.split('/')[1];
         return routes.map((route) =>
             route === pathName.toLocaleLowerCase() ? (
-                <SelectedNavLink key={route} to={`/${route}`}>
+                <SelectedNavLink key={route} onClick={() => handleNavigate(route)}>
                     {route.toLocaleUpperCase()}
                 </SelectedNavLink>
             ) : (
-                <NavLink key={route} to={`/${route}`}>
+                <NavLink key={route} onClick={() => handleNavigate(route)}>
                     {route.toLocaleUpperCase()}
                 </NavLink>
             )
@@ -85,7 +99,6 @@ function Header() {
                                 <DropdownItem onClick={() => navigate('/me')}>
                                     Edit Profile
                                 </DropdownItem>
-                                <DropdownItem>Settings</DropdownItem>
                                 <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
                             </DropdownMenu>
                         </IconSection>

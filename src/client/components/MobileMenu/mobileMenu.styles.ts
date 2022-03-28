@@ -1,19 +1,24 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: none;
+    height: 0;
 
-    position: fixed;
-    bottom: 10vh;
-    height: fit-content;
-    padding: 2em 0;
-    box-sizing: border-box;
-    width: 100vw;
-    background: ${(props) => props.theme.color.footer};
-    color: ${(props) => props.theme.color.mainText};
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        position: fixed;
+        bottom: 10vh;
+        height: fit-content;
+        padding: 2em 0;
+        box-sizing: border-box;
+        width: 100vw;
+        background: ${(props) => props.theme.color.footer};
+        color: ${(props) => props.theme.color.mainText};
+    }
 `;
 
 export const MenuItem = styled.div`

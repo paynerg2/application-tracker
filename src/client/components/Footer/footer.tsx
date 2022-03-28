@@ -33,6 +33,13 @@ function Footer() {
                     <Link to="#"> Privacy Policy</Link> <Link to="#">Terms of Use</Link>
                 </p>
             </FooterContainer>
+            <a rel="noopener noreferrer" target="_blank" href="https://icons8.com/icon/7690/done">
+                Done
+            </a>{' '}
+            icon by{' '}
+            <a rel="noopener noreferrer" target="_blank" href="https://icons8.com">
+                Icons8
+            </a>
         </Layout>
     );
 }

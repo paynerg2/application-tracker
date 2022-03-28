@@ -1,8 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Application } from '../../../interfaces/application';
 
 import { iconSelector } from '../../../_helpers/iconSelector';
-import Link from '../../Link/link';
 import { Card, Title, Company, Location, Icon } from './applicationCard.styles';
 
 interface Props {
@@ -10,17 +10,16 @@ interface Props {
 }
 
 function ApplicationCard({ application }: Props) {
+    const navigate = useNavigate();
     const { id, jobTitle, company, location, mainSkill } = application;
 
     return (
-        <Link to={`/applications/${id}`}>
-            <Card>
-                <Title>{jobTitle}</Title>
-                <Company>{company}</Company>
-                <Location>{location}</Location>
-                <Icon>{iconSelector(mainSkill)}</Icon>
-            </Card>
-        </Link>
+        <Card onClick={() => navigate(`/applications/${id}`)}>
+            <Title>{jobTitle}</Title>
+            <Company>{company}</Company>
+            <Location>{location}</Location>
+            <Icon>{iconSelector(mainSkill)}</Icon>
+        </Card>
     );
 }
 

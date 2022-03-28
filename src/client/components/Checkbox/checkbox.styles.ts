@@ -11,23 +11,6 @@ export const Container = styled.label`
     user-select: none;
 `;
 
-export const StyledCheckbox = styled.input`
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-
-    &:checked ~ span {
-        background-color: ${(props) => props.theme.color.primary};
-        border: solid 2px ${(props) => props.theme.color.primary};
-    }
-
-    &:checked ~ span::after {
-        display: block;
-    }
-`;
-
 export const Checkmark = styled.span`
     position: absolute;
     top: 0;
@@ -52,3 +35,22 @@ export const Checkmark = styled.span`
         transform: rotate(45deg);
     }
 `;
+Checkmark.displayName = 'checkmark';
+
+export const StyledCheckbox = styled.input`
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+
+    &:checked ~ ${Checkmark} {
+        background-color: ${(props) => props.theme.color.primary};
+        border: solid 2px ${(props) => props.theme.color.primary};
+    }
+
+    &:checked ~ ${Checkmark}::after {
+        display: block;
+    }
+`;
+StyledCheckbox.displayName = 'input';

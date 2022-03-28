@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Button from '../Button/button';
 import Prompt from '../Prompt/prompt';
 import Modal from '../Modal/modal';
 import TextButton from '../TextButton/textButton';
