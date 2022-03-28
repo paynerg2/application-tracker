@@ -6,9 +6,10 @@ import { CircularButton, ListContainer } from './InterviewList.styles';
 
 interface Props {
     interviews: Interview[];
+    withAdd?: boolean;
 }
 
-function InterviewList({ interviews }: Props) {
+function InterviewList({ interviews, withAdd = true }: Props) {
     const navigate = useNavigate();
 
     return (
@@ -20,7 +21,9 @@ function InterviewList({ interviews }: Props) {
             ) : (
                 <div>No interviews... yet!</div>
             )}
-            <CircularButton onClick={() => navigate('/interviews/new/1')}>+</CircularButton>
+            {withAdd && (
+                <CircularButton onClick={() => navigate('/interviews/new')}>+</CircularButton>
+            )}
         </ListContainer>
     );
 }

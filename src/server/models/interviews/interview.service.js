@@ -30,12 +30,12 @@ async function create(interviewParam, token) {
 async function update(id, interviewParam, token) {
     const { user } = await userService.getUser(token);
 
-    const index = user.interviews.findIndex((i) => i._id === id);
-    if (!index) throw Error('Interview not found');
+    const index = user.interviews.findIndex((i) => i.id === id);
+    if (index < 0) throw Error('Interview not found');
 
-    user.interviews = user.interviews.map((interview) =>
-        interview.id === id ? interviewParam : interview
-    );
+    user.interviews.set(index, { id, ...interviewParam });
+
+    user.markModified('interviews');
     await user.save();
 
     return user;

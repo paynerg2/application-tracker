@@ -1,4 +1,5 @@
 export const interviewTypes = ['On Site', 'Video', 'Phone'] as const;
+export const interviewResponseTypes = ['none', 'passed', 'rejected', 'offer'] as const;
 
 export interface Interview {
     id: string;
@@ -7,7 +8,7 @@ export interface Interview {
     contact: string;
     company: string;
     followUpSent: boolean;
-    response: string;
+    response: typeof interviewResponseTypes[number];
     offer: number;
     interviewType: typeof interviewTypes[number];
     round: number;

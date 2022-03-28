@@ -7,7 +7,7 @@ const schema = new Schema({
     contact: { type: String },
     company: { type: String, required: true },
     followUpSent: { type: Boolean, required: true, default: false },
-    response: { type: String },
+    response: { type: String, enum: ['none', 'passed', 'rejected', 'offer'], default: 'none' },
     offer: { type: Number, default: 0 },
     interviewType: { type: String },
     round: { type: Number, default: 1 },

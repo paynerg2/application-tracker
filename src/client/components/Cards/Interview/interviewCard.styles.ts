@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { ThemeType } from '../../../app/theme/theme';
+import Button from '../../Button/button';
 
 type CustomProps = {
     isOpen: boolean;
@@ -86,4 +87,12 @@ export const Actions = styled.div<Props>`
 
     border-bottom-left-radius: ${(props) => props.theme.borders.radius};
     border-bottom-right-radius: ${(props) => props.theme.borders.radius};
+`;
+
+export const ResponseButton = styled(Button)`
+    font-size: 1em;
+    width: fit-content;
+    padding: 0.2em;
+    box-sizing: border-box;
+    border-color: ${(props) => props.theme.color.error};
 `;
