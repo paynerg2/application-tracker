@@ -1,7 +1,8 @@
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import Button from '../../components/Button/button';
 
-export const Layout = styled.div`
+export const Layout = styled(motion.div)`
     display: grid;
 
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;

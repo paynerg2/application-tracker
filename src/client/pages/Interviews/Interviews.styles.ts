@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-import Button from '../../components/Button/button';
+import { motion } from 'framer-motion';
 import { CircularButton } from '../../components/InterviewList/InterviewList.styles';
 import { List } from '../../components/List/list';
+import Button from '../../components/Button/button';
 
-export const Layout = styled.div`
+export const Layout = styled(motion.div)`
     display: grid;
 
     grid-template-columns: 40% 1fr;
@@ -20,7 +21,9 @@ export const Layout = styled.div`
         width: 100%;
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
     }
 `;
 
@@ -29,15 +32,8 @@ export const InterviewSection = styled.section`
 `;
 
 export const ContactSection = styled.section`
-    margin-bottom: 20vh; // pushes above nav & buttons
-
-    > h2 {
-        font-size: 2em;
-    }
-
     > ${List} {
         gap: 2vmin;
-        border-radius: 0;
 
         > ${CircularButton} {
             align-self: flex-end;
@@ -45,10 +41,15 @@ export const ContactSection = styled.section`
             margin-top: 2.5%;
         }
     }
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        margin-bottom: 20vh;
+    }
 `;
 
 export const SectionHeader = styled.h2`
     font-size: 2em;
+    font-size: 700;
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
         text-align: center;

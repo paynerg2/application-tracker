@@ -22,6 +22,7 @@ import { useGetApplicationsQuery } from '../../services/api';
 import { iconSelector } from '../../_helpers/iconSelector';
 import { useAppSelector } from '../../app/hooks';
 import SkeletonList from '../../components/List/skeletonList';
+import { pageTransitionProps } from '../../common/animations';
 
 export interface ApplicationFilters {
     response: string;
@@ -34,6 +35,7 @@ function Applications() {
     const defaultApplicationDisplayStyle = useAppSelector(
         (state) => state.auth.user?.settings?.defaultApplicationDisplayStyle
     );
+    const { direction, isGoingToNavSection } = useAppSelector((state) => state.animation);
     const [isCardView, setIsCardView] = useState(defaultApplicationDisplayStyle === 'Card');
 
     const defaultFilters: ApplicationFilters = {
@@ -46,6 +48,7 @@ function Applications() {
 
     const { data, error, isLoading } = useGetApplicationsQuery();
     const [filteredApplications, setFilteredApplications] = useState<Application[]>([]);
+    const [layoutProps, setLayoutProps] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -56,6 +59,10 @@ function Applications() {
             setFilteredApplications(applicationHelpers.filterApplications(applications, filters));
         }
     }, [filters, data]);
+
+    useEffect(() => {
+        setLayoutProps(isGoingToNavSection ? { ...pageTransitionProps, custom: direction } : {});
+    }, [isGoingToNavSection, direction]);
 
     // Todo: Add a better error dialogue
     if (error || !data) {
@@ -97,10 +104,6 @@ function Applications() {
             }
         }
     };
-
-    if (error) {
-        return <div>Error</div>;
-    }
 
     const getCardView = () => {
         return (
@@ -191,7 +194,7 @@ function Applications() {
     };
 
     return (
-        <Layout>
+        <Layout {...pageTransitionProps}>
             <NewApplication>
                 <h2>Add Application</h2>
                 <p>Log a new submitted application</p>

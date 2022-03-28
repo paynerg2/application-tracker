@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetContactsQuery, useGetInterviewsQuery } from '../../services/api';
 import {
@@ -12,45 +12,84 @@ import {
 import { List } from '../../components/List/list';
 import { CircularButton } from '../../components/InterviewList/InterviewList.styles';
 import ContactCard from '../../components/Cards/Contact/contactCard';
+import SkeletonList from '../../components/List/skeletonList';
 import InterviewList from '../../components/InterviewList/InterviewList';
+import { pageTransitionProps } from '../../common/animations';
+import { useAppSelector } from '../../app/hooks';
+import { Interview } from '../../interfaces/interviews';
+import InterviewResponseTable from '../../components/InterviewResponseTable/InterviewResponseTable';
 
 function Interviews() {
-    const { data: interviews, isLoading: interviewsLoading } = useGetInterviewsQuery();
+    const today = new Date();
+    const {
+        upcomingInterviews,
+        previousInterviews,
+        isLoading: interviewsLoading,
+    } = useGetInterviewsQuery(undefined, {
+        selectFromResult: ({ data, isLoading }) => ({
+            upcomingInterviews: data?.filter(
+                (i: Interview) => new Date(i.startTime).toISOString() > today.toISOString()
+            ),
+            previousInterviews: data?.filter(
+                (i: Interview) => new Date(i.startTime).toISOString() <= today.toISOString()
+            ),
+            isLoading,
+        }),
+    });
     const { data: contacts, isLoading: contactsLoading } = useGetContactsQuery();
+    const { direction, isGoingToNavSection } = useAppSelector((state) => state.animation);
+    const [layoutProps, setLayoutProps] = useState({});
     const navigate = useNavigate();
 
-    const loading = interviewsLoading || contactsLoading;
-
-    if (loading) return <div>Loading...</div>;
+    useEffect(() => {
+        setLayoutProps(isGoingToNavSection ? { ...pageTransitionProps, custom: direction } : {});
+    }, [isGoingToNavSection, direction]);
 
     return (
         <>
-            <Layout>
+            <Layout {...pageTransitionProps}>
                 <InterviewSection>
-                    <SectionHeader>
-                        <strong>Upcoming</strong>
-                    </SectionHeader>
-                    {interviews && <InterviewList interviews={interviews} />}
+                    <SectionHeader>Upcoming</SectionHeader>
+                    {!interviewsLoading ? (
+                        upcomingInterviews && <InterviewList interviews={upcomingInterviews} />
+                    ) : (
+                        <SkeletonList />
+                    )}
+                    <SectionHeader>Previous Interviews</SectionHeader>
+                    {!interviewsLoading ? (
+                        previousInterviews && (
+                            // <InterviewList withAdd={false} interviews={previousInterviews} />
+                            <InterviewResponseTable interviews={previousInterviews} />
+                        )
+                    ) : (
+                        <SkeletonList />
+                    )}
                 </InterviewSection>
                 <ContactSection>
-                    <SectionHeader>
-                        <strong>Contacts</strong>
-                    </SectionHeader>
-                    <List>
-                        {contacts?.map((contact) => (
-                            <ContactCard key={contact.id} contact={contact} type="item" />
-                        ))}
-                        <CircularButton onClick={() => navigate('/contacts/new/1')}>
-                            +
-                        </CircularButton>
-                    </List>
+                    <SectionHeader>Contacts</SectionHeader>
+                    {!contactsLoading ? (
+                        contacts && (
+                            <List>
+                                {contacts?.map((contact) => (
+                                    <ContactCard key={contact.id} contact={contact} type="item" />
+                                ))}
+                                <CircularButton onClick={() => navigate('/contacts/new')}>
+                                    +
+                                </CircularButton>
+                            </List>
+                        )
+                    ) : (
+                        <SkeletonList />
+                    )}
                 </ContactSection>
             </Layout>
             <MobileButtonSection>
-                <MobileButton onClick={() => navigate('/interviews/new/1')} inverted>
+                <MobileButton onClick={() => navigate('/interviews/new')} inverted>
                     Add Interview
                 </MobileButton>
-                <MobileButton inverted>Add Contact</MobileButton>
+                <MobileButton onClick={() => navigate('/contacts/new')} inverted>
+                    Add Contact
+                </MobileButton>
             </MobileButtonSection>
         </>
     );

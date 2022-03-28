@@ -24,6 +24,9 @@ import {
     Response,
     ResponseGroup,
     Label,
+    DetailList,
+    ContactsSection,
+    InterviewsSection,
 } from './Application.styles';
 import { theme } from '../../app/theme/theme';
 import DateContainer from '../../components/DateContainer/dateContainer';
@@ -33,10 +36,11 @@ import DeleteIcon from '../../assets/ant-design_delete-filled.png';
 import InterviewList from '../../components/InterviewList/InterviewList';
 import { List } from '../../components/List/list';
 import ContactCard from '../../components/Cards/Contact/contactCard';
-import Link from '../../components/Link/link';
 import Modal from '../../components/Modal/modal';
 import Prompt from '../../components/Prompt/prompt';
 import { Application as IApplication } from '../../interfaces/application';
+import { motion } from 'framer-motion';
+import { pageTransitionProps } from '../../common/animations';
 
 // Note: Declared as type instead of interface to avoid a strange bug
 // insisting that id satisfy Record<string, string | undefined>
@@ -123,7 +127,6 @@ function Application() {
     };
 
     const handleResponseChanged = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
-        console.log(e.target.value);
         const updatedApplication: IApplication = {
             ...application,
             response: e.target.value as typeof application.response,
@@ -136,7 +139,7 @@ function Application() {
     };
 
     return (
-        <>
+        <motion.div {...pageTransitionProps}>
             <TitleBanner>
                 <Container>
                     <Company>{application.company}</Company>
@@ -197,7 +200,7 @@ function Application() {
                                 {iconSelector(application.mainSkill, { width: 40, height: 40 })}
                             </div>
                             <SectionHeading>Description</SectionHeading>
-                            <ul style={{ columns: 2 }}>
+                            <DetailList>
                                 <ListItem>{getYearsOfExperience()}</ListItem>
                                 <ListItem>
                                     <span>
@@ -213,7 +216,7 @@ function Application() {
                                         {` expected salary`}
                                     </span>
                                 </ListItem>
-                            </ul>
+                            </DetailList>
                             <SectionHeading>Skills</SectionHeading>
                             <ul>
                                 <ListItem>
@@ -246,21 +249,21 @@ function Application() {
                                 </ListItem>
                             </ul>
                             <DateSection>
-                                <div>
+                                <div id="posted">
                                     <SectionHeading>Posted</SectionHeading>
                                     <DateContainer date={application.datePosted} />
                                 </div>
-                                <div>
+                                <div id="submitted">
                                     <SectionHeading>Submitted</SectionHeading>
                                     <DateContainer date={application.dateApplicationSent} />
                                 </div>
                             </DateSection>
                             <RelatedInfoSection>
-                                <div style={{ width: '60%' }}>
+                                <InterviewsSection>
                                     <SectionHeading>Interviews</SectionHeading>
                                     {interviews && <InterviewList interviews={interviews} />}
-                                </div>
-                                <div style={{ width: '35%' }}>
+                                </InterviewsSection>
+                                <ContactsSection>
                                     <SectionHeading>Contacts</SectionHeading>
                                     {contacts && contacts.length > 0 && (
                                         <List
@@ -274,10 +277,10 @@ function Application() {
                                             ))}
                                         </List>
                                     )}
-                                    <Link to="/contacts/new/1">
-                                        <Button>Add a New Contact</Button>
-                                    </Link>
-                                </div>
+                                    <Button onClick={() => navigate('/contacts/new')}>
+                                        Add a New Contact
+                                    </Button>
+                                </ContactsSection>
                             </RelatedInfoSection>
                         </ApplicationDetails>
                     </div>
@@ -290,13 +293,13 @@ function Application() {
             </Modal>
             <Modal show={showAddInterviewPrompt}>
                 <Prompt
-                    confirm={() => navigate('/interviews/new/1')}
+                    confirm={() => navigate('/interviews/new')}
                     cancel={() => setShowAddInterviewPrompt(false)}
                 >
                     Would you like to add this interview now?
                 </Prompt>
             </Modal>
-        </>
+        </motion.div>
     );
 }
 
