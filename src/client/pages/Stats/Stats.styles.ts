@@ -56,6 +56,8 @@ export const ChartLoader = styled.div`
     }
 `;
 export const ChartRow = styled.div`
+    height: 40em;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -64,6 +66,9 @@ export const ChartRow = styled.div`
 `;
 
 export const ChartContainer = styled.div`
+    min-height: 30em;
+    height: 30em;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

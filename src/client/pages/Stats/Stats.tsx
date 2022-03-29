@@ -1,5 +1,6 @@
 import React from 'react';
 import { Chart } from 'react-google-charts';
+import Sankey, { SankeyData } from '../../components/SankeyDiagram/sankey';
 import { useGetApplicationsQuery, useGetInterviewsQuery } from '../../services/api';
 import { getFrequencyMapForCharting } from '../../_helpers/dataAnalysis';
 import {
@@ -10,6 +11,7 @@ import {
     ChartRow,
     ChartContainer,
 } from './Stats.styles';
+import { theme } from '../../app/theme/theme';
 
 interface Props {}
 
@@ -17,7 +19,6 @@ const Stats = () => {
     const {
         total,
         noResponseCount,
-        interviewCount,
         rejectedCount,
         skills,
         submissionDates,
@@ -29,7 +30,6 @@ const Stats = () => {
             error,
             total: data?.length,
             noResponseCount: data?.filter((a) => a.response === 'No Response').length,
-            interviewCount: data?.filter((a) => a.response === 'Interview').length,
             rejectedCount: data?.filter((a) => a.response === 'Rejected').length,
             skills: data?.map((a) => a.mainSkill),
             submissionDates: data?.map((a) => new Date(a.dateApplicationSent)),
@@ -37,6 +37,7 @@ const Stats = () => {
     });
 
     const {
+        interviewCount,
         interviewNoResponseCount,
         passedCount,
         interviewRejectedCount,
@@ -47,6 +48,7 @@ const Stats = () => {
         selectFromResult: ({ data, isLoading, error }) => ({
             isLoading,
             error,
+            interviewCount: data?.length,
             interviewNoResponseCount: data?.filter((i) => i.response === 'none').length,
             passedCount: data?.filter((i) => i.response === 'passed' || i.response === 'offer')
                 .length,
@@ -95,56 +97,127 @@ const Stats = () => {
         title: 'Applications Sent',
     };
 
+    const sankeyNodeIds = {
+        sent: 'Applications',
+        rejected: 'Rejected',
+        noResponse: 'No Response',
+        interviews: 'Interviews',
+        interviewNoResponse: 'No Contact',
+        passed: 'Passed',
+        failed: 'Failed',
+        offers: 'Offers',
+    };
+
+    const getColorByNodeId = (id: string) => {
+        if (id === sankeyNodeIds.sent) {
+            return theme.color.lightGray;
+        } else if (id === sankeyNodeIds.interviews) {
+            return theme.color.primary;
+        } else if (id === sankeyNodeIds.noResponse || id === sankeyNodeIds.interviewNoResponse) {
+            return theme.color.veryLightGray;
+        } else if (id === sankeyNodeIds.failed || id === sankeyNodeIds.rejected) {
+            return theme.color.error;
+        } else if (id === sankeyNodeIds.passed) {
+            return theme.color.skyBlue;
+        } else if (id === sankeyNodeIds.offers) {
+            return theme.color.mintGreen;
+        } else {
+            return theme.color.primary;
+        }
+    };
+
     const getSankeyChartData = () => {
-        const labels = ['From', 'To', 'Weight'];
+        let data: SankeyData = {
+            nodes: [],
+            links: [],
+        };
 
-        let data = [];
+        if (total !== undefined && total > 0) {
+            data.nodes.push({
+                id: sankeyNodeIds.sent,
+            });
 
-        if (total && total > 0) {
             if (interviewCount !== undefined && interviewCount > 0) {
-                data.push([
-                    `Applications Sent: ${total}`,
-                    `Interviews: ${interviewCount}`,
-                    interviewCount,
-                ]);
+                data.nodes.push({
+                    id: sankeyNodeIds.interviews,
+                });
+                data.links.push({
+                    source: sankeyNodeIds.sent,
+                    target: sankeyNodeIds.interviews,
+                    value: interviewCount,
+                });
             }
-            if (noResponseCount !== undefined && noResponseCount > 0) {
-                data.push([
-                    `Applications Sent: ${total}`,
-                    `No Response: ${noResponseCount}`,
-                    noResponseCount,
-                ]);
-            }
+
             if (rejectedCount !== undefined && rejectedCount > 0) {
-                data.push([
-                    `Applications Sent: ${total}`,
-                    `Rejected: ${rejectedCount}`,
-                    rejectedCount,
-                ]);
+                data.nodes.push({
+                    id: sankeyNodeIds.rejected,
+                });
+                data.links.push({
+                    source: sankeyNodeIds.sent,
+                    target: sankeyNodeIds.rejected,
+                    value: rejectedCount,
+                });
             }
+
+            if (noResponseCount !== undefined && noResponseCount > 0) {
+                data.nodes.push({
+                    id: sankeyNodeIds.noResponse,
+                });
+                data.links.push({
+                    source: sankeyNodeIds.sent,
+                    target: sankeyNodeIds.noResponse,
+                    value: noResponseCount,
+                });
+            }
+
             if (interviewNoResponseCount !== undefined && interviewNoResponseCount > 0) {
-                data.push([
-                    `Interviews: ${interviewCount}`,
-                    `No Response: ${interviewNoResponseCount}`,
-                    interviewNoResponseCount,
-                ]);
+                data.nodes.push({
+                    id: sankeyNodeIds.interviewNoResponse,
+                });
+                data.links.push({
+                    source: sankeyNodeIds.interviews,
+                    target: sankeyNodeIds.interviewNoResponse,
+                    value: interviewNoResponseCount,
+                });
             }
-            if (passedCount !== undefined && passedCount > 0) {
-                data.push([`Interviews: ${interviewCount}`, `Passed: ${passedCount}`, passedCount]);
-            }
+
             if (interviewRejectedCount !== undefined && interviewRejectedCount > 0) {
-                data.push([
-                    `Interviews: ${interviewCount}`,
-                    `Rejected: ${interviewRejectedCount}`,
-                    interviewRejectedCount,
-                ]);
+                data.nodes.push({
+                    id: sankeyNodeIds.failed,
+                });
+                data.links.push({
+                    source: sankeyNodeIds.interviews,
+                    target: sankeyNodeIds.failed,
+                    value: interviewRejectedCount,
+                });
             }
+
+            if (passedCount !== undefined && passedCount > 0) {
+                data.nodes.push({
+                    id: sankeyNodeIds.passed,
+                });
+                data.links.push({
+                    source: sankeyNodeIds.interviews,
+                    target: sankeyNodeIds.passed,
+                    value: passedCount,
+                });
+            }
+
             if (offerCount !== undefined && offerCount > 0) {
-                data.push([`Passed: ${passedCount}`, `Offers: ${offerCount}`, offerCount]);
+                data.nodes.push({
+                    id: sankeyNodeIds.offers,
+                });
+                data.links.push({
+                    source: sankeyNodeIds.passed,
+                    target: sankeyNodeIds.offers,
+                    value: offerCount,
+                });
             }
         }
+
         console.log(data);
-        return [labels, ...data];
+
+        return data;
     };
 
     const Loader = () => {
@@ -155,16 +228,6 @@ const Stats = () => {
                 can! Try refreshing the page after some time has passed.
             </ChartLoader>
         );
-    };
-
-    const sankeyChartOptions = {
-        title: 'The Job Hunt So Far',
-        sankey: {
-            node: {
-                nodePadding: 100,
-            },
-            interactivity: true,
-        },
     };
 
     return (
@@ -186,15 +249,11 @@ const Stats = () => {
                         ) : (
                             <div>Hmmm..</div>
                         )}
-                        {!applicationsLoading ? (
+                    </ChartRow>
+                    <ChartRow>
+                        {!applicationsLoading && !interviewsLoading ? (
                             <ChartContainer id="sankeyChart">
-                                <Chart
-                                    chartType="Sankey"
-                                    width="400px"
-                                    height="400px"
-                                    data={getSankeyChartData()}
-                                    options={sankeyChartOptions}
-                                />
+                                <Sankey data={getSankeyChartData()} getColor={getColorByNodeId} />
                             </ChartContainer>
                         ) : (
                             <div>Something is wrong</div>
