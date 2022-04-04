@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Button from '../../components/Button/button';
 import {
     ApplicationCardContainer,
@@ -20,6 +21,7 @@ import ApplicationFilter from '../../components/Cards/Application/ApplicationFil
 import { applicationHelpers } from '../../_helpers/applicationHelpers';
 import { useGetApplicationsQuery } from '../../services/api';
 import { iconSelector } from '../../_helpers/iconSelector';
+import { compareDates } from '../../_helpers/dateHelpers';
 import { useAppSelector } from '../../app/hooks';
 import SkeletonList from '../../components/List/skeletonList';
 import { pageTransitionProps } from '../../common/animations';
@@ -73,7 +75,7 @@ function Applications() {
 
     const onFilterChange = (newFilter: string, type: string) => {
         if (type === 'response') {
-            setFilters((prev) => ({ ...prev, response: newFilter }));
+            setFilters((prev) => ({ ...prev, response: prev.response === 'Open' ? '' : 'Open' }));
         }
 
         if (type === 'remoteOnly') {
@@ -118,10 +120,7 @@ function Applications() {
                         {groupedApplications ? (
                             Object.keys(groupedApplications)
                                 .sort((a, b) => {
-                                    const aDate = new Date(a);
-                                    const bDate = new Date(b);
-                                    // Sort in descending order (i.e. newest date first)
-                                    return bDate.getTime() - aDate.getTime();
+                                    return compareDates(new Date(a), new Date(b), 'descending');
                                 })
                                 .map((date) => (
                                     <SubmissionsContainer key={date}>
@@ -159,26 +158,36 @@ function Applications() {
                         <ApplicationListContainer>
                             {filteredApplications
                                 .sort((a, b) => {
-                                    const aDate = new Date(a.dateApplicationSent);
-                                    const bDate = new Date(b.dateApplicationSent);
-                                    // Sort in descending order (i.e. newest date first)
-                                    return bDate.getTime() - aDate.getTime();
+                                    return compareDates(
+                                        a.dateApplicationSent,
+                                        b.dateApplicationSent,
+                                        'descending'
+                                    );
                                 })
                                 .map((application) => (
-                                    <ApplicationListItem
-                                        key={application.id}
-                                        onClick={() => navigate(`/applications/${application.id}`)}
-                                    >
-                                        <DateContainer date={application.dateApplicationSent} />
-                                        <div>
-                                            <strong>{application.jobTitle}</strong>
-                                        </div>
-                                        <div>
-                                            <strong>{application.company}</strong>
-                                        </div>
-                                        <div>{application.location}</div>
-                                        <div id="icon">{iconSelector(application.mainSkill)}</div>
-                                    </ApplicationListItem>
+                                    <AnimatePresence>
+                                        <ApplicationListItem
+                                            key={application.id}
+                                            onClick={() =>
+                                                navigate(`/applications/${application.id}`)
+                                            }
+                                            initial={{ width: 0 }}
+                                            animate={{ width: '95%' }}
+                                            exit={{ x: 0, width: 0, height: 0, opacity: 0 }}
+                                        >
+                                            <DateContainer date={application.dateApplicationSent} />
+                                            <div>
+                                                <strong>{application.jobTitle}</strong>
+                                            </div>
+                                            <div>
+                                                <strong>{application.company}</strong>
+                                            </div>
+                                            <div>{application.location}</div>
+                                            <div id="icon">
+                                                {iconSelector(application.mainSkill)}
+                                            </div>
+                                        </ApplicationListItem>
+                                    </AnimatePresence>
                                 ))}
                         </ApplicationListContainer>
                     </SubmissionsList>

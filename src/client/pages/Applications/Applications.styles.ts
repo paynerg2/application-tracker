@@ -173,7 +173,7 @@ export const ApplicationListContainer = styled.ul`
 `;
 
 export const applicationListItemHeight = '15vmin';
-export const ApplicationListItem = styled.li`
+export const ApplicationListItem = styled(motion.li)`
     display: grid;
     // This syntax gives 5 equal-sized columns
     grid-template-columns: repeat(5, minmax(0, 1fr));
