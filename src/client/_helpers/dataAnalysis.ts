@@ -29,11 +29,27 @@ export const formatFrequencyMapForCharting = <T extends string | number | symbol
 ) => {
     let frequencyData = [];
     for (const [key, value] of Object.entries(data)) {
-        frequencyData.push([key, value as number]);
+        frequencyData.push({
+            day: key,
+            value: value as number,
+        });
     }
     return frequencyData;
 };
 
+export const formatFrequencyMapForPieChart = <T extends string | number | symbol>(
+    data: Record<T, number>
+) => {
+    let frequencyData = [];
+    for (const [key, value] of Object.entries(data)) {
+        frequencyData.push({
+            id: key,
+            label: key,
+            value: value as number,
+        });
+    }
+    return frequencyData;
+};
 /**
  * Helper function for transforming an array of values into frequency data ready to be used in a Google Chart
  * @param arr An array of elements with values suitable to be object keys
@@ -42,4 +58,17 @@ export const formatFrequencyMapForCharting = <T extends string | number | symbol
 export const getFrequencyMapForCharting = <T extends string | number | symbol>(arr: T[]) => {
     const frequencyMap = getFrequencyFromArray(arr);
     return formatFrequencyMapForCharting(frequencyMap);
+};
+
+export const getCalendarDataFromDates = (dates: Date[]) => {
+    const dateFrequencies = getFrequencyFromArray(dates.map((d) => d.toLocaleDateString('en-Us')));
+    let calendarData = [];
+    for (const [key, value] of Object.entries(dateFrequencies)) {
+        calendarData.push({
+            // format: yyyy-mm-dd
+            day: new Date(key).toISOString().slice(0, 10),
+            value: value,
+        });
+    }
+    return calendarData;
 };

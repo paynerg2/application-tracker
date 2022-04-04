@@ -1,8 +1,12 @@
 import React from 'react';
-import { Chart } from 'react-google-charts';
 import Sankey, { SankeyData } from '../../components/SankeyDiagram/sankey';
+import { useTheme } from 'styled-components';
 import { useGetApplicationsQuery, useGetInterviewsQuery } from '../../services/api';
-import { getFrequencyMapForCharting } from '../../_helpers/dataAnalysis';
+import {
+    formatFrequencyMapForPieChart,
+    getCalendarDataFromDates,
+    getFrequencyFromArray,
+} from '../../_helpers/dataAnalysis';
 import {
     ChartLoader,
     Container,
@@ -10,12 +14,17 @@ import {
     ChartSection,
     ChartRow,
     ChartContainer,
+    ChartHeader,
+    Chart,
 } from './Stats.styles';
-import { theme } from '../../app/theme/theme';
-
-interface Props {}
+import Calendar from '../../components/CalendarChart/calendar';
+import PieChart from '../../components/PieChart/pieChart';
+import { HorizontalLine } from '../../components/MobileMenu/mobileMenu.styles';
+import { getLastArrayElement } from '../../_helpers/arrayHelpers';
+import { addDays, compareDates } from '../../_helpers/dateHelpers';
 
 const Stats = () => {
+    const theme = useTheme();
     const {
         total,
         noResponseCount,
@@ -60,41 +69,40 @@ const Stats = () => {
     if (applicationsError || interviewsError) return <div>Something went wrong</div>;
 
     const getCalendarData = () => {
-        const formattedDates = submissionDates?.map((d) => d.toLocaleDateString('en-Us'));
-        const dateFrequency = formattedDates
-            ? getFrequencyMapForCharting(formattedDates).map((entry) => [
-                  new Date(entry[0]),
-                  entry[1],
-              ])
-            : [];
-        console.log(dateFrequency);
-        const typeInfo = [
-            {
-                type: 'date',
-                id: 'Date',
-            },
-            {
-                type: 'number',
-                id: 'Submissions',
-            },
-        ];
-        const calendarData = [
-            typeInfo,
-            //@ts-ignore
-            ...dateFrequency,
-        ];
-        console.log(calendarData);
-        return calendarData;
+        const { beginning, end } = getSubmissionRange();
+        console.log(beginning);
+        console.log(end);
+        return getCalendarDataFromDates(submissionDates || []);
     };
 
-    const pieChartData = skills ? getFrequencyMapForCharting(skills) : [];
-    const pieChartOptions = {
-        title: 'Main Skill Percentage of Submitted Applications',
-        sliceVisibilityThreshold: 0.1,
-        backgroundColor: 'transparent',
+    const getSubmissionRange = () => {
+        if (submissionDates !== undefined && submissionDates.length > 0) {
+            // Get unique years
+            const sortedDates = submissionDates.sort((a, b) => {
+                return compareDates(a, b, 'ascending');
+            });
+
+            const earliestDate = addDays(sortedDates[0], -20).toISOString().slice(0, 10);
+            const latestDate = addDays(getLastArrayElement(sortedDates), 20)
+                .toISOString()
+                .slice(0, 10);
+
+            return {
+                beginning: earliestDate,
+                end: latestDate,
+            };
+        }
+
+        const today = new Date().toISOString().slice(0, 10);
+        return {
+            beginning: today,
+            end: today,
+        };
     };
-    const calendarChartOptions = {
-        title: 'Applications Sent',
+
+    const getPieChartData = () => {
+        const frequency = getFrequencyFromArray(skills || []);
+        return formatFrequencyMapForPieChart(frequency);
     };
 
     const sankeyNodeIds = {
@@ -220,14 +228,22 @@ const Stats = () => {
         return data;
     };
 
+    const chartContainerAnimation = {
+        initial: {
+            height: 0,
+            opacity: 0,
+        },
+        animate: {
+            height: 'fit-content',
+            opacity: 1,
+        },
+        transition: {
+            duration: 0.4,
+        },
+    };
+
     const Loader = () => {
-        return (
-            <ChartLoader>
-                The charts are loading. Sometimes Google takes a while to update them when data
-                changes, but don't be too harsh on them. They're a small company doing the best they
-                can! Try refreshing the page after some time has passed.
-            </ChartLoader>
-        );
+        return <ChartLoader>Chart is loading. Thanks for the patience!</ChartLoader>;
     };
 
     return (
@@ -235,42 +251,44 @@ const Stats = () => {
             <Layout>
                 <ChartSection id="charts">
                     <ChartRow>
-                        {!applicationsLoading && skills ? (
-                            <ChartContainer id="skillsPieChart">
-                                <Chart
-                                    chartType="PieChart"
-                                    width="500px"
-                                    height="400px"
-                                    data={[['Skills', 'Submissions'], ...pieChartData]}
-                                    options={pieChartOptions}
-                                    loader={<Loader />}
-                                />
+                        {skills ? (
+                            <ChartContainer id="skillsPie" {...chartContainerAnimation}>
+                                <ChartHeader>Skills</ChartHeader>
+                                <Chart>
+                                    <PieChart data={getPieChartData()} />
+                                </Chart>
                             </ChartContainer>
                         ) : (
-                            <div>Hmmm..</div>
+                            <Loader />
                         )}
-                    </ChartRow>
-                    <ChartRow>
                         {!applicationsLoading && !interviewsLoading ? (
-                            <ChartContainer id="sankeyChart">
-                                <Sankey data={getSankeyChartData()} getColor={getColorByNodeId} />
+                            <ChartContainer id="sankeyChart" {...chartContainerAnimation}>
+                                <ChartHeader>The job hunt so far</ChartHeader>
+                                <Chart>
+                                    <Sankey
+                                        data={getSankeyChartData()}
+                                        getColor={getColorByNodeId}
+                                    />
+                                </Chart>
                             </ChartContainer>
                         ) : (
-                            <div>Something is wrong</div>
+                            <Loader />
                         )}
                     </ChartRow>
                     <ChartRow>
-                        {!applicationsLoading && !interviewsLoading && submissionDates ? (
-                            <ChartContainer id="calendarChart">
-                                <Chart
-                                    chartType="Calendar"
-                                    width="950px"
-                                    data={getCalendarData()}
-                                    options={calendarChartOptions}
-                                />
+                        {submissionDates !== undefined && submissionDates.length > 0 ? (
+                            <ChartContainer className="calendar" {...chartContainerAnimation}>
+                                <ChartHeader>Application Submission History</ChartHeader>
+                                <Chart style={{ height: '25em' }}>
+                                    <Calendar
+                                        data={getCalendarData()}
+                                        from={getSubmissionRange().beginning}
+                                        to={getSubmissionRange().end}
+                                    />
+                                </Chart>
                             </ChartContainer>
                         ) : (
-                            <div>Something is amiss</div>
+                            <Loader />
                         )}
                     </ChartRow>
                 </ChartSection>
