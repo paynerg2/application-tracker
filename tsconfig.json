@@ -18,5 +18,5 @@
         "useUnknownInCatchVariables": false,
         "types": ["react/next", "react-dom/next", "jest"]
     },
-    "include": ["src"]
+    "include": ["src", "server"]
 }
