@@ -49,7 +49,7 @@ function Login() {
                 onSubmit={handleSubmit}
                 steps={[Step1]}
                 image={LoginImage}
-                header="Register"
+                header="Login"
                 initialValues={{}}
             >
                 <section style={{ textAlign: 'center' }}>
