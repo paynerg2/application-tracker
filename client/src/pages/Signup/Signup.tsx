@@ -33,7 +33,7 @@ function SignUp() {
             if (window !== undefined) {
                 window.localStorage.setItem('token', signupResponse.token);
             }
-            dispatch(setUser(signupResponse.user));
+            dispatch(setUser(signupResponse._doc));
         } catch (error) {
             console.log(error);
         }
