@@ -6,6 +6,10 @@
         "type": "git",
         "directory": "git+https://github.com/paynerg2/application-tracker"
     },
+    "engines": {
+        "node": "14.x",
+        "npm": "6.14.10"
+    },
     "dependencies": {
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.18.3",
@@ -39,8 +43,7 @@
         "webpack-cli": "^3.3.1"
     },
     "scripts": {
-        "start": "nodemon server",
-        "build": "react-scripts build"
+        "start": "nodemon server"
     },
     "eslintConfig": {
         "extends": "react-app"
