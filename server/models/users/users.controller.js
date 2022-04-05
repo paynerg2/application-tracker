@@ -29,7 +29,7 @@ function authenticate(req, res, next) {
 function register(req, res, next) {
     userService
         .create(req.body)
-        .then(() => res.json({}))
+        .then((user) => (user ? res.json(user) : res.sendStatus(404)))
         .catch((err) => next(err));
 }
 

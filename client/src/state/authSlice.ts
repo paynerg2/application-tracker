@@ -1,7 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '../interfaces/user';
 
-const _user: User = JSON.parse(window.localStorage.getItem('user') || '{}');
+const token = window.localStorage.getItem('user');
+let _user: User = {} as User;
+if (token) {
+    _user = JSON.parse(token);
+}
 
 const initialState = {
     user: _user,

@@ -87,6 +87,9 @@ async function create(userParam) {
 
         // save user
         await user.save();
+
+        const { hash, ...userWithoutHash } = user;
+        return userWithoutHash;
     } catch (error) {
         throw Error(error);
     }
