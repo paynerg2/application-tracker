@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Interview } from '../../interfaces/interviews';
 import InterviewCard from '../Cards/Interview/interviewCard';
-import { CircularButton, ListContainer } from './InterviewList.styles';
+import { CircularButton, ListContainer, Placeholder } from './InterviewList.styles';
 
 interface Props {
     interviews: Interview[];
@@ -19,7 +19,9 @@ function InterviewList({ interviews, withAdd = true }: Props) {
                     <InterviewCard key={interview.id} interview={interview} />
                 ))
             ) : (
-                <div>No interviews... yet!</div>
+                <Placeholder>
+                    <div>No interviews yet!</div>
+                </Placeholder>
             )}
             {withAdd && (
                 <CircularButton onClick={() => navigate('/interviews/new')}>+</CircularButton>

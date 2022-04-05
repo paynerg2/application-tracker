@@ -43,7 +43,7 @@ function ApplicationFilter({ applications, filters, onChange, setIsCardView }: P
 
     return (
         <Layout>
-            <SearchBox placeholder="Search..." />
+            {/* <SearchBox placeholder="Search..." /> */}
             <StyleSelector toggleCardView={() => setIsCardView((prev) => !prev)} />
             <FilterSection style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Filters</span>
