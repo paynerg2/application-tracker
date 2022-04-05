@@ -137,3 +137,13 @@ export const Chart = styled.div`
     padding: 2em;
     box-sizing: border-box;
 `;
+
+export const Placeholder = styled.div`
+    height: 10em;
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: ${(props) => props.theme.color.background};
+`;

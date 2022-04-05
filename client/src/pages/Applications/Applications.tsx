@@ -213,12 +213,14 @@ function Applications() {
             </NewApplication>
             {isCardView ? getCardView() : getListView()}
             {!isLoading ? (
-                <ApplicationFilter
-                    applications={data || []}
-                    filters={filters}
-                    onChange={onFilterChange}
-                    setIsCardView={setIsCardView}
-                />
+                data.length > 0 && (
+                    <ApplicationFilter
+                        applications={data}
+                        filters={filters}
+                        onChange={onFilterChange}
+                        setIsCardView={setIsCardView}
+                    />
+                )
             ) : (
                 <SkeletonList
                     height={'40vh'}

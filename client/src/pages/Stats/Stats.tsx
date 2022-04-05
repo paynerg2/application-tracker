@@ -16,6 +16,7 @@ import {
     ChartContainer,
     ChartHeader,
     Chart,
+    Placeholder,
 } from './Stats.styles';
 import Calendar from '../../components/CalendarChart/calendar';
 import PieChart from '../../components/PieChart/pieChart';
@@ -223,8 +224,6 @@ const Stats = () => {
             }
         }
 
-        console.log(data);
-
         return data;
     };
 
@@ -249,49 +248,59 @@ const Stats = () => {
     return (
         <Container>
             <Layout>
-                <ChartSection id="charts">
-                    <ChartRow>
-                        {skills ? (
-                            <ChartContainer id="skillsPie" {...chartContainerAnimation}>
-                                <ChartHeader>Skills</ChartHeader>
-                                <Chart>
-                                    <PieChart data={getPieChartData()} />
-                                </Chart>
-                            </ChartContainer>
-                        ) : (
-                            <Loader />
-                        )}
-                        {!applicationsLoading && !interviewsLoading ? (
-                            <ChartContainer id="sankeyChart" {...chartContainerAnimation}>
-                                <ChartHeader>The job hunt so far</ChartHeader>
-                                <Chart>
-                                    <Sankey
-                                        data={getSankeyChartData()}
-                                        getColor={getColorByNodeId}
-                                    />
-                                </Chart>
-                            </ChartContainer>
-                        ) : (
-                            <Loader />
-                        )}
-                    </ChartRow>
-                    <ChartRow>
-                        {submissionDates !== undefined && submissionDates.length > 0 ? (
-                            <ChartContainer className="calendar" {...chartContainerAnimation}>
-                                <ChartHeader>Application Submission History</ChartHeader>
-                                <Chart style={{ height: '25em' }}>
-                                    <Calendar
-                                        data={getCalendarData()}
-                                        from={getSubmissionRange().beginning}
-                                        to={getSubmissionRange().end}
-                                    />
-                                </Chart>
-                            </ChartContainer>
-                        ) : (
-                            <Loader />
-                        )}
-                    </ChartRow>
-                </ChartSection>
+                {total && total > 0 ? (
+                    <ChartSection id="charts">
+                        <ChartRow>
+                            {skills ? (
+                                <ChartContainer id="skillsPie" {...chartContainerAnimation}>
+                                    <ChartHeader>Skills</ChartHeader>
+                                    <Chart>
+                                        <PieChart data={getPieChartData()} />
+                                    </Chart>
+                                </ChartContainer>
+                            ) : (
+                                <Loader />
+                            )}
+                            {!applicationsLoading && !interviewsLoading ? (
+                                <ChartContainer id="sankeyChart" {...chartContainerAnimation}>
+                                    <ChartHeader>The job hunt so far</ChartHeader>
+                                    <Chart>
+                                        <Sankey
+                                            data={getSankeyChartData()}
+                                            getColor={getColorByNodeId}
+                                        />
+                                    </Chart>
+                                </ChartContainer>
+                            ) : (
+                                <Loader />
+                            )}
+                        </ChartRow>
+                        <ChartRow>
+                            {submissionDates !== undefined && submissionDates.length > 0 ? (
+                                <ChartContainer className="calendar" {...chartContainerAnimation}>
+                                    <ChartHeader>Application Submission History</ChartHeader>
+                                    <Chart style={{ height: '25em' }}>
+                                        <Calendar
+                                            data={getCalendarData()}
+                                            from={getSubmissionRange().beginning}
+                                            to={getSubmissionRange().end}
+                                        />
+                                    </Chart>
+                                </ChartContainer>
+                            ) : (
+                                <Loader />
+                            )}
+                        </ChartRow>
+                    </ChartSection>
+                ) : (
+                    <Placeholder>
+                        <h2>Try adding some applications</h2>
+                        <p>
+                            Once you've submitted some applications, insights into how the job hunt
+                            is going will automatically be generated.
+                        </p>
+                    </Placeholder>
+                )}
             </Layout>
         </Container>
     );

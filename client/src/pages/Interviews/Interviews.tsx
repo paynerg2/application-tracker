@@ -55,14 +55,20 @@ function Interviews() {
                     ) : (
                         <SkeletonList />
                     )}
-                    <SectionHeader>Previous Interviews</SectionHeader>
+
                     {!interviewsLoading ? (
-                        previousInterviews && (
-                            // <InterviewList withAdd={false} interviews={previousInterviews} />
-                            <InterviewResponseTable interviews={previousInterviews} />
+                        previousInterviews &&
+                        previousInterviews.length > 0 && (
+                            <>
+                                <SectionHeader>Previous Interviews</SectionHeader>
+                                <InterviewResponseTable interviews={previousInterviews} />
+                            </>
                         )
                     ) : (
-                        <SkeletonList />
+                        <>
+                            <SectionHeader>Previous Interviews</SectionHeader>
+                            <SkeletonList />
+                        </>
                     )}
                 </InterviewSection>
                 <ContactSection>
