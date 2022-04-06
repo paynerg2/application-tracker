@@ -44,6 +44,7 @@ export const ContactSection = styled.section`
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
         margin-bottom: 20vh;
+        width: 100%;
     }
 `;
 
