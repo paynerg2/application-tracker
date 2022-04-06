@@ -25,5 +25,6 @@ export const List = styled.ul`
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
         border-radius: 0;
+        width: 100%;
     }
 `;

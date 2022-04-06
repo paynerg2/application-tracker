@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useAppDispatch } from '../../app/hooks';
 import { api, tags } from '../../services/api';
@@ -83,18 +83,14 @@ function Header() {
         navigate('/');
     };
 
-    /*-------- Animations -------------*/
-
-    const dropdownVariants = {
-        open: {},
-    };
-
     return (
         <Layout>
             <HeaderContainer>
-                <Link to="/">
-                    <img src={getLogo()} alt="Trackr Logo" />
-                </Link>
+                <img
+                    onClick={() => navigate(!isEmpty(user) ? '/applications' : '/')}
+                    src={getLogo()}
+                    alt="Trackr Logo"
+                />
                 <NavLinkSection>{!isEmpty(user) && getRouteNav()}</NavLinkSection>
                 {!isEmpty(user) && (
                     <>

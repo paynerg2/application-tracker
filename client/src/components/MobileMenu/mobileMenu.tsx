@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { capitalizeFirstLetter } from '../../_helpers/capitalize';
-import { Container, HorizontalLine, MenuItem } from './mobileMenu.styles';
+import { Container, HorizontalLine, LinkContainer, MenuItem } from './mobileMenu.styles';
 
 interface Props {
     show: boolean;
@@ -74,12 +74,12 @@ function MobileMenu({ show, setShow, onLogout }: Props) {
                     exit={{
                         height: 0,
                         transition: {
-                            delay: 0.7,
+                            delay: 0.2,
                             duration: 0.3,
                         },
                     }}
                 >
-                    <motion.ul
+                    <LinkContainer
                         initial="closed"
                         animate="open"
                         exit="closed"
@@ -108,7 +108,7 @@ function MobileMenu({ show, setShow, onLogout }: Props) {
                         >
                             Logout
                         </MenuItem>
-                    </motion.ul>
+                    </LinkContainer>
                 </Container>
             )}
         </AnimatePresence>

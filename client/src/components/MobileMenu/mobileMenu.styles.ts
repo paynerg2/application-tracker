@@ -20,7 +20,7 @@ export const Container = styled(motion.div)`
     }
 `;
 
-export const MenuItem = styled(motion.li)`
+export const MenuItem = styled(motion.div)`
     width: 100%;
     height: 3em;
     line-height: 3em;
@@ -41,4 +41,12 @@ export const HorizontalLine = styled(motion.li)`
     height: 0.1em;
     width: 90%;
     background-color: ${(props) => props.theme.color.separator};
+`;
+
+export const LinkContainer = styled(motion.div)`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 `;

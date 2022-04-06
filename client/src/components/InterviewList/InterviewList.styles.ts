@@ -30,6 +30,7 @@ export const ListContainer = styled(List)`
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
         border-radius: 0;
+        width: 100%;
     }
 `;
 
