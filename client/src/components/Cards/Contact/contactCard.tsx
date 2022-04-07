@@ -31,7 +31,7 @@ function ContactCard({ contact, type }: Props) {
         await deleteContact(id!);
     };
 
-    const handleEdit = () => navigate(`/contacts/edit/${id}/1`);
+    const handleEdit = () => navigate(`/contacts/edit/${id}`);
 
     return (
         <>

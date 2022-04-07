@@ -30,7 +30,7 @@ function InterviewCard({ interview }: Props) {
         await deleteInterview(id!);
     };
 
-    const handleEdit = () => navigate(`/interviews/edit/${id}/1`);
+    const handleEdit = () => navigate(`/interviews/edit/${id}`);
 
     return (
         <ActionAccordion isOpen={isOpen} edit={handleEdit} onDelete={handleDelete}>
