@@ -8,8 +8,6 @@ import App from './App';
 import GlobalCSS from './app/theme/global.css';
 import DarkThemeProvider from './components/DarkThemeProvider/darkThemeProvider';
 
-console.log(store.getState());
-
 ReactDOM.render(
     <Provider store={store}>
         <DarkThemeProvider>

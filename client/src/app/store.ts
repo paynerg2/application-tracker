@@ -1,8 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import authReducer from '../state/authSlice';
-import animationReducer from '../state/animationSlice';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { createLogger } from 'redux-logger';
+import authReducer from '../state/authSlice';
 import { api } from '../services/api';
 
 const loggerMiddleware = createLogger();
@@ -11,7 +10,6 @@ export const middlewares = [loggerMiddleware, api.middleware];
 export const store = configureStore({
     reducer: {
         auth: authReducer,
-        animation: animationReducer,
         [api.reducerPath]: api.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(middlewares),

@@ -37,14 +37,13 @@ const Container = styled.div`
 
 function App() {
     const location = useLocation();
-    const { direction } = useAppSelector((state) => state.animation);
 
     return (
         <>
             <Container>
                 <Header />
                 <ScrollToTop />
-                <AnimatePresence initial={false} custom={direction} exitBeforeEnter>
+                <AnimatePresence initial={false} exitBeforeEnter>
                     <Routes location={location} key={location.pathname}>
                         <Route path="/" element={<LandingPage />} />
                         <Route path="login" element={<Login />} />

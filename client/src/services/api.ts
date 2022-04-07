@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Application } from '../interfaces/application';
 import config from '../config.json';
+import { Application } from '../interfaces/application';
 import { Interview } from '../interfaces/interviews';
 import { Contact } from '../interfaces/contact';
 import { User } from '../interfaces/user';
