@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetContactsQuery, useGetInterviewsQuery } from '../../services/api';
+import { List } from '../../components/List/list';
+import { CircularButton } from '../../components/InterviewList/InterviewList.styles';
+import ContactCard from '../../components/Cards/Contact/contactCard';
+import SkeletonList from '../../components/List/skeletonList';
+import InterviewList from '../../components/InterviewList/InterviewList';
+import InterviewResponseTable from '../../components/InterviewResponseTable/InterviewResponseTable';
 import {
     ContactSection,
     InterviewSection,
@@ -9,15 +15,10 @@ import {
     MobileButtonSection,
     SectionHeader,
 } from './Interviews.styles';
-import { List } from '../../components/List/list';
-import { CircularButton } from '../../components/InterviewList/InterviewList.styles';
-import ContactCard from '../../components/Cards/Contact/contactCard';
-import SkeletonList from '../../components/List/skeletonList';
-import InterviewList from '../../components/InterviewList/InterviewList';
 import { pageTransitionProps } from '../../common/animations';
-import { useAppSelector } from '../../app/hooks';
 import { Interview } from '../../interfaces/interviews';
-import InterviewResponseTable from '../../components/InterviewResponseTable/InterviewResponseTable';
+import Placeholder from '../../components/Placeholder/placeholder';
+import TabsImage from '../../assets/Tabs.svg';
 
 function Interviews() {
     const today = new Date();
@@ -37,13 +38,7 @@ function Interviews() {
         }),
     });
     const { data: contacts, isLoading: contactsLoading } = useGetContactsQuery();
-    const { direction, isGoingToNavSection } = useAppSelector((state) => state.animation);
-    const [layoutProps, setLayoutProps] = useState({});
     const navigate = useNavigate();
-
-    useEffect(() => {
-        setLayoutProps(isGoingToNavSection ? { ...pageTransitionProps, custom: direction } : {});
-    }, [isGoingToNavSection, direction]);
 
     return (
         <>
@@ -74,11 +69,22 @@ function Interviews() {
                 <ContactSection>
                     <SectionHeader>Contacts</SectionHeader>
                     {!contactsLoading ? (
-                        contacts && (
+                        contacts && contacts.length > 0 ? (
                             <List>
                                 {contacts?.map((contact) => (
                                     <ContactCard key={contact.id} contact={contact} type="item" />
                                 ))}
+                                <CircularButton onClick={() => navigate('/contacts/new')}>
+                                    +
+                                </CircularButton>
+                            </List>
+                        ) : (
+                            <List>
+                                <Placeholder
+                                    image={TabsImage}
+                                    headerText="No Contacts"
+                                    cta="Time to start networking!"
+                                />
                                 <CircularButton onClick={() => navigate('/contacts/new')}>
                                     +
                                 </CircularButton>

@@ -93,9 +93,3 @@ export const ResponseGroup = styled.div`
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
     }
 `;
-
-export const Placeholder = styled.div`
-    width: 60%;
-    font-size: 1.25em;
-    font-family: ${(props) => props.theme.font.secondary};
-`;

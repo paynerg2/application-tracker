@@ -16,11 +16,11 @@ import {
     ChartContainer,
     ChartHeader,
     Chart,
-    Placeholder,
 } from './Stats.styles';
 import Calendar from '../../components/CalendarChart/calendar';
 import PieChart from '../../components/PieChart/pieChart';
-import { HorizontalLine } from '../../components/MobileMenu/mobileMenu.styles';
+import Placeholder from '../../components/Placeholder/placeholder';
+import DataImage from '../../assets/Data.svg';
 import { getLastArrayElement } from '../../_helpers/arrayHelpers';
 import { addDays, compareDates } from '../../_helpers/dateHelpers';
 
@@ -293,13 +293,13 @@ const Stats = () => {
                         </ChartRow>
                     </ChartSection>
                 ) : (
-                    <Placeholder>
-                        <h2>Try adding some applications</h2>
-                        <p>
-                            Once you've submitted some applications, insights into how the job hunt
-                            is going will automatically be generated.
-                        </p>
-                    </Placeholder>
+                    <Placeholder
+                        image={DataImage}
+                        headerText="Try Adding Some Applications"
+                        cta="Once you've submitted some applications, insights into how the job hunt
+                    is going will automatically be generated."
+                        style={{ width: '100%', height: '20em', marginTop: '4em' }}
+                    />
                 )}
             </Layout>
         </Container>

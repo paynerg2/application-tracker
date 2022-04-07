@@ -11,7 +11,7 @@ export const Layout = styled(motion.div)`
     row-gap: 2vh;
 
     width: 80vw;
-    //min-height: 90vh;
+    min-height: 90vh;
     height: auto;
     margin: 0 auto;
 
@@ -210,20 +210,4 @@ export const ApplicationListItem = styled(motion.li)`
     #icon {
         border-right: none;
     }
-`;
-
-export const Placeholder = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5em;
-    font-weight: 500;
-    height: 15em;
-    width: 100%;
-    background-color: ${(props) => props.theme.color.background};
-    margin-bottom: 20em;
-
-    grid-column: 3 / 7;
-    grid-row: 2 / 3;
 `;

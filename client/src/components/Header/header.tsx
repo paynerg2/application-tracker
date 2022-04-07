@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
+import { useTheme } from 'styled-components';
 import { useAppDispatch } from '../../app/hooks';
+import { useAppSelector } from '../../app/hooks';
 import { api, tags } from '../../services/api';
 import { defaultState } from '../../state/authSlice';
 import { isEmpty } from '../../_helpers/objectHelpers';
-import { useAppSelector } from '../../app/hooks';
 import {
     DropdownItem,
     DropdownMenu,
@@ -22,10 +22,8 @@ import ProfileImage from '../ProfileImage/profileImage';
 import Logo from '../../assets/Logo.svg';
 import DarkLogo from '../../assets/Dark_Logo.svg';
 import useWindowDimensions from '../../_helpers/useWindowDimensions';
-import { theme } from '../../app/theme/theme';
 import { pixelStringToNumber } from '../../_helpers/stringHelpers';
 import MobileMenu from '../MobileMenu/mobileMenu';
-import { updateNavState } from '../../state/animationSlice';
 
 function Header() {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -36,6 +34,7 @@ function Header() {
     const navigate = useNavigate();
     const user = useAppSelector((state) => state.auth.user);
     const { width } = useWindowDimensions();
+    const theme = useTheme();
 
     const pathName = location.pathname.split('/')[1];
     const routes = ['applications', 'interviews', 'stats'];
@@ -67,13 +66,6 @@ function Header() {
     /*-------- Callbacks -------------*/
 
     const handleNavigate = (next: string) => {
-        dispatch(
-            updateNavState({
-                current: pathName,
-                next: next,
-            })
-        );
-
         navigate(`/${next}`);
     };
 

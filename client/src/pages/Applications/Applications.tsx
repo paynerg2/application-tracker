@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import { useAppSelector } from '../../app/hooks';
 import Button from '../../components/Button/button';
+import DateContainer from '../../components/DateContainer/dateContainer';
+import ApplicationCard from '../../components/Cards/Application/applicationCard';
+import SkeletonList from '../../components/List/skeletonList';
+import ApplicationFilter from '../../components/Cards/Application/ApplicationFilter';
+import EmptyListImage from '../../assets/Empty_List.svg';
+import { Application } from '../../interfaces/application';
+import { pageTransitionProps } from '../../common/animations';
+import { applicationCardHeight } from '../../components/Cards/Application/applicationCard.styles';
+import { applicationHelpers } from '../../_helpers/applicationHelpers';
+import { useGetApplicationsQuery } from '../../services/api';
+import { iconSelector } from '../../_helpers/iconSelector';
+import { compareDates } from '../../_helpers/dateHelpers';
 import {
     ApplicationCardContainer,
     ApplicationListContainer,
@@ -12,19 +25,7 @@ import {
     SubmissionsList,
     applicationListItemHeight,
 } from './Applications.styles';
-import DateContainer from '../../components/DateContainer/dateContainer';
-
-import { Application } from '../../interfaces/application';
-import ApplicationCard from '../../components/Cards/Application/applicationCard';
-import { applicationCardHeight } from '../../components/Cards/Application/applicationCard.styles';
-import ApplicationFilter from '../../components/Cards/Application/ApplicationFilter';
-import { applicationHelpers } from '../../_helpers/applicationHelpers';
-import { useGetApplicationsQuery } from '../../services/api';
-import { iconSelector } from '../../_helpers/iconSelector';
-import { compareDates } from '../../_helpers/dateHelpers';
-import { useAppSelector } from '../../app/hooks';
-import SkeletonList from '../../components/List/skeletonList';
-import { pageTransitionProps } from '../../common/animations';
+import Placeholder from '../../components/Placeholder/placeholder';
 
 export interface ApplicationFilters {
     response: string;
@@ -37,7 +38,6 @@ function Applications() {
     const defaultApplicationDisplayStyle = useAppSelector(
         (state) => state.auth.user?.settings?.defaultApplicationDisplayStyle
     );
-    const { direction, isGoingToNavSection } = useAppSelector((state) => state.animation);
     const [isCardView, setIsCardView] = useState(defaultApplicationDisplayStyle === 'Card');
 
     const defaultFilters: ApplicationFilters = {
@@ -50,26 +50,15 @@ function Applications() {
 
     const { data, error, isLoading } = useGetApplicationsQuery();
     const [filteredApplications, setFilteredApplications] = useState<Application[]>([]);
-    const [layoutProps, setLayoutProps] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
-        //setIsCardView(defaultApplicationDisplayStyle === 'Card');
         if (data) {
             // Need to act on copies of data, because sorting directly affects the object.
             const applications = [...data];
             setFilteredApplications(applicationHelpers.filterApplications(applications, filters));
         }
     }, [filters, data]);
-
-    useEffect(() => {
-        setLayoutProps(isGoingToNavSection ? { ...pageTransitionProps, custom: direction } : {});
-    }, [isGoingToNavSection, direction]);
-
-    // Todo: Add a better error dialogue
-    if (error || !data) {
-        return <div>Something went wrong...</div>;
-    }
 
     const groupedApplications = applicationHelpers.groupApplicationsByDate(filteredApplications);
 
@@ -108,9 +97,19 @@ function Applications() {
     };
 
     const getCardView = () => {
+        if (isLoading) {
+            return (
+                <SubmissionsList>
+                    {[1, 2, 3].map((loading) => (
+                        <SkeletonList width={'100%'} height={applicationCardHeight} />
+                    ))}
+                </SubmissionsList>
+            );
+        }
+
         return (
             <>
-                {!isLoading ? (
+                {data && data.length > 0 ? (
                     <SubmissionsList>
                         <h2>
                             <strong>Submitted Applications</strong>
@@ -137,20 +136,31 @@ function Applications() {
                         )}
                     </SubmissionsList>
                 ) : (
-                    <SubmissionsList>
-                        {[1, 2, 3].map((loading) => (
-                            <SkeletonList width={'100%'} height={applicationCardHeight} />
-                        ))}
-                    </SubmissionsList>
+                    <Placeholder
+                        image={EmptyListImage}
+                        headerText="No Applications Submitted yet!"
+                        cta="Get out there and find your dream job"
+                        style={{ width: '100%', height: '20em' }}
+                    />
                 )}
             </>
         );
     };
 
     const getListView = () => {
+        if (isLoading) {
+            return (
+                <SubmissionsList>
+                    {[1, 2, 3].map((loading) => (
+                        <SkeletonList width={'100%'} height={applicationCardHeight} />
+                    ))}
+                </SubmissionsList>
+            );
+        }
+
         return (
             <>
-                {!isLoading ? (
+                {data && data.length > 0 ? (
                     <SubmissionsList>
                         <h2 style={{ fontSize: '2em' }}>
                             <strong>Submitted Applications</strong>
@@ -192,11 +202,12 @@ function Applications() {
                         </ApplicationListContainer>
                     </SubmissionsList>
                 ) : (
-                    <SubmissionsList>
-                        {[1, 2, 3, 4].map((loading) => (
-                            <SkeletonList width={'100%'} height={applicationListItemHeight} />
-                        ))}
-                    </SubmissionsList>
+                    <Placeholder
+                        image={EmptyListImage}
+                        headerText="No Applications Submitted yet!"
+                        cta="Get out there and find your dream job"
+                        style={{ width: '100%', height: '20em' }}
+                    />
                 )}
             </>
         );
@@ -207,12 +218,12 @@ function Applications() {
             <NewApplication>
                 <h2>Add Application</h2>
                 <p>Log a new submitted application</p>
-                <Button onClick={() => navigate('/applications/new/1')} inverted>
+                <Button onClick={() => navigate('/applications/new')} inverted>
                     New Application
                 </Button>
             </NewApplication>
             {isCardView ? getCardView() : getListView()}
-            {!isLoading ? (
+            {!isLoading && data ? (
                 data.length > 0 && (
                     <ApplicationFilter
                         applications={data}
