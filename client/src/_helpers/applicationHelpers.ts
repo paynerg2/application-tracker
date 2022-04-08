@@ -10,14 +10,10 @@ export interface GroupedApplications {
  * displaying the Card View on the applications page.
  *
  * @param applications Array of applications to be indexed
- * @param sortDescending Dictates the sort direction for date indices
  * @returns Applications indexed by dateApplicationSent property
  * as a date string of the format 'Mon DD, YYYY'
  * */
-const groupApplicationsByDate = (
-    applications: Application[],
-    sortDescending = true
-): GroupedApplications => {
+const groupApplicationsByDate = (applications: Application[]): GroupedApplications => {
     return applications.reduce(function (r: any, a: Application) {
         const dateString = new Date(a.dateApplicationSent).toLocaleDateString('default', {
             month: 'short',

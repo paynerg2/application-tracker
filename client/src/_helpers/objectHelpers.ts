@@ -18,6 +18,12 @@ export const isEmpty = (obj: object): boolean => {
     return obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype;
 };
 
+/**
+ * Mimics the Lodash _.merge() function, merging the properties of a set of objects.
+ * @param object Base object to merge with
+ * @param sources List of other objects to merge with the base object
+ * @returns Object with the combined properties of each source.
+ */
 export const merge = <O extends object>(object: O, ...sources: O[]): O => {
     for (let source of sources) {
         for (let key in source) {
@@ -27,6 +33,13 @@ export const merge = <O extends object>(object: O, ...sources: O[]): O => {
     }
     return object;
 };
+
+/**
+ * Replaces the value of a property
+ * @param value
+ * @param newValue
+ * @returns
+ */
 
 const replaceValue = (value: any, newValue: any): any => {
     if (Array.isArray(value) && Array.isArray(newValue)) {
@@ -39,6 +52,12 @@ const replaceValue = (value: any, newValue: any): any => {
     return newValue;
 };
 
-const isObject = (object: any) => {
+/**
+ * Checks that the input is an object.
+ * @param object
+ * @returns
+ */
+
+const isObject = (object: any): boolean => {
     return object && object.constructor === 'Object';
 };
