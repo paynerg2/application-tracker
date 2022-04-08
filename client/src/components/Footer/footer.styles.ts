@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import TextButton from '../TextButton/textButton';
 
 export const Layout = styled.footer`
     height: 80vh;
@@ -47,6 +48,47 @@ export const FooterContainer = styled.div`
             display: flex;
             flex-direction: column;
             column-gap: 5vh;
+        }
+    }
+`;
+
+export const FooterSections = styled.div`
+    display: flex;
+    justify-content: space-around;
+
+    section {
+        width: 20em;
+    }
+
+    h3 {
+        color: ${(props) => props.theme.color.dropzoneText};
+        border-bottom: 1px solid ${(props) => props.theme.color.dropzoneText};
+        margin-bottom: 0.2em;
+    }
+
+    p {
+        color: ${(props) => props.theme.color.dropzoneText};
+        margin-top: 0;
+    }
+`;
+
+export const Logo = styled.img`
+    width: 15em;
+    height: fit-content;
+    align-self: flex-start;
+`;
+
+export const SiteNav = styled.section`
+    ul {
+        padding: 0;
+    }
+
+    li {
+        list-style: none;
+        margin-bottom: 0.1em;
+
+        button {
+            color: ${(props) => props.theme.color.dropzoneText};
         }
     }
 `;
