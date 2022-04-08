@@ -63,21 +63,21 @@ export const NavLinkSection = styled.nav`
     }
 `;
 
-const itemHeight = '3rem';
+const itemHeight = '3em';
 export const DropdownItem = styled.li`
     width: 100%;
     height: ${itemHeight};
     line-height: ${itemHeight};
-    background: ${(props) => props.theme.color.secondarySurface};
+    background: ${(props) => props.theme.color.surface};
     display: block;
-    position: relative;
-    transition-duration: 0.5s;
-    border-bottom: 1px solid ${(props) => props.theme.color.separator};
+    transition-duration: 0.2s;
+    border-radius: ${(props) => props.theme.borders.radius};
     text-align: center;
+    z-index: 1;
 
     &:hover {
-        background: ${(props) => props.theme.color.primary};
-        color: ${(props) => props.theme.color.buttonInverted};
+        color: ${(props) => props.theme.color.primary};
+        font-weight: 700;
         cursor: pointer;
     }
 
@@ -90,16 +90,28 @@ export const DropdownMenu = styled(motion.ul)`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-width: 10rem;
-    height: fit-content;
+    width: 10em;
+    height: 6em;
     margin: 0;
     padding-left: 0;
+    background-color: ${(props) => props.theme.color.surface};
+    border-radius: ${(props) => props.theme.borders.radius};
 
     position: absolute;
-    top: 15vh;
+    top: 10vh;
     cursor: pointer;
 
-    border-right: 2px solid red;
+    // Dialog arrow
+    &:before {
+        content: '';
+        position: absolute;
+        width: 2em;
+        height: 2em;
+        top: -1.2em;
+        left: 5.5em;
+        background-color: ${(props) => props.theme.color.surface};
+        transform: rotate(45deg);
+    }
 `;
 
 export const IconSection = styled.section`
@@ -108,6 +120,7 @@ export const IconSection = styled.section`
     justify-content: center;
     align-items: center;
     gap: 1vw;
+    height: 100%;
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
         display: none;

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { useAppDispatch } from '../../app/hooks';
 import { useAppSelector } from '../../app/hooks';
+import useOutsideClick from '../../_helpers/useOutsideClick';
 import { api, tags } from '../../services/api';
 import { defaultState } from '../../state/authSlice';
 import { isEmpty } from '../../_helpers/objectHelpers';
@@ -28,6 +29,7 @@ import MobileMenu from '../MobileMenu/mobileMenu';
 function Header() {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
+    const ref = useRef(null);
 
     const dispatch = useAppDispatch();
     const location = useLocation();
@@ -38,6 +40,8 @@ function Header() {
 
     const pathName = location.pathname.split('/')[1];
     const routes = ['applications', 'interviews', 'stats'];
+
+    useOutsideClick(ref, () => setShowDropdown(false));
 
     /*-------- Display -------------*/
 
@@ -89,7 +93,6 @@ function Header() {
                         <IconSection
                             aria-haspopup="true"
                             onMouseEnter={() => setShowDropdown(true)}
-                            onMouseLeave={() => setTimeout(() => setShowDropdown(false), 2000)}
                         >
                             {user.fullName && (
                                 <Greeting>
@@ -99,10 +102,11 @@ function Header() {
                             <ProfileImage name={user.fullName || ''} />
                             {showDropdown && (
                                 <DropdownMenu
+                                    ref={ref}
                                     aria-label="submenu"
-                                    initial={{ opacity: 0, height: 0 }}
-                                    animate={{ opacity: 1, height: '1.5em' }}
-                                    transition={{ duration: 0.4 }}
+                                    initial={{ opacity: 0, scale: 0.5 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.2 }}
                                 >
                                     <DropdownItem onClick={() => navigate('/me')}>
                                         Edit Profile

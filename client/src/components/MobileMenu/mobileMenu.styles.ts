@@ -43,7 +43,8 @@ export const HorizontalLine = styled(motion.li)`
     background-color: ${(props) => props.theme.color.separator};
 `;
 
-export const LinkContainer = styled(motion.div)`
+export const LinkContainer = styled(motion.ul)`
+    list-style: none;
     display: flex;
     flex-direction: column;
     justify-content: center;

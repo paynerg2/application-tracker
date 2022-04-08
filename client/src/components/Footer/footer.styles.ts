@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import TextButton from '../TextButton/textButton';
 
 export const Layout = styled.footer`
-    height: 80vh;
+    height: 60vh;
     min-width: 400px;
     display: flex;
     flex-direction: column;
