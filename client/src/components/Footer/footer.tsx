@@ -20,7 +20,7 @@ function Footer() {
     const getNavLinks = () => {
         const routes = ['appliations', 'interviews', 'stats'];
         return routes.map((route) => (
-            <li>
+            <li key={route}>
                 <TextButton onClick={() => navigate(`/${route}`)}>
                     {capitalizeFirstLetter(route)}
                 </TextButton>
@@ -35,6 +35,7 @@ function Footer() {
                     onClick={() => (isEmpty(user) ? '/' : '/applications')}
                     src={LogoImage}
                     alt="Trackr Logo"
+                    style={{ cursor: 'pointer' }}
                 />
                 <FooterSections>
                     {isEmpty(user) && (

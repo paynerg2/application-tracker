@@ -6,7 +6,7 @@ const Contact = require('../contacts/contact.model');
 const Schema = mongoose.Schema;
 
 const SettingsSchema = mongoose.Schema({
-    isDarkMode: { type: Boolean, default: true },
+    isDarkMode: { type: Boolean, default: false },
     defaultApplicationDisplayStyle: {
         type: String,
         enum: ['Card', 'List'],
@@ -16,7 +16,7 @@ const SettingsSchema = mongoose.Schema({
 
 const schema = new Schema({
     email: { type: String, unique: true, required: true },
-    hash: { type: String, required: true },
+    hash: { type: String },
     createdDate: { type: Date, default: Date.now },
     location: { type: String },
     fullName: { type: String },

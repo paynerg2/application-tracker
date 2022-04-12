@@ -1,4 +1,5 @@
 const config = require('../../config.json');
+const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../../_helpers/db');
@@ -13,6 +14,7 @@ module.exports = {
     create,
     update,
     updateWithoutImage,
+    googleAuthenticate,
     delete: _delete,
 };
 
@@ -21,17 +23,82 @@ function removeCollections(user) {
     return rest;
 }
 
+function generateToken(id) {
+    return jwt.sign({ sub: id }, config.secret);
+}
+
 async function authenticate({ email, password }) {
     const _user = await User.findOne({ email });
 
     if (_user && bcrypt.compareSync(password, _user.hash)) {
         const user = removeCollections(_user.toObject());
         const { hash, ...userWithoutHash } = user;
-        const token = jwt.sign({ sub: user._id }, config.secret);
+        const token = generateToken(user._id);
         return {
             user: userWithoutHash,
             token,
         };
+    }
+}
+
+async function googleAuthenticate(token) {
+    // Verify token
+    const client = new OAuth2Client(process.env.CLIENT_ID);
+
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+
+    const email = payload.email;
+
+    // If user already exists, return user
+    const user = await User.findOne({ email: email });
+    if (user) {
+        const token = generateToken(user._id);
+        return {
+            user: user,
+            token: token,
+        };
+    } else {
+        const newUserParams = {
+            email: email,
+            fullName: payload.name,
+            profileImage: payload.picture,
+            settings: {
+                isDarkMode: false,
+                defaultApplicationDisplayStyle: 'Card',
+            },
+        };
+
+        try {
+            let _user;
+            // upload profile image to cloudinary
+            if (newUserParams.profileImage) {
+                const result = await cloudinary.uploader.upload(newUserParams.profileImage, {
+                    public_id: `${newUserParams.email}_avatar`,
+                });
+                _user = new User({
+                    ...newUserParams,
+                    profileImage: result.secure_url,
+                    cloudinary_id: result.public_id,
+                });
+            } else {
+                _user = new User(newUserParams);
+            }
+
+            await _user.save();
+            const token = generateToken(_user._id);
+
+            return {
+                user: _user,
+                token: token,
+            };
+        } catch (error) {
+            throw Error(error);
+        }
     }
 }
 
@@ -60,7 +127,7 @@ async function getById(id) {
 
 async function create(userParam) {
     // validate
-    if (await User.findOne({ username: userParam.email })) {
+    if (await User.findOne({ email: userParam.email })) {
         throw Error('Email "' + userParam.email + '" is already taken');
     }
 
@@ -89,7 +156,12 @@ async function create(userParam) {
         await user.save();
 
         const { hash, ...userWithoutHash } = user;
-        return userWithoutHash;
+        const token = userWithoutHash._id;
+
+        return {
+            user: userWithoutHash,
+            token: token,
+        };
     } catch (error) {
         throw Error(error);
     }

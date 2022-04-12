@@ -5,7 +5,7 @@ import { isEmpty } from '../../_helpers/objectHelpers';
 
 function RequireAuth() {
     let location = useLocation();
-    const token = window.localStorage.getItem('token');
+    const token = window.localStorage.getItem('user');
     const user = useAppSelector((state) => state.auth.user);
 
     const verifiedUser = !isEmpty(user) && !!token;

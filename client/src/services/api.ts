@@ -41,6 +41,12 @@ export const api = createApi({
                 body: data,
             }),
         }),
+        googleAuth: build.mutation<any, any>({
+            query: (token) => ({
+                url: `/users/googleAuth/${token}`,
+                method: 'POST',
+            }),
+        }),
         verifyUser: build.mutation({
             query: (body: { token: string }) => {
                 return {
@@ -159,6 +165,7 @@ export const api = createApi({
 export const {
     useLoginMutation,
     useRegisterMutation,
+    useGoogleAuthMutation,
     useUpdateUserMutation,
     useUpdateUserSettingsMutation,
     useVerifyUserMutation,

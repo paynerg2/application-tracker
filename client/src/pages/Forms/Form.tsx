@@ -73,6 +73,7 @@ const Form = <T extends object>({ steps, initialValues, onSubmit }: Props<T>) =>
                 {steps.map(
                     (step, index) =>
                         state.activeStep === index && (
+                            //@ts-ignore
                             <step.Component
                                 key={step.key}
                                 values={state.data[step.key] || step.defaultValues}

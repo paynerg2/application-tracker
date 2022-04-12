@@ -1,26 +1,27 @@
 import React, { useCallback, useEffect } from 'react';
-import { useRegisterMutation } from '../../services/api';
+import { useGoogleAuthMutation, useRegisterMutation } from '../../services/api';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import FormPage from '../Forms/FormPage';
 import { setUser } from '../../state/authSlice';
 import Step1 from './Step1';
 import { ButtonSection } from '../../components/Form/form';
-import Button from '../../components/Button/button';
 import SignupImage from '../../assets/signup_image.svg';
-import GoogleIcon from '../../assets/google_icon.svg';
 import { useNavigate } from 'react-router-dom';
 import { isEmpty } from '../../_helpers/objectHelpers';
 import { defaultSettings } from '../../interfaces/settings';
+import GoogleLoginComponent from '../../components/Google/GoogleLogin';
+import { GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 
 function SignUp() {
     const dispatch = useAppDispatch();
     const [registerUser] = useRegisterMutation();
+    const [googleAuth] = useGoogleAuthMutation();
     const user = useAppSelector((state) => state.auth.user);
     const navigate = useNavigate();
 
     useEffect(() => {
         if (!isEmpty(user)) {
-            navigate('/');
+            navigate('/applications');
         }
     }, [user]);
 
@@ -40,6 +41,24 @@ function SignUp() {
     };
     const handleSubmit = useCallback(onSubmit, []);
 
+    const handleGoogleLogin = async (
+        response: GoogleLoginResponse | GoogleLoginResponseOffline
+    ) => {
+        if ((response as GoogleLoginResponse).tokenId !== undefined) {
+            try {
+                //@ts-ignore
+                const googleAuthResponse = await googleAuth(response.tokenId).unwrap();
+                console.log(googleAuthResponse);
+                if (window !== undefined) {
+                    window.localStorage.setItem('token', googleAuthResponse.token);
+                }
+                dispatch(setUser(googleAuthResponse.user));
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
     return (
         <>
             <FormPage
@@ -50,10 +69,11 @@ function SignUp() {
                 initialValues={{}}
             >
                 <ButtonSection>
-                    <Button inverted={true}>
+                    {/* <Button inverted={true}>
                         <img aria-hidden={true} src={GoogleIcon} alt="Google Icon" />
                         <span>Sign up with Google</span>
-                    </Button>
+                    </Button> */}
+                    <GoogleLoginComponent loginSuccess={handleGoogleLogin} />
                 </ButtonSection>
             </FormPage>
         </>

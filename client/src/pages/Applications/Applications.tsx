@@ -100,8 +100,12 @@ function Applications() {
         if (isLoading) {
             return (
                 <SubmissionsList>
-                    {[1, 2, 3].map((loading) => (
-                        <SkeletonList width={'100%'} height={applicationCardHeight} />
+                    {[1, 2, 3].map((index) => (
+                        <SkeletonList
+                            key={`skeleton_${index}`}
+                            width={'100%'}
+                            height={applicationCardHeight}
+                        />
                     ))}
                 </SubmissionsList>
             );
@@ -151,8 +155,12 @@ function Applications() {
         if (isLoading) {
             return (
                 <SubmissionsList>
-                    {[1, 2, 3].map((loading) => (
-                        <SkeletonList width={'100%'} height={applicationCardHeight} />
+                    {[1, 2, 3].map((index) => (
+                        <SkeletonList
+                            key={`skeleton-${index}`}
+                            width={'100%'}
+                            height={applicationCardHeight}
+                        />
                     ))}
                 </SubmissionsList>
             );

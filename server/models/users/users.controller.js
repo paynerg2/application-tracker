@@ -12,24 +12,33 @@ router.get('/:id', getById);
 router.patch('/:id', update);
 router.patch('/:id/settings', updateWithoutImage);
 router.delete('/:id', _delete);
+router.post('/googleAuth/:token', verifyWithGoogleToken);
 
 module.exports = router;
 
 function authenticate(req, res, next) {
     userService
         .authenticate(req.body)
-        .then((user) =>
-            user
-                ? res.json(user)
+        .then((response) =>
+            response
+                ? res.json(response)
                 : res.status(400).json({ message: 'Email or password is incorrect' })
         )
+        .catch((err) => next(err));
+}
+
+function verifyWithGoogleToken(req, res, next) {
+    console.log('verify with google');
+    userService
+        .googleAuthenticate(req.params.token)
+        .then((response) => (response ? res.json(response) : res.sendStatus(404)))
         .catch((err) => next(err));
 }
 
 function register(req, res, next) {
     userService
         .create(req.body)
-        .then((user) => (user ? res.json(user) : res.sendStatus(404)))
+        .then((response) => (response ? res.json(response) : res.sendStatus(404)))
         .catch((err) => next(err));
 }
 

@@ -30,6 +30,7 @@ const DatePicker = ({
                 name={name}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <>
+                        {/* @ts-ignore */}
                         <ReactDatePicker
                             name={name}
                             onChange={onChange}

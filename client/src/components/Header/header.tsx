@@ -64,7 +64,8 @@ function Header() {
         if (width && width <= breakpoint) {
             return DarkLogo;
         }
-        return user.settings?.isDarkMode ? DarkLogo : Logo;
+
+        return !isEmpty(user) && user.settings?.isDarkMode ? DarkLogo : Logo;
     };
 
     /*-------- Callbacks -------------*/
@@ -86,6 +87,7 @@ function Header() {
                     onClick={() => navigate(!isEmpty(user) ? '/applications' : '/')}
                     src={getLogo()}
                     alt="Trackr Logo"
+                    style={{ cursor: 'pointer' }}
                 />
                 <NavLinkSection>{!isEmpty(user) && getRouteNav()}</NavLinkSection>
                 {!isEmpty(user) && (

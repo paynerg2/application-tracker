@@ -11,6 +11,8 @@ function jwt() {
             // public routes don't require authentication
             '/users/authenticate',
             '/users/register',
+            //expressJwt.unless doesn't accept :param syntax, but it does accept RegEx
+            /^\/users\/googleAuth\/.*/,
         ],
     });
 }
