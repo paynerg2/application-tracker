@@ -12,10 +12,11 @@ export interface LoginResponse {
 }
 
 export const tags = ['Applications', 'User', 'Interviews', 'Contacts'];
+const baseUrl = process.env.NODE_ENV === 'production' ? config.apiUrl : 'http://localhost:4000';
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
-        baseUrl: config.apiUrl,
+        baseUrl: baseUrl,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem('token');
             if (token) {
