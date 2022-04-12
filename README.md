@@ -30,7 +30,8 @@ This version is a full rebuild which included
 No learning project is actually ever finished. This one is still undergoing active improvement, with plans to add the following features:
 
 -   Refactor backend to Typescript
--   Allow for third-party authorization via Google and Github.
+-   Allow for third-party authorization with Github.
+-   Fill out unit/integration/e2e test coverage
 -   Add to and improve upon current animations.
 -   Programmatically generate a to-do list for interview prep/follow-up actions.
 -   Email confirmation

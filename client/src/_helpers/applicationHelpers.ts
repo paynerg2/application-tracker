@@ -38,8 +38,6 @@ const groupApplicationsByDate = (applications: Application[]): GroupedApplicatio
  * @returns A list of applications which meet the filtering requirements
  */
 const filterApplications = (applications: Application[], filters: ApplicationFilters) => {
-    console.log('filters');
-    console.log(filters);
     if (filters.response === 'Open') {
         applications = applications.filter((a) => a.response.toLocaleLowerCase() !== 'rejected');
     }
