@@ -17,7 +17,6 @@ const FormActions = ({ state, dispatch, handleSubmit, onSubmit, steps }: Props) 
                 <Button
                     onClick={() => {
                         handleSubmit((values: any) => {
-                            console.log('values', values);
                             dispatch({
                                 type: StepActionTypes.SETDATA,
                                 payload: values,
@@ -34,10 +33,7 @@ const FormActions = ({ state, dispatch, handleSubmit, onSubmit, steps }: Props) 
             {state.activeStep === steps.length - 1 && (
                 <Button
                     onClick={() => {
-                        console.log('clicked');
                         handleSubmit((values: any) => {
-                            console.log('clicked');
-                            console.log('values', values);
                             dispatch({
                                 type: StepActionTypes.SETDATA,
                                 payload: values,

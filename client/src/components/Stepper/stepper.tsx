@@ -17,7 +17,6 @@ interface Props {
 
 function Stepper({ steps, currentStep, dispatch }: Props) {
     const handleClick = (step: number) => {
-        console.log(step);
         dispatch({
             type: StepActionTypes.SETSTEP,
             payload: {

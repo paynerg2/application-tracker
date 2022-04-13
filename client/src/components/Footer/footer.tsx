@@ -18,7 +18,7 @@ function Footer() {
     const user = useAppSelector((state) => state.auth.user);
 
     const getNavLinks = () => {
-        const routes = ['appliations', 'interviews', 'stats'];
+        const routes = ['applications', 'interviews', 'stats'];
         return routes.map((route) => (
             <li key={route}>
                 <TextButton onClick={() => navigate(`/${route}`)}>

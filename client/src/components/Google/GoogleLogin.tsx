@@ -6,9 +6,6 @@ interface Props {
 }
 
 const GoogleLoginComponent = ({ loginSuccess }: Props) => {
-    console.log('client id');
-    console.log(`${process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID}`);
-
     return (
         <>
             <GoogleLogin

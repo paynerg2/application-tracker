@@ -105,8 +105,6 @@ describe('Application Validation Schema', () => {
         };
 
         const error = await validateApplication(testApplication, 3);
-        console.log('**************************************');
-        console.log(error);
         expect(error.path).toEqual('additionalSkillsMet');
         expect(error.message).toEqual(negativeNumberError);
     });

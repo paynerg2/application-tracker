@@ -30,7 +30,6 @@ function SignUp() {
 
         try {
             const signupResponse = await registerUser(_user).unwrap();
-            console.log(signupResponse);
             if (window !== undefined) {
                 window.localStorage.setItem('token', signupResponse.token);
             }
@@ -48,7 +47,6 @@ function SignUp() {
             try {
                 //@ts-ignore
                 const googleAuthResponse = await googleAuth(response.tokenId).unwrap();
-                console.log(googleAuthResponse);
                 if (window !== undefined) {
                     window.localStorage.setItem('token', googleAuthResponse.token);
                 }

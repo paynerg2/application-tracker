@@ -71,8 +71,6 @@ const Stats = () => {
 
     const getCalendarData = () => {
         const { beginning, end } = getSubmissionRange();
-        console.log(beginning);
-        console.log(end);
         return getCalendarDataFromDates(submissionDates || []);
     };
 
