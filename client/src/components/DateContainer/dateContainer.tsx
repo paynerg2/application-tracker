@@ -23,7 +23,7 @@ const StyledDateContainer = styled.div`
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
         width: 100vw;
-        min-width: 400px;
+        min-width: 18em;
         height: fit-content;
 
         margin: 0;

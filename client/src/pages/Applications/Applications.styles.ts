@@ -11,8 +11,7 @@ export const Layout = styled(motion.div)`
     row-gap: 2vh;
 
     width: 80vw;
-    min-height: 90vh;
-    height: auto;
+    height: 100%;
     margin: 0 auto;
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
@@ -57,6 +56,7 @@ export const NewApplication = styled.div`
         position: fixed;
         bottom: 10vh; // nav height
         border-radius: 0;
+        z-index: 50; // Note: Needs to exceed date headings, but not exceed popup menu
 
         p,
         h2 {

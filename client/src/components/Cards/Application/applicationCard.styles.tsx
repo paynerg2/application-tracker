@@ -27,8 +27,9 @@ export const Card = styled(motion.div)`
     }
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
-        width: 48vw;
-        min-width: 28em;
+        width: 90vw;
+        min-width: 18em;
+        height: 12em;
 
         margin: 0;
         border-radius: 0;
