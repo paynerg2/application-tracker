@@ -34,6 +34,11 @@ export const Label = styled.label`
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.5vh;
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        width: 18em;
+        height: fit-content;
+    }
 `;
 
 export const SmallInput = styled(StyledInput)`
@@ -52,4 +57,8 @@ export const TwoColumnFormInput = styled.div`
 export const MinorLabel = styled(Label)`
     color: ${(props) => props.theme.color.lightGray};
     margin-left: 2vw;
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        max-width: 60vw;
+    }
 `;

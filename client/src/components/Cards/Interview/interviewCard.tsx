@@ -3,7 +3,7 @@ import { capitalizeFirstLetter } from '../../../_helpers/capitalize';
 import { Interview } from '../../../interfaces/interviews';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteInterviewMutation } from '../../../services/api';
-import { CompanyName, VerticalLine, Info, Item, Time } from './interviewCard.styles';
+import { CompanyName, Divider, Info, Item, Time } from './interviewCard.styles';
 import ActionAccordion from '../../ActionAccordion/ActionAccordion';
 
 interface Props {
@@ -37,13 +37,11 @@ function InterviewCard({ interview }: Props) {
             {/* @ts-ignore */}
             <Item isOpen={isOpen} onClick={() => setIsOpen((prev) => !prev)}>
                 <Time>
-                    <div style={{ fontWeight: 500 }}>{month}</div>
-                    <div>
-                        <strong>{date}</strong>
-                    </div>
-                    <div style={{ fontSize: '0.8rem' }}>{time}</div>
+                    <div id="month">{month}</div>
+                    <div id="date">{date} </div>
+                    <div id="time">{time}</div>
                 </Time>
-                <VerticalLine />
+                <Divider />
                 <Info>
                     <div>
                         <span style={{ fontWeight: 700 }}>

@@ -57,11 +57,26 @@ export const Item = styled.li<Props>`
     border-radius: ${(props) => props.theme.borders.radius};
     border-bottom-left-radius: ${(props) => (props.isOpen ? 0 : props.theme.borders.radius)};
     border-bottom-right-radius: ${(props) => (props.isOpen ? 0 : props.theme.borders.radius)};
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        height: 10em;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
 `;
 
 export const Identity = styled.div`
     display: flex;
     flex-direction: column;
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+    }
 `;
 
 export const Name = styled.div`
@@ -80,7 +95,7 @@ export const Position = styled.div`
     text-transform: capitalize;
 `;
 
-export const Line = styled.div`
+export const Divider = styled.div`
     height: 4px;
     width: 100%;
     background-color: ${(props) => props.theme.color.veryLightGray};
@@ -103,6 +118,10 @@ export const Company = styled.div`
     font-size: 1.6rem;
     font-weight: 700;
     text-transform: capitalize;
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        height: 100%;
+    }
 `;
 
 export const Actions = styled.div<Props>`

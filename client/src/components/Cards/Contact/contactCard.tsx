@@ -6,7 +6,7 @@ import {
     Card,
     Email,
     Identity,
-    Line,
+    Divider,
     Name,
     Position,
     Company,
@@ -44,7 +44,7 @@ function ContactCard({ contact, type }: Props) {
                             <Email>{email}</Email>
                             {phone && <Email>{phone}</Email>}
                         </Identity>
-                        <VerticalLine />
+                        <Divider />
                         <Company>{company}</Company>
                     </Item>
                     {/* {getActionButtons()} */}
@@ -57,7 +57,7 @@ function ContactCard({ contact, type }: Props) {
                             <Name>{name}</Name>
                             <Email>{email}</Email>
                         </Identity>
-                        <Line />
+                        <Divider />
                         <Position>{position}</Position>
                     </Card>
                 </ActionAccordion>

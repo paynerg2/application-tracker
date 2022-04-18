@@ -33,12 +33,36 @@ export const Item = styled.li<Props>`
     &:hover {
         box-shadow: ${(props) => props.theme.borders.shadow};
     }
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        width: 90vw;
+        min-width: 18em;
+        height: 12em;
+
+        margin: 0;
+
+        &:hover {
+            transform: none;
+        }
+    }
 `;
 
-export const VerticalLine = styled.div`
+export const Divider = styled.div`
+    // Vertical divider
     height: 100%;
     width: 4px;
     background-color: ${(props) => props.theme.color.separator};
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        // Horizontal divider
+        height: 4px;
+        width: 100%;
+    }
 `;
 
 export const Time = styled.div`
@@ -47,6 +71,39 @@ export const Time = styled.div`
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+
+    > #month {
+        font-weight: 500;
+    }
+
+    > #date {
+        font-weight: 700;
+    }
+
+    > #time {
+        font-size: 0.8em;
+    }
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        height: 2em;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.4em;
+        font-size: 1.4em;
+
+        > #month {
+            font-weight: 400;
+        }
+
+        > #date {
+            font-weight: 400;
+        }
+
+        > #time {
+            font-size: 1em;
+        }
+    }
 `;
 
 export const Info = styled.div`
@@ -56,6 +113,16 @@ export const Info = styled.div`
     align-items: flex-start;
     justify-content: center;
     font-size: 1.3rem;
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
 `;
 
 export const CompanyName = styled.span`
