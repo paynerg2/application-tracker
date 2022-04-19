@@ -1,152 +1,94 @@
 import styled from 'styled-components';
-import ListStyle from '../../assets/List_Style.svg';
+import DesktopLandingImage from '../../assets/Desktop_Landing_Image.png';
+import MobileLandingImage from '../../assets/Mobile_Landing_Image.png';
+import Button from '../../components/Button/button';
 
 export const Layout = styled.div`
+    min-height: 42em;
+    height: 90vh;
     display: flex;
     flex-direction: column;
-`;
 
-export const GridSection = styled.section`
+    background: white;
+
+    &:after {
+        position: absolute;
+        content: '';
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+        right: 0;
+        background-image: url(${DesktopLandingImage});
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
+        z-index: 0;
+        opacity: 0.3;
+        filter: brightness(60%);
+
+        @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+            background-image: url(${MobileLandingImage});
+            height: 100vh;
+        }
+    }
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        align-items: flex-start;
+        justify-content: center;
+        height: 100vh;
+    }
+`;
+export const SimplifySection = styled.div`
+    width: 80vw;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 5vh;
-    margin-top: 10vmax;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+    z-index: 2;
 
-    h1,
-    h2,
-    p,
-    a,
-    img {
-        width: 90%;
-    }
+    & > #simplify_text {
+        font-weight: 600;
+        font-size: 1.5em;
+        max-width: 18em;
 
-    h1 {
-        margin-top: 5vh;
-        font-size: 3rem;
-    }
-
-    h2 {
-        margin-top: 5vh;
-        font-size: 2.5rem;
-    }
-
-    p {
-        font-size: 1.25rem;
-    }
-
-    a {
-        button {
-            height: 4rem;
-            font-size: 1.5rem;
+        @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+            font-size: 1em;
+            text-align: center;
+            width: 80vw;
         }
     }
 
-    img {
-        height: auto;
-        max-width: 90%;
-    }
+    & > #simplify_cta {
+        ${Button} {
+            width: 16em;
+            max-width: 80vw;
+            font-size: 1.4em;
+            font-weight: 700;
+            background: transparent;
+            color: ${(props) => props.theme.color.primary};
+            text-transform: uppercase;
+            border: 2px solid ${(props) => props.theme.color.primary};
+            margin-top: 2em;
 
-    @media (min-width: ${(props) => props.theme.breakpoint.mobile}) {
-        display: grid;
-        grid-template-columns: 50% 50%;
-        grid-template-rows: repeat(4, 1fr);
-        gap: 0;
-        margin: 0 10vmax;
-        margin-top: 10vmax;
-    }
-`;
-
-export const SimplifySection = styled(GridSection)`
-    @media (min-width: ${(props) => props.theme.breakpoint.mobile}) {
-        #simplify_heading {
-            grid-column: 1 / 2;
-            margin: 0;
-        }
-
-        #simplify_text {
-            grid-column: 1 / 2;
-            grid-row: 2 / 3;
-        }
-
-        #simplify_cta {
-            grid-column: 1 / 2;
-            grid-row: 3 / 4;
-        }
-
-        #simplify_image {
-            grid-column: 2 / 3;
-            grid-row: 2 / 5;
-
-            align-self: flex-end;
+            &:hover {
+                color: ${(props) => props.theme.color.contrastText};
+                background-color: ${(props) => props.theme.color.primary};
+                transition: all 0.4s ease-in-out;
+            }
         }
     }
 `;
-
-export const BlueBackground = styled.section`
-    background-color: ${(props) => props.theme.color.primary};
-`;
-
-export const EssentialsSection = styled(GridSection)`
-    color: ${(props) => props.theme.color.buttonInverted};
-
-    li {
-        font-size: 1.5rem;
-        font-weight: 500;
-        text-align: left;
-        list-style-image: url(${ListStyle});
-        padding-inline-start: 1vmin;
-        margin-bottom: 2vmin;
-    }
-
-    @media (min-width: ${(props) => props.theme.breakpoint.mobile}) {
-        #essential_heading {
-            grid-column: 2 / 3;
-            grid-row: 1 / 3;
-
-            margin-top: 0;
-            text-align: left;
-        }
-
-        #essential_image {
-            grid-column: 1 / 2;
-            grid-row: 1 / 5;
-
-            margin-top: 5vh;
-        }
-
-        #essential_list {
-            grid-column: 2 /3;
-            grid-row: 3 / 5;
-        }
-    }
-`;
-
-export const AnalyticsSection = styled(GridSection)`
-    @media (min-width: ${(props) => props.theme.breakpoint.mobile}) {
-        #analytics_heading {
-            grid-column: 1 / 2;
-            grid-row: 1 / 3;
-        }
-
-        #analytics_text {
-            grid-column: 1 / 2;
-            grid-row: 3 / 5;
-        }
-
-        #analytics_image {
-            grid-column: 2 / 3;
-            grid-row: 1 / 5;
-
-            align-self: flex-end;
-        }
-    }
-`;
-
 export const MainHeading = styled.h1`
     color: ${(props) => props.theme.color.primary};
-    font-size: 4rem;
+    font-size: 3em;
     font-weight: 700;
+    text-align: left;
+    max-width: 80vw;
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        font-size: 2em;
+        text-align: center;
+    }
 `;
