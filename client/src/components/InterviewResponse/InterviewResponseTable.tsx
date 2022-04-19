@@ -1,13 +1,14 @@
 import React from 'react';
 import Row from './row';
-import { Interview } from '../../interfaces/interviews';
+import { Interview, interviewResponseTypes } from '../../interfaces/interviews';
 import { Container, Header } from './InterviewResponseTable.styles';
 
 interface Props {
     interviews: Interview[];
+    onChange: (response: typeof interviewResponseTypes[number], interview: Interview) => void;
 }
 
-const InterviewResponseTable = ({ interviews }: Props) => {
+const InterviewResponseTable = ({ interviews, onChange }: Props) => {
     return (
         <Container>
             <Header>
@@ -18,7 +19,7 @@ const InterviewResponseTable = ({ interviews }: Props) => {
                 <div>Offer</div>
             </Header>
             {interviews.map((interview) => (
-                <Row key={interview.id} interview={interview} />
+                <Row key={interview.id} interview={interview} onChange={onChange} />
             ))}
         </Container>
     );

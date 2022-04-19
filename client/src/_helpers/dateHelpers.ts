@@ -37,3 +37,16 @@ export const compareDates = (first: Date, second: Date, order: Order = 'descendi
         ? secondDate.getTime() - firstDate.getTime()
         : firstDate.getTime() - secondDate.getTime();
 };
+
+/**
+ * Formats a short date string
+ * @param date
+ * @returns Short date string (e.g. Jan 22)
+ */
+export const getShortDate = (date: Date) => {
+    const _date = new Date(date);
+    const month = _date.toLocaleDateString('default', { month: 'short' });
+    const day = _date.getDate();
+
+    return `${month} ${day}`;
+};

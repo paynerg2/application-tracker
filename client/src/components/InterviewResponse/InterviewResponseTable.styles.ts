@@ -58,6 +58,10 @@ interface Props {
     isChecked: boolean;
 }
 export const ResponseButton = styled(CircularButton)<Props>`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     height: 0.75em;
     width: 0.75em;
     background-color: ${(props) => props.theme.color.surface};

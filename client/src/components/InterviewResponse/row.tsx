@@ -6,19 +6,17 @@ import Checkmark from '../../assets/icons8-done.svg';
 import Close from '../../assets/icons8-close.svg';
 import { interviewResponseTypes } from '../../interfaces/interviews';
 import { useEditInterviewMutation } from '../../services/api';
+import { getShortDate } from '../../_helpers/dateHelpers';
 
 interface Props {
     interview: Interview;
+    onChange: (response: typeof interviewResponseTypes[number], interview: Interview) => void;
 }
 
-const Row = ({ interview }: Props) => {
+const Row = ({ interview, onChange }: Props) => {
     const [updateInterview] = useEditInterviewMutation();
-    const { interviewType, company, startTime } = interview;
-    const startTimeDate = new Date(startTime);
-    const month = startTimeDate.toLocaleString('default', { month: 'short' });
-    const day = startTimeDate.getDate();
+    const { interviewType, company, startTime, response } = interview;
 
-    const date = `${month} ${day}`;
     const info = `${capitalizeFirstLetter(interviewType)} interview with ${company}`;
 
     const handleResponseChanged = async (response: typeof interviewResponseTypes[number]) => {
@@ -31,37 +29,33 @@ const Row = ({ interview }: Props) => {
 
     return (
         <StyledRow>
-            <div>{date}</div>
+            <div>{getShortDate(startTime)}</div>
             <div>{info}</div>
             <div>
                 <ResponseButton
-                    onClick={() => handleResponseChanged('passed')}
+                    onClick={() => onChange('passed', interview)}
                     name="passed"
-                    isChecked={interview.response === 'passed'}
+                    isChecked={response === 'passed'}
                 >
-                    {interview.response === 'passed' && (
-                        <CheckmarkImg src={Checkmark} alt="checkmark" />
-                    )}
+                    {response === 'passed' && <CheckmarkImg src={Checkmark} alt="checkmark" />}
                 </ResponseButton>
             </div>
             <div>
                 <ResponseButton
-                    onClick={() => handleResponseChanged('rejected')}
+                    onClick={() => onChange('rejected', interview)}
                     name="rejected"
-                    isChecked={interview.response === 'rejected'}
+                    isChecked={response === 'rejected'}
                 >
-                    {interview.response === 'rejected' && <CheckmarkImg src={Close} alt="X" />}
+                    {response === 'rejected' && <CheckmarkImg src={Close} alt="X" />}
                 </ResponseButton>
             </div>
             <div>
                 <ResponseButton
-                    onClick={() => handleResponseChanged('offer')}
+                    onClick={() => onChange('offer', interview)}
                     name="offer"
-                    isChecked={interview.response === 'offer'}
+                    isChecked={response === 'offer'}
                 >
-                    {interview.response === 'offer' && (
-                        <CheckmarkImg src={Checkmark} alt="checkmark" />
-                    )}
+                    {response === 'offer' && <CheckmarkImg src={Checkmark} alt="checkmark" />}
                 </ResponseButton>
             </div>
         </StyledRow>
