@@ -71,6 +71,11 @@ export const ApplicationDetails = styled.div`
     flex-direction: column;
     width: 60vw;
     align-self: flex-end;
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        width: 100%;
+        max-width: 18em;
+    }
 `;
 
 export const Location = styled.div`
@@ -134,7 +139,8 @@ export const ListItem = styled.li`
     white-space: nowrap;
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
-        padding-left: 2em;
+        //padding-left: 2em;
+        background-image: none;
         margin-bottom: 1em;
     }
 `;
@@ -179,6 +185,15 @@ export const RelatedInfoSection = styled.div`
         align-items: center;
 
         width: 100%;
+
+        & #interviews,
+        #contacts {
+            width: 100%;
+            color: ${(props) => props.theme.color.contrastText};
+            padding: 0.5em 0;
+            box-sizing: border-box;
+            background-color: ${(props) => props.theme.color.primary};
+        }
     }
 `;
 
@@ -187,6 +202,13 @@ export const InterviewsSection = styled.div`
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
         width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        ${Button} {
+            width: 80%;
+        }
     }
 `;
 
@@ -201,7 +223,7 @@ export const ContactsSection = styled.div`
         align-items: center;
 
         ${Button} {
-            width: 50%;
+            width: 80%;
         }
     }
 `;
@@ -270,8 +292,12 @@ export const Label = styled.label`
     position: relative;
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
         height: 10vh;
-        line-height: 10vh;
         border-radius: 0;
     }
 `;

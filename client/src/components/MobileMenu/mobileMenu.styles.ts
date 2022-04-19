@@ -50,4 +50,8 @@ export const LinkContainer = styled(motion.ul)`
     justify-content: center;
     align-items: center;
     width: 100%;
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        padding: 0;
+    }
 `;

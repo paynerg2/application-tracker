@@ -41,6 +41,9 @@ import Prompt from '../../components/Prompt/prompt';
 import { Application as IApplication } from '../../interfaces/application';
 import { motion } from 'framer-motion';
 import { pageTransitionProps } from '../../common/animations';
+import useWindowDimensions from '../../_helpers/useWindowDimensions';
+import { useTheme } from 'styled-components';
+import { pixelStringToNumber } from '../../_helpers/stringHelpers';
 
 // Note: Declared as type instead of interface to avoid a strange bug
 // insisting that id satisfy Record<string, string | undefined>
@@ -54,6 +57,8 @@ function Application() {
     const [showModal, setShowModal] = useState(false);
     const [showAddInterviewPrompt, setShowAddInterviewPrompt] = useState(false);
     const navigate = useNavigate();
+    const { width } = useWindowDimensions();
+    const theme = useTheme();
     const { id } = useParams<ApplicationParams>();
     const { application, ...rest } = useGetApplicationsQuery(undefined, {
         selectFromResult: ({ data, ...rest }) => ({
@@ -138,6 +143,14 @@ function Application() {
         }
     };
 
+    const isMobileViewport = () => {
+        const mobileBreakpoint = pixelStringToNumber(theme.breakpoint.laptop);
+        if (width !== null) {
+            return width < mobileBreakpoint;
+        }
+        return false;
+    };
+
     return (
         <motion.div {...pageTransitionProps}>
             <TitleBanner>
@@ -149,11 +162,11 @@ function Application() {
                             onClick={() => setShowModal(true)}
                         >
                             <img aria-hidden={true} src={DeleteIcon} alt="Delete Icon" />
-                            <span>Delete</span>
+                            {!isMobileViewport() && <span>Delete</span>}
                         </Button>
                         <Button inverted onClick={handleEdit}>
                             <img aria-hidden={true} src={EditIcon} alt="Edit Icon" />
-                            <span>Edit</span>
+                            {!isMobileViewport() && <span>Edit</span>}
                         </Button>
                     </ButtonGroup>
                 </Container>
@@ -260,11 +273,16 @@ function Application() {
                             </DateSection>
                             <RelatedInfoSection>
                                 <InterviewsSection>
-                                    <SectionHeading>Interviews</SectionHeading>
+                                    <SectionHeading id="interviews">Interviews</SectionHeading>
                                     {interviews && <InterviewList interviews={interviews} />}
+                                    {isMobileViewport() && (
+                                        <Button onClick={() => navigate('/interviews/new')}>
+                                            Add a New Interview
+                                        </Button>
+                                    )}
                                 </InterviewsSection>
                                 <ContactsSection>
-                                    <SectionHeading>Contacts</SectionHeading>
+                                    <SectionHeading id="contacts">Contacts</SectionHeading>
                                     {contacts && contacts.length > 0 && (
                                         <List
                                             style={{
