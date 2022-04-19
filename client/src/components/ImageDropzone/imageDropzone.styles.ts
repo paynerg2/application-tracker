@@ -29,4 +29,11 @@ export const Container = styled.div<Props>`
     > p {
         color: ${(props) => props.theme.color.dropzoneText};
     }
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        > p {
+            width: 100%;
+            font-size: 0.8em;
+        }
+    }
 `;

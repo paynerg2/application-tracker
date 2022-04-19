@@ -35,6 +35,7 @@ export const Layout = styled.div`
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        justify-content: center;
         margin-top: 0;
     }
 `;
@@ -60,6 +61,7 @@ export const OptionsSection = styled.section`
         align-items: flex-start;
         gap: 5em;
         border-radius: 0;
+        padding: 1em;
     }
 `;
 

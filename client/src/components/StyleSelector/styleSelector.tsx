@@ -7,7 +7,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: row;
     width: 20vw;
-    min-width: 300px;
+    min-width: 18em;
     height: fit-content;
     background: ${(props) => props.theme.color.primary};
     border: 2px solid ${(props) => props.theme.color.primary};
