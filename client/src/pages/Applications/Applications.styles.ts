@@ -13,6 +13,7 @@ export const Layout = styled(motion.div)`
     width: 80vw;
     height: 100%;
     margin: 0 auto;
+    margin-top: 2vmax;
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
         width: 100%;

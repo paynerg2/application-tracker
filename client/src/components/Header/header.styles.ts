@@ -8,7 +8,7 @@ export const Layout = styled.header`
     align-items: center;
     height: 10vh;
     background-color: ${(props) => props.theme.color.background};
-    margin-bottom: 2vh;
+    //margin-bottom: 2vh;
 
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
         width: 100vw;

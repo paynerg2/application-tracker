@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import TextButton from '../TextButton/textButton';
 
 export const Layout = styled.footer`
+    min-height: 25em;
     height: 60vh;
     min-width: 400px;
     display: flex;
@@ -54,7 +54,7 @@ export const FooterContainer = styled.div`
 
 export const FooterSections = styled.div`
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 
     section {
         width: 20em;
