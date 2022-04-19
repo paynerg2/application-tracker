@@ -6,7 +6,7 @@ import { CircularButton } from '../../components/InterviewList/InterviewList.sty
 import ContactCard from '../../components/Cards/Contact/contactCard';
 import SkeletonList from '../../components/List/skeletonList';
 import InterviewList from '../../components/InterviewList/InterviewList';
-import InterviewResponseTable from '../../components/InterviewResponseTable/InterviewResponseTable';
+import InterviewResponseTable from '../../components/InterviewResponse/InterviewResponseTable';
 import {
     ContactSection,
     InterviewSection,
@@ -19,6 +19,7 @@ import { pageTransitionProps } from '../../common/animations';
 import { Interview } from '../../interfaces/interviews';
 import Placeholder from '../../components/Placeholder/placeholder';
 import TabsImage from '../../assets/Tabs.svg';
+import InterviewResponses from '../../components/InterviewResponse/InterviewResponses';
 
 function Interviews() {
     const today = new Date();
@@ -56,7 +57,7 @@ function Interviews() {
                         previousInterviews.length > 0 && (
                             <>
                                 <SectionHeader>Previous Interviews</SectionHeader>
-                                <InterviewResponseTable interviews={previousInterviews} />
+                                <InterviewResponses interviews={previousInterviews} />
                             </>
                         )
                     ) : (
