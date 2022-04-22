@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
     useDeleteApplicationMutation,
     useEditApplicationMutation,
@@ -7,7 +8,6 @@ import {
     useGetContactsQuery,
     useGetInterviewsQuery,
 } from '../../services/api';
-import { iconSelector } from '../../_helpers/iconSelector';
 import {
     ApplicationDetails,
     Company,
@@ -28,21 +28,22 @@ import {
     ContactsSection,
     InterviewsSection,
 } from './Application.styles';
-import { theme } from '../../app/theme/theme';
 import DateContainer from '../../components/DateContainer/dateContainer';
 import Button from '../../components/Button/button';
-import EditIcon from '../../assets/clarity_edit-solid.png';
-import DeleteIcon from '../../assets/ant-design_delete-filled.png';
 import InterviewList from '../../components/InterviewList/InterviewList';
 import { List } from '../../components/List/list';
 import ContactCard from '../../components/Cards/Contact/contactCard';
 import Modal from '../../components/Modal/modal';
 import Prompt from '../../components/Prompt/prompt';
+import Placeholder from '../../components/Placeholder/placeholder';
+import EditIcon from '../../assets/clarity_edit-solid.png';
+import DeleteIcon from '../../assets/ant-design_delete-filled.png';
+import TabsImage from '../../assets/Tabs.svg';
 import { Application as IApplication } from '../../interfaces/application';
-import { motion } from 'framer-motion';
 import { pageTransitionProps } from '../../common/animations';
 import useWindowDimensions from '../../_helpers/useWindowDimensions';
 import { useTheme } from 'styled-components';
+import { iconSelector } from '../../_helpers/iconSelector';
 import { pixelStringToNumber } from '../../_helpers/stringHelpers';
 
 // Note: Declared as type instead of interface to avoid a strange bug
@@ -283,7 +284,7 @@ function Application() {
                                 </InterviewsSection>
                                 <ContactsSection>
                                     <SectionHeading id="contacts">Contacts</SectionHeading>
-                                    {contacts && contacts.length > 0 && (
+                                    {contacts && contacts.length > 0 ? (
                                         <List
                                             style={{
                                                 background: `${theme.color.secondary}`,
@@ -294,6 +295,12 @@ function Application() {
                                                 <ContactCard type="card" contact={contact} />
                                             ))}
                                         </List>
+                                    ) : (
+                                        <Placeholder
+                                            image={TabsImage}
+                                            headerText="No Contacts"
+                                            cta="Time to start networking!"
+                                        />
                                     )}
                                     <Button onClick={() => navigate('/contacts/new')}>
                                         Add a New Contact

@@ -12,7 +12,7 @@ export const Container = styled.div`
     @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
         width: 100%;
         margin: 0;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
     }
 `;
@@ -53,6 +53,8 @@ export const TitleBanner = styled.div`
         position: sticky;
         top: 0;
         z-index: 1000;
+        height: fit-content;
+        min-height: 10vh;
     }
 `;
 
@@ -322,5 +324,6 @@ export const ResponseGroup = styled.div`
         width: 100vw;
         height: 10vh;
         gap: 0;
+        z-index: 1000;
     }
 `;

@@ -6,7 +6,6 @@ import { CircularButton } from '../../components/InterviewList/InterviewList.sty
 import ContactCard from '../../components/Cards/Contact/contactCard';
 import SkeletonList from '../../components/List/skeletonList';
 import InterviewList from '../../components/InterviewList/InterviewList';
-import InterviewResponseTable from '../../components/InterviewResponse/InterviewResponseTable';
 import {
     ContactSection,
     InterviewSection,
