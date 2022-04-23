@@ -46,6 +46,11 @@ export const Title = styled.h2`
     font-size: 1.3rem;
     font-weight: 700;
     margin: 0;
+
+    @media (max-width: ${(props) => props.theme.breakpoint.laptop}) {
+        // Give the user the impression that the title is clickable on mobile
+        color: ${(props) => props.theme.color.primary};
+    }
 `;
 
 export const Company = styled.h3`

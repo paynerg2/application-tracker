@@ -52,7 +52,7 @@ export const TitleBanner = styled.div`
         box-sizing: border-box;
         position: sticky;
         top: 0;
-        z-index: 1000;
+        z-index: 10000;
         height: fit-content;
         min-height: 10vh;
     }

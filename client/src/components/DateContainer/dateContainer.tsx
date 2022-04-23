@@ -34,10 +34,10 @@ const StyledDateContainer = styled.div`
         position: sticky;
         top: 0;
 
-        border-top: 2px solid ${(props) => props.theme.color.primary};
-        border-bottom: 2px solid ${(props) => props.theme.color.primary};
+        border-top: 2px solid ${(props) => props.theme.color.footer};
+        border-bottom: 2px solid ${(props) => props.theme.color.footer};
 
-        background-color: ${(props) => props.theme.color.primary};
+        background-color: ${(props) => props.theme.color.footer};
         h2,
         p {
             color: ${(props) => props.theme.color.contrastText};
