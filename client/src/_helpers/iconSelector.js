@@ -236,6 +236,8 @@ export const iconSelector = (name, props = { width: 60, height: 60 }) => {
         return <ThreeJSIcon {...props} />;
     } else if (skillName.includes('typescript')) {
         return <TypescriptIcon {...props} />;
+    } else if (skillName.includes('unity')) {
+        return <UnityIcon {...props} />;
     } else if (skillName.includes('visualstudio')) {
         return <VisualStudioIcon {...props} />;
     } else if (skillName.includes('vue')) {
