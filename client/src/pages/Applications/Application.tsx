@@ -300,6 +300,7 @@ function Application() {
                                             image={TabsImage}
                                             headerText="No Contacts"
                                             cta="Time to start networking!"
+                                            style={{ width: '100%', marginBottom: '1em' }}
                                         />
                                     )}
                                     <Button onClick={() => navigate('/contacts/new')}>
