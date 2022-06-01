@@ -8,7 +8,9 @@ const phoneRegExp =
 export const contactStepOneValidationSchema = yup.object({
     name: yup.string().required(requiredError),
     email: yup.string().email(invalidEmail),
-    phone: yup.string().matches(phoneRegExp, invalidPhoneNumber),
+    phone: yup
+        .string()
+        .matches(phoneRegExp, { excludeEmptyString: true, message: invalidPhoneNumber }),
 });
 
 export const contactStepTwoValidationSchema = yup.object({
