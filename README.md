@@ -39,6 +39,10 @@ No learning project is actually ever finished. This one is still undergoing acti
 -   Account deletion
 -   Alerts to give feedback where appropriate to improve the user experience
 
+## Alternative Server Build
+
+An alternative version of the backend built with C#, ASP.NET Core, EF Core, and SQL Server can be found [here](https://github.com/paynerg2/Trackr-Dotnet-Backend)
+
 # Built With
 
 <p float="left">
