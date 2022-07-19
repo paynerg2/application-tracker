@@ -16,7 +16,6 @@ import { useGetApplicationsQuery } from '../../services/api';
 import { iconSelector } from '../../_helpers/iconSelector';
 import { compareDates } from '../../_helpers/dateHelpers';
 import {
-    ApplicationCardContainer,
     ApplicationListContainer,
     ApplicationListItem,
     Layout,
@@ -26,6 +25,7 @@ import {
     applicationListItemHeight,
 } from './Applications.styles';
 import Placeholder from '../../components/Placeholder/placeholder';
+import ApplicationCardContainer from '../../components/ApplicationCardContainer/ApplicationCardContainer';
 
 export interface ApplicationFilters {
     response: string;
@@ -128,11 +128,9 @@ function Applications() {
                                 .map((date) => (
                                     <SubmissionsContainer key={date} layout="position">
                                         <DateContainer date={date} />
-                                        <ApplicationCardContainer>
-                                            {groupedApplications[date].map((app: Application) => (
-                                                <ApplicationCard key={app.id} application={app} />
-                                            ))}
-                                        </ApplicationCardContainer>
+                                        <ApplicationCardContainer
+                                            applications={groupedApplications[date]}
+                                        />
                                     </SubmissionsContainer>
                                 ))
                         ) : (
