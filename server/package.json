@@ -37,7 +37,7 @@
         "enzyme": "^3.10.0",
         "enzyme-adapter-react-16": "^1.14.0",
         "enzyme-to-json": "^3.3.5",
-        "html-webpack-plugin": "^3.2.0",
+        "html-webpack-plugin": "^5.5.0",
         "nodemon": "^1.18.11",
         "path": "^0.12.7",
         "ts-jest": "^27.1.3",
